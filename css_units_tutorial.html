@@ -1,0 +1,1766 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS өлшем бірліктері - толық сабақ</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #e74c3c, #8e44ad);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .content {
+            padding: 40px;
+            display: grid;
+            gap: 30px;
+        }
+
+        .section {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 5px solid #e74c3c;
+        }
+
+        .section h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .units-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .unit-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border-left: 4px solid;
+        }
+
+        .unit-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .absolute-units { border-left-color: #e74c3c; }
+        .relative-units { border-left-color: #3498db; }
+        .viewport-units { border-left-color: #27ae60; }
+        .other-units { border-left-color: #f39c12; }
+
+        .unit-card h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .code-example {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            margin: 15px 0;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 11px;
+        }
+
+        .copy-btn:hover {
+            background: #c0392b;
+        }
+
+        .demo-container {
+            background: #f8f9fa;
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            min-height: 200px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .demo-box {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-align: center;
+            margin: 10px;
+            display: inline-block;
+            min-width: 100px;
+            transition: all 0.3s ease;
+        }
+
+        .interactive-demo {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .control-group {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .control-group h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .slider {
+            width: 100%;
+            margin: 10px 0;
+            -webkit-appearance: none;
+            height: 5px;
+            border-radius: 5px;
+            background: #d3d3d3;
+            outline: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #e74c3c;
+            cursor: pointer;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #e74c3c;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #e74c3c, #8e44ad);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn.active {
+            background: linear-gradient(135deg, #27ae60, #16a085);
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #ff6b6b 0%, #feca57 100%);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .comparison-table th {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            font-weight: bold;
+        }
+
+        .comparison-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #e74c3c;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            z-index: 1000;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .step-by-step {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .step {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .step-number {
+            background: #e74c3c;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .visual-comparison {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .visual-item {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .visual-demo {
+            background: #3498db;
+            color: white;
+            margin: 10px 0;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .pros-cons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .pros, .cons {
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .pros {
+            background: #e8f5e8;
+            border-left: 4px solid #27ae60;
+        }
+
+        .cons {
+            background: #ffeaea;
+            border-left: 4px solid #e74c3c;
+        }
+
+        @media (max-width: 768px) {
+            .units-grid, .controls, .pros-cons, .visual-comparison {
+                grid-template-columns: 1fr;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📏 CSS өлшем бірліктері</h1>
+            <p>Responsive дизайн үшін дұрыс өлшем бірліктерін таңдау</p>
+        </div>
+
+        <div class="content">
+            <!-- Introduction -->
+            <div class="section">
+                <h2>🎯 Кіріспе</h2>
+                
+                <p style="font-size: 1.1rem; margin-bottom: 20px;">
+                    CSS-те өлшем бірліктері - <span class="highlight">responsive дизайнның негізі</span>. Дұрыс бірлікті таңдау арқылы барлық құрылғыларда жақсы көрінетін сайт жасауға болады.
+                </p>
+
+                <div style="background: #ffe8e8; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                    <h3 style="color: #c0392b; margin-bottom: 15px;">🎯 Осы сабақта үйренетініміз:</h3>
+                    <ul style="color: #2c3e50; line-height: 1.8; margin-left: 20px;">
+                        <li>Абсолютті бірліктер (px, pt, cm)</li>
+                        <li>Салыстырмалы бірліктер (em, rem, %)</li>
+                        <li>Viewport бірліктері (vw, vh, vmin, vmax)</li>
+                        <li>Жаңа CSS бірліктері (ch, ex, fr)</li>
+                        <li>Responsive дизайн үшін ең жақсы тәжірибелер</li>
+                        <li>Қашан қандай бірлікті пайдалану</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Absolute Units -->
+            <div class="section">
+                <h2>📐 Абсолютті өлшем бірліктері</h2>
+                
+                <div class="units-grid">
+                    <div class="unit-card absolute-units">
+                        <h3>📍 Pixel (px)</h3>
+                        <p><strong>Ең танымал бірлік:</strong> Экран нүктесі</p>
+                        
+                        <div class="code-example">
+                            <button class="copy-btn" onclick="copyCode(this)">Көшіру</button>
+/* Pixel өлшемдері */
+.header {
+    height: 80px;           /* Тұрақты биіктік */
+    font-size: 16px;        /* Стандартты мәтін */
+    border: 1px solid #ddd; /* Жіңішке шекара */
+    padding: 10px 20px;     /* Ішкі жиектер */
+}
+
+.button {
+    width: 120px;           /* Батырма ені */
+    height: 40px;           /* Батырма биіктігі */
+    font-size: 14px;        /* Мәтін өлшемі */
+    border-radius: 5px;     /* Дөңгелек бұрыштар */
+}
+
+/* Responsive pixel */
+@media (max-width: 768px) {
+    .header {
+        height: 60px;       /* Кішірек экранда */
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+}
+
+/* High DPI экрандарға */
+@media (-webkit-min-device-pixel-ratio: 2) {
+    .icon {
+        background-size: 24px 24px; /* 2x өлшем */
+    }
+}
+                        </div>
+
+                        <div class="demo-container">
+                            <div class="demo-box" style="width: 100px; height: 50px;">100px × 50px</div>
+                            <div class="demo-box" style="width: 150px; height: 30px;">150px × 30px</div>
+                            <div class="demo-box" style="width: 80px; height: 80px;">80px × 80px</div>
+                        </div>
+
+                        <div class="pros-cons">
+                            <div class="pros">
+                                <h4 style="color: #27ae60;">✅ Артықшылықтары:</h4>
+                                <ul style="font-size: 0.9rem;">
+                                    <li>Дәл өлшем</li>
+                                    <li>Барлық браузерлерде жұмыс істейді</li>
+                                    <li>Дизайнерлерге таныс</li>
+                                    <li>Шекаралар мен теңшеулер үшін жақсы</li>
+                                </ul>
+                            </div>
+                            <div class="cons">
+                                <h4 style="color: #e74c3c;">❌ Кемшіліктері:</h4>
+                                <ul style="font-size: 0.9rem;">
+                                    <li>Responsive емес</li>
+                                    <li>Accessibility мәселелері</li>
+                                    <li>Әртүрлі экрандарда проблемалар</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="unit-card absolute-units">
+                        <h3>📄 Point (pt) және басқалар</h3>
+                        <p><strong>Баспа бірліктері:</strong> Принт медиасы үшін</p>
+                        
+                        <div class="code-example">
+                            <button class="copy-btn" onclick="copyCode(this)">Көшіру</button>
+/* Баспа медиасы бірліктері */
+@media print {
+    body {
+        font-size: 12pt;        /* Point - баспа стандарты */
+        line-height: 14pt;
+        margin: 1in;            /* Inch - дюйм */
+    }
+    
+    h1 {
+        font-size: 18pt;
+        margin-bottom: 0.5cm;   /* Сантиметр */
+    }
+    
+    .page-break {
+        page-break-before: always;
+        margin-top: 1in;
+    }
+}
+
+/* Physical units салыстыру */
+.measurement-demo {
+    width: 2in;             /* 2 дюйм = 192px */
+    height: 5cm;            /* 5 см = ~189px */
+    border: 1pt solid black; /* 1 point = 1.33px */
+    margin: 5mm;            /* 5 миллиметр */
+}
+
+/* PC units (пика) */
+.typography {
+    font-size: 1pc;         /* 1 pica = 12pt = 16px */
+    line-height: 1.5pc;
+}
+                        </div>
+
+                        <div class="visual-comparison">
+                            <div class="visual-item">
+                                <h5>1 inch (in)</h5>
+                                <div class="visual-demo" style="width: 96px; height: 20px;">96px</div>
+                            </div>
+                            <div class="visual-item">
+                                <h5>1 cm</h5>
+                                <div class="visual-demo" style="width: 37.8px; height: 20px;">37.8px</div>
+                            </div>
+                            <div class="visual-item">
+                                <h5>1 pt</h5>
+                                <div class="visual-demo" style="width: 1.33px; height: 20px; min-width: 50px;">1.33px</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Relative Units -->
+            <div class="section">
+                <h2>📊 Салыстырмалы өлшем бірліктері</h2>
+                
+                <div class="units-grid">
+                    <div class="unit-card relative-units">
+                        <h3>🔄 EM бірлігі</h3>
+                        <p><strong>Parent элементке қатысты:</strong> Иерархиялық масштабтау</p>
+                        
+                        <div class="code-example">
+                            <button class="copy-btn" onclick="copyCode(this)">Көшіру</button>
+/* EM бірлігі мысалы */
+.parent {
+    font-size: 20px;        /* Базалық өлшем */
+}
+
+.child {
+    font-size: 1.2em;       /* 20px * 1.2 = 24px */
+    padding: 0.5em;         /* 24px * 0.5 = 12px */
+    margin: 1em 0;          /* 24px margin */
+}
+
+/* Nested EM - мұқият болыңыз! */
+.grandchild {
+    font-size: 1.1em;       /* 24px * 1.1 = 26.4px */
+    /* Compounding effect! */
+}
+
+/* EM-ді дұрыс пайдалану */
+.card {
+    font-size: 16px;        /* Базалық өлшем */
+    padding: 1em;           /* 16px padding */
+    border-radius: 0.5em;   /* 8px radius */
+    margin-bottom: 1.5em;   /* 24px margin */
+}
+
+.card h3 {
+    font-size: 1.25em;      /* 20px */
+    margin-bottom: 0.5em;   /* 8px */
+}
+
+.card p {
+    font-size: 0.875em;     /* 14px */
+    line-height: 1.5em;     /* 21px */
+}
+
+/* Responsive EM */
+@media (max-width: 768px) {
+    .card {
+        font-size: 14px;     /* Барлығы кішірейеді */
+    }
+}
+                        </div>
+
+                        <div class="demo-container">
+                            <div style="font-size: 18px; border: 2px solid #3498db; padding: 10px; margin: 10px;">
+                                Parent: 18px
+                                <div style="font-size: 1.2em; background: #ecf0f1; padding: 0.5em; margin: 0.5em 0;">
+                                    Child: 1.2em (21.6px)
+                                    <div style="font-size: 1.1em; background: #bdc3c7; padding: 0.3em;">
+                                        Grandchild: 1.1em (23.76px)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="unit-card relative-units">
+                        <h3>🎯 REM бірлігі</h3>
+                        <p><strong>Root элементке қатысты:</strong> Болжауға болатын масштабтау</p>
+                        
+                        <div class="code-example">
+                            <button class="copy-btn" onclick="copyCode(this)">Көшіру</button>
+/* REM бірлігі - заманауи стандарт */
+html {
+    font-size: 16px;        /* Root font size */
+}
+
+/* REM негізіндегі типография */
+h1 { font-size: 2rem; }     /* 32px */
+h2 { font-size: 1.5rem; }   /* 24px */
+h3 { font-size: 1.25rem; }  /* 20px */
+p  { font-size: 1rem; }     /* 16px */
+small { font-size: 0.875rem; } /* 14px */
+
+/* Layout өлшемдері REM-мен */
+.container {
+    max-width: 75rem;       /* 1200px */
+    padding: 2rem;          /* 32px */
+    margin: 0 auto;
+}
+
+.section {
+    margin-bottom: 3rem;    /* 48px */
+    padding: 2rem 1.5rem;   /* 32px 24px */
+}
+
+.button {
+    padding: 0.75rem 1.5rem;  /* 12px 24px */
+    font-size: 1rem;          /* 16px */
+    border-radius: 0.375rem;  /* 6px */
+}
+
+/* Accessibility: user-тің font size өзгеруіне жауап береді */
+@media (prefers-reduced-motion: no-preference) {
+    .smooth-resize {
+        transition: font-size 0.3s ease;
+    }
+}
+
+/* Responsive REM */
+@media (max-width: 768px) {
+    html {
+        font-size: 14px;     /* Барлық REM өлшемдері кішірейеді */
+    }
+}
+                        </div>
+
+                        <div class="demo-container">
+                            <div style="font-size: 2rem; margin: 0.5rem 0;">h1: 2rem</div>
+                            <div style="font-size: 1.5rem; margin: 0.5rem 0;">h2: 1.5rem</div>
+                            <div style="font-size: 1.25rem; margin: 0.5rem 0;">h3: 1.25rem</div>
+                            <div style="font-size: 1rem; margin: 0.5rem 0;">p: 1rem</div>
+                            <div style="font-size: 0.875rem; margin: 0.5rem 0;">small: 0.875rem</div>
+                        </div>
+                    </div>
+
+                    <div class="unit-card relative-units">
+                        <h3>📊 Percentage (%)</h3>
+                        <p><strong>Parent элементке пайызбен:</strong> Responsive layout</p>
+                        
+                        <div class="code-example">
+                            <button class="copy-btn" onclick="copyCode(this)">Көшіру</button>
+/* Percentage layout жүйесі */
+.container {
+    width: 100%;            /* Толық ені */
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.row {
+    display: flex;
+    width: 100%;
+}
+
+/* Flexbox percentage */
+.col-1 { flex: 0 0 8.33%; }     /* 1/12 */
+.col-2 { flex: 0 0 16.66%; }    /* 2/12 */
+.col-3 { flex: 0 0 25%; }       /* 3/12 */
+.col-4 { flex: 0 0 33.33%; }    /* 4/12 */
+.col-6 { flex: 0 0 50%; }       /* 6/12 */
+.col-12 { flex: 0 0 100%; }     /* 12/12 */
+
+/* Classic percentage layout */
+.sidebar {
+    width: 25%;             /* Бүйір панель */
+    float: left;
+}
+
+.main-content {
+    width: 75%;             /* Негізгі мазмұн */
+    float: right;
+}
+
+/* Responsive percentage */
+@media (max-width: 768px) {
+    .sidebar,
+    .main-content {
+        width: 100%;        /* Mobile-да толық ені */
+        float: none;
+    }
+}
+
+/* Height percentage */
+.full-height {
+    height: 100vh;          /* Viewport height */
+}
+
+.half-section {
+    height: 50%;            /* Parent-тың жартысы */
+}
+
+/* Font size percentage */
+.large-text {
+    font-size: 120%;        /* Parent font-тың 120%-ы */
+}
+                        </div>
+
+                        <div class="demo-container">
+                            <div style="display: flex; gap: 10px; height: 100px;">
+                                <div style="background: #e74c3c; color: white; width: 25%; display: flex; align-items: center; justify-content: center;">25%</div>
+                                <div style="background: #3498db; color: white; width: 50%; display: flex; align-items: center; justify-content: center;">50%</div>
+                                <div style="background: #27ae60; color: white; width: 25%; display: flex; align-items: center; justify-content: center;">25%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Viewport Units -->
+            <div class="section">
+                <h2>📱 Viewport өлшем бірліктері</h2>
+                
+                <div class="units-grid">
+                    <div class="unit-card viewport-units">
+                        <h3>🖥️ VW және VH</h3>
+                        <p><strong>Viewport-қа қатысты:</strong> True responsive design</p>
+                        
+                        <div class="code-example">
+                            <button class="copy-btn" onclick="copyCode(this)">Көшіру</button>
+/* Viewport Width және Height */
+.hero-section {
+    height: 100vh;          /* Viewport height-тың 100%-ы */
+    width: 100vw;           /* Viewport width-тың 100%-ы */
+    
+    /* Орталықтау */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-title {
+    font-size: 8vw;         /* Responsive font size */
+    max-font-size: 4rem;    /* Maximum шектеу */
+    min-font-size: 2rem;    /* Minimum шектеу */
+}
+
+/* Card responsive өлшемдері */
+.card {
+    width: 90vw;            /* Mobile-да толық ені */
+    max-width: 400px;       /* Desktop шектеуі */
+    height: 60vh;           /* Биіктік viewport-қа байланысты */
+    max-height: 600px;
+}
+
+/* Sidebar viewport */
+.sidebar {
+    width: 25vw;            /* Viewport width-тың 25%-ы */
+    min-width: 200px;       /* Minimum ені */
+    height: 100vh;          /* Толық биіктік */
+}
+
+/* Responsive typography */
+.responsive-text {
+    font-size: calc(1rem + 2vw);  /* Hybrid approach */
+    line-height: calc(1.4 + 0.5vw);
+}
+
+/* Full screen components */
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.8);
+}
+                        </div>
+
+                        <div class="demo-container">
+                            <div style="background: #e74c3c; color: white; width: 50vw; height: 15vh; display: flex; align-items: center; justify-content: center; margin: 5px;">50vw × 15vh</div>
+                            <div style="background: #3498db; color: white; width: 30vw; height: 10vh; display: flex; align-items: center; justify-content: center; margin: 5px;">30vw × 10vh</div>
+                        </div>
+                    </div>
+
+                    <div class="unit-card viewport-units">
+                        <h3>📐 VMIN және VMAX</h3>
+                        <p><strong>Viewport минимум/максимум:</strong> Orientation-responsive</p>
+                        
+                        <div class="code-example">
+                            <button class="copy-btn" onclick="copyCode(this)">Көшіру</button>
+/* VMIN және VMAX бірліктері */
+.square-element {
+    width: 20vmin;          /* Кішкентай viewport dimension */
+    height: 20vmin;         /* Әрқашан квадрат болады */
+    background: #3498db;
+}
+
+.responsive-circle {
+    width: 15vmin;
+    height: 15vmin;
+    border-radius: 50%;
+    background: #e74c3c;
+}
+
+/* Text responsive to screen orientation */
+.adaptive-text {
+    font-size: 5vmin;       /* Portrait/landscape-та жақсы */
+    line-height: 6vmin;
+}
+
+/* Full coverage elements */
+.cover-element {
+    width: 100vmax;         /* Үлкен dimension-ды жабады */
+    height: 100vmax;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Mobile-first responsive design */
+.mobile-card {
+    width: 90vmin;          /* Әрқашан экранға сыяды */
+    max-width: 500px;
+    height: 40vmin;
+    max-height: 400px;
+}
+
+/* Landscape/Portrait adaptation */
+@media (orientation: landscape) {
+    .adaptive-container {
+        width: 80vmin;      /* Landscape-та кішірек */
+        height: 60vmin;
+    }
+}
+
+@media (orientation: portrait) {
+    .adaptive-container {
+        width: 90vmin;      /* Portrait-та үлкенірек */
+        height: 50vmin;
+    }
+}
+                        </div>
+
+                        <div class="demo-container">
+                            <div style="background: #9b59b6; color: white; width: 15vmin; height: 15vmin; display: flex; align-items: center; justify-content: center; margin: 10px; border-radius: 50%;">15vmin</div>
+                            <div style="background: #f39c12; color: white; width: 10vmax; height: 5vmin; display: flex; align-items: center; justify-content: center; margin: 10px;">10vmax × 5vmin</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modern CSS Units -->
+            <div class="section">
+                <h2>⚡ Заманауи CSS бірліктері</h2>
+                
+                <div class="units-grid">
+                    <div class="unit-card other-units">
+                        <h3>📝 CH және EX</h3>
+                        <p><strong>Мәтін-негізіндегі бірліктер:</strong> Typography үшін</p>
+                        
+                        <div class="code-example">
+                            <button class="copy-btn" onclick="copyCode(this)">Көшіру</button>
+/* Character-based units */
+.monospace-input {
+    font-family: 'Courier New', monospace;
+    width: 40ch;            /* 40 character ені */
+    padding: 1ch;           /* Character-based padding */
+}
+
+/* Form labels мен input alignment */
+.form-group {
+    display: grid;
+    grid-template-columns: 15ch 1fr;  /* Label фиксированной ені */
+    gap: 1ch;
+    align-items: center;
+}
+
+/* Code block индентациясы */
+.code-indent-1 { margin-left: 2ch; }
+.code-indent-2 { margin-left: 4ch; }
+.code-indent-3 { margin-left: 6ch; }
+
+/* Responsive text containers */
+.readable-text {
+    max-width: 65ch;        /* Оптимальды оқу ені */
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* EX unit for vertical spacing */
+.text-with-ex {
+    font-size: 16px;
+    margin-bottom: 2ex;     /* x-height негізіндегі margin */
+    text-indent: 3ex;       /* Paragraph indentation */
+}
+
+/* Terminal-style layouts */
+.terminal {
+    font-family: 'Courier New', monospace;
+    background: #2d3748;
+    color: #e2e8f0;
+    padding: 2ch;
+    width: 80ch;            /* Standard terminal width */
+    height: 25ex;           /* Height in x-heights */
+}
+                        </div>
+
+                        <div class="demo-container">
+                            <div style="font-family: monospace; background: #ecf0f1; padding: 10px; margin: 5px; width: 30ch;">30ch width (monospace)</div>
+                            <div style="background: #ddd; padding: 10px; margin: 5px; max-width: 50ch;">50ch max-width for readable text content that flows naturally</div>
+                        </div>
+                    </div>
+
+                    <div class="unit-card other-units">
+                        <h3>🎛️ FR (Grid Fraction)</h3>
+                        <p><strong>CSS Grid үшін:</strong> Flexible space distribution</p>
+                        
+                        <div class="code-example">
+                            <button class="copy-btn" onclick="copyCode(this)">Көшіру</button>
+/* FR unit CSS Grid-те */
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;  /* 1:2:1 ratio */
+    gap: 20px;
+    height: 200px;
+}
+
+/* Complex grid layouts */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 
+        200px       /* Fixed sidebar */
+        1fr         /* Main content */
+        300px;      /* Fixed aside */
+    grid-template-rows: 
+        60px        /* Header */
+        1fr         /* Content */
+        40px;       /* Footer */
+    height: 100vh;
+}
+
+/* Responsive fr units */
+.responsive-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+/* Mixed units with fr */
+.mixed-layout {
+    display: grid;
+    grid-template-columns: 
+        100px       /* Fixed */
+        1fr         /* Flexible */
+        20%         /* Percentage */
+        2fr;        /* 2x flexible */
+}
+
+/* Flexible rows */
+.vertical-layout {
+    display: grid;
+    grid-template-rows: 
+        auto        /* Content-based */
+        1fr         /* Fill available */
+        auto;       /* Content-based */
+    height: 100vh;
+}
+                        </div>
+
+                        <div class="demo-container">
+                            <div style="display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 10px; height: 100px;">
+                                <div style="background: #e74c3c; color: white; display: flex; align-items: center; justify-content: center;">1fr</div>
+                                <div style="background: #3498db; color: white; display: flex; align-items: center; justify-content: center;">2fr</div>
+                                <div style="background: #27ae60; color: white; display: flex; align-items: center; justify-content: center;">1fr</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="unit-card other-units">
+                        <h3>🧮 CALC() функциясы</h3>
+                        <p><strong>Математикалық есептеулер:</strong> Бірліктерді араластыру</p>
+                        
+                        <div class="code-example">
+                            <button class="copy-btn" onclick="copyCode(this)">Көшіру</button>
+/* CALC() комбинациялары */
+.mixed-width {
+    width: calc(100% - 300px);     /* Percentage + pixels */
+    max-width: calc(80vw - 2rem);  /* Viewport + rem */
+}
+
+/* Responsive spacing */
+.responsive-margin {
+    margin: calc(2rem + 3vw);      /* Fixed + responsive */
+    padding: calc(1em + 10px);     /* Relative + absolute */
+}
+
+/* Perfect centering with calc */
+.center-with-calc {
+    position: absolute;
+    width: 300px;
+    height: 200px;
+    top: calc(50% - 100px);        /* Half of height */
+    left: calc(50% - 150px);       /* Half of width */
+}
+
+/* Grid track sizing */
+.calc-grid {
+    display: grid;
+    grid-template-columns: 
+        200px 
+        calc(100% - 500px) 
+        300px;
+}
+
+/* Font size scaling */
+.fluid-typography {
+    font-size: calc(1rem + 0.5vw);
+    line-height: calc(1.4 + 0.2vw);
+}
+
+/* Container with border consideration */
+.border-box-calc {
+    width: calc(100% - 40px);      /* Account for margins */
+    border: 2px solid #ddd;
+    margin: 20px;
+    padding: calc(1rem - 2px);     /* Account for border */
+}
+
+/* Dynamic heights */
+.full-minus-header {
+    height: calc(100vh - 80px);    /* Full viewport minus header */
+    overflow-y: auto;
+}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Demo -->
+            <div class="section">
+                <h2>🎮 Интерактивті өлшем салыстыру</h2>
+                
+                <div class="interactive-demo">
+                    <h3 style="color: #2c3e50; margin-bottom: 20px;">🔧 Әртүрлі бірліктерді салыстыру</h3>
+                    
+                    <div class="controls">
+                        <div class="control-group">
+                            <h4>Мәтін өлшемі (px)</h4>
+                            <input type="range" class="slider" id="baseFontSize" min="12" max="24" value="16" oninput="updateDemo()">
+                            <span id="fontSizeValue">16px</span>
+                        </div>
+                        
+                        <div class="control-group">
+                            <h4>Контейнер ені (px)</h4>
+                            <input type="range" class="slider" id="containerWidth" min="300" max="800" value="500" oninput="updateDemo()">
+                            <span id="containerWidthValue">500px</span>
+                        </div>
+                        
+                        <div class="control-group">
+                            <h4>Viewport ені (px)</h4>
+                            <input type="range" class="slider" id="viewportWidth" min="320" max="1200" value="768" oninput="updateDemo()">
+                            <span id="viewportWidthValue">768px</span>
+                        </div>
+                    </div>
+                    
+                    <div style="background: #f8f9fa; border-radius: 10px; padding: 20px; margin: 20px 0; overflow: hidden;" id="demoArea">
+                        <div style="background: #3498db; color: white; padding: 10px; margin: 5px; text-align: center;" id="pxDemo">100px</div>
+                        <div style="background: #e74c3c; color: white; padding: 10px; margin: 5px; text-align: center;" id="emDemo">6em</div>
+                        <div style="background: #27ae60; color: white; padding: 10px; margin: 5px; text-align: center;" id="remDemo">6rem</div>
+                        <div style="background: #9b59b6; color: white; padding: 10px; margin: 5px; text-align: center;" id="percentDemo">50%</div>
+                        <div style="background: #f39c12; color: white; padding: 10px; margin: 5px; text-align: center;" id="vwDemo">20vw</div>
+                    </div>
+                    
+                    <div style="background: #2d3748; color: #e2e8f0; padding: 15px; border-radius: 8px; margin-top: 20px; font-family: monospace; font-size: 13px;" id="calculatedValues">
+/* Есептелген мәндер */
+1px = 1px
+1em = 16px
+1rem = 16px
+50% = 250px
+20vw = 153.6px
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comparison Table -->
+            <div class="section">
+                <h2>⚖️ Бірліктерді салыстыру кестесі</h2>
+                
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Бірлік</th>
+                            <th>Түрі</th>
+                            <th>Негізделу</th>
+                            <th>Responsive</th>
+                            <th>Қолдану аясы</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>px</strong></td>
+                            <td>Абсолютті</td>
+                            <td>Экран нүктесі</td>
+                            <td>❌ Жоқ</td>
+                            <td>Шекаралар, дәл өлшемдер</td>
+                        </tr>
+                        <tr>
+                            <td><strong>em</strong></td>
+                            <td>Салыстырмалы</td>
+                            <td>Parent font-size</td>
+                            <td>✅ Иә</td>
+                            <td>Padding, margin, компоненттер</td>
+                        </tr>
+                        <tr>
+                            <td><strong>rem</strong></td>
+                            <td>Салыстырмалы</td>
+                            <td>Root font-size</td>
+                            <td>✅ Иә</td>
+                            <td>Typography, layout, spacing</td>
+                        </tr>
+                        <tr>
+                            <td><strong>%</strong></td>
+                            <td>Салыстырмалы</td>
+                            <td>Parent өлшемі</td>
+                            <td>✅ Иә</td>
+                            <td>Layout, width/height</td>
+                        </tr>
+                        <tr>
+                            <td><strong>vw/vh</strong></td>
+                            <td>Viewport</td>
+                            <td>Viewport өлшемі</td>
+                            <td>✅ Иә</td>
+                            <td>Full-screen, responsive text</td>
+                        </tr>
+                        <tr>
+                            <td><strong>vmin/vmax</strong></td>
+                            <td>Viewport</td>
+                            <td>Min/Max viewport</td>
+                            <td>✅ Иә</td>
+                            <td>Square elements, orientation</td>
+                        </tr>
+                        <tr>
+                            <td><strong>ch</strong></td>
+                            <td>Мәтін-негізіндегі</td>
+                            <td>Character width</td>
+                            <td>✅ Иә</td>
+                            <td>Monospace layouts, forms</td>
+                        </tr>
+                        <tr>
+                            <td><strong>fr</strong></td>
+                            <td>Grid</td>
+                            <td>Available space</td>
+                            <td>✅ Иә</td>
+                            <td>CSS Grid tracks</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Best Practices -->
+            <div class="section">
+                <h2>🏆 Ең жақсы практикалар</h2>
+                
+                <div class="step-by-step">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div>
+                            <h4 style="color: #27ae60; margin-bottom: 10px;">✅ Typography үшін REM пайдаланыңыз</h4>
+                            <p style="color: #555; margin-bottom: 10px;">Мәтін өлшемдері мен spacing үшін rem ең жақсы таңдау</p>
+                            <div style="background: #2d3748; color: #e2e8f0; padding: 10px; border-radius: 4px; font-family: monospace; font-size: 12px;">
+/* Дұрыс ✅ */
+h1 { font-size: 2rem; }
+p { font-size: 1rem; margin-bottom: 1rem; }
+.container { padding: 2rem; }
+
+/* Емес ❌ */
+h1 { font-size: 32px; }
+p { font-size: 16px; margin-bottom: 16px; }
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div>
+                            <h4 style="color: #27ae60; margin-bottom: 10px;">✅ Layout үшін процент және viewport бірліктері</h4>
+                            <p style="color: #555; margin-bottom: 10px;">Responsive layout үшін %, vw, vh пайдаланыңыз</p>
+                            <div style="background: #2d3748; color: #e2e8f0; padding: 10px; border-radius: 4px; font-family: monospace; font-size: 12px;">
+/* Дұрыс ✅ */
+.sidebar { width: 25%; }
+.hero { height: 100vh; }
+.responsive-text { font-size: calc(1rem + 2vw); }
+
+/* Дәл өлшемдер керек жерде ғана px ❌ */
+.container { width: 1200px; } /* Fixed width */
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div>
+                            <h4 style="color: #27ae60; margin-bottom: 10px;">✅ Шекаралар мен кішкентай өлшемдер үшін px</h4>
+                            <p style="color: #555; margin-bottom: 10px;">1px border, кішкентай border-radius, shadow үшін</p>
+                            <div style="background: #2d3748; color: #e2e8f0; padding: 10px; border-radius: 4px; font-family: monospace; font-size: 12px;">
+/* Дұрыс ✅ */
+.card {
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: 4px;
+}
+
+/* Емес ❌ */
+.card { border: 0.063rem solid #ddd; } /* Overcomplicated */
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <div>
+                            <h4 style="color: #f39c12; margin-bottom: 10px;">⚠️ EM-ді мұқият пайдаланыңыз</h4>
+                            <p style="color: #555; margin-bottom: 10px;">Nested elements-те compounding effect болуы мүмкін</p>
+                            <div style="background: #2d3748; color: #e2e8f0; padding: 10px; border-radius: 4px; font-family: monospace; font-size: 12px;">
+/* Мұқият болыңыз ⚠️ */
+.parent { font-size: 1.2em; }
+.child { font-size: 1.2em; } /* 1.44x larger than root! */
+
+/* Жақсырақ ✅ */
+.parent { font-size: 1.2rem; }
+.child { font-size: 1.2rem; } /* Consistent sizing */
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">5</div>
+                        <div>
+                            <h4 style="color: #9b59b6; margin-bottom: 10px;">🔧 CALC() арқылы бірліктерді аралас</h4>
+                            <p style="color: #555; margin-bottom: 10px;">Қажет болғанда әртүрлі бірліктерді біріктіріңіз</p>
+                            <div style="background: #2d3748; color: #e2e8f0; padding: 10px; border-radius: 4px; font-family: monospace; font-size: 12px;">
+/* Күрделі layout ✅ */
+.main-content {
+    width: calc(100% - 300px); /* Full width minus sidebar */
+    height: calc(100vh - 80px); /* Full height minus header */
+    padding: calc(1rem + 1vw); /* Responsive padding */
+}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Real-world Examples -->
+            <div class="section">
+                <h2>🌍 Нақты мысалдар</h2>
+                
+                <div class="units-grid">
+                    <div class="unit-card">
+                        <h3>📱 Responsive веб-сайт</h3>
+                        
+                        <div class="code-example">
+                            <button class="copy-btn" onclick="copyCode(this)">Көшіру</button>
+/* Толық responsive сайт */
+html {
+    font-size: 16px;           /* Base size */
+}
+
+/* Typography scale */
+h1 { font-size: 2.5rem; }      /* 40px */
+h2 { font-size: 2rem; }        /* 32px */
+h3 { font-size: 1.5rem; }      /* 24px */
+p { font-size: 1rem; }         /* 16px */
+
+/* Layout */
+.container {
+    max-width: 75rem;          /* 1200px */
+    margin: 0 auto;
+    padding: 0 1rem;           /* 16px sides */
+}
+
+/* Header */
+.header {
+    height: 5rem;              /* 80px */
+    padding: 0 2rem;           /* 32px */
+}
+
+/* Hero section */
+.hero {
+    height: 100vh;             /* Full viewport */
+    font-size: calc(1rem + 2vw); /* Responsive text */
+}
+
+/* Cards grid */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+    gap: 2rem;                 /* 32px */
+}
+
+/* Responsive breakpoints */
+@media (max-width: 48rem) {    /* 768px */
+    html { font-size: 14px; }  /* Smaller base */
+    .container { padding: 0 0.75rem; }
+}
+                        </div>
+                    </div>
+
+                    <div class="unit-card">
+                        <h3>🎮 Dashboard layout</h3>
+                        
+                        <div class="code-example">
+                            <button class="copy-btn" onclick="copyCode(this)">Көшіру</button>
+/* Admin dashboard */
+.dashboard {
+    display: grid;
+    grid-template-areas: 
+        "sidebar header"
+        "sidebar main";
+    grid-template-columns: 18rem 1fr;  /* Fixed sidebar */
+    grid-template-rows: 4rem 1fr;      /* Fixed header */
+    height: 100vh;
+}
+
+.sidebar {
+    grid-area: sidebar;
+    background: #2c3e50;
+    padding: 1rem;
+    overflow-y: auto;
+}
+
+.header {
+    grid-area: header;
+    background: white;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+}
+
+.main-content {
+    grid-area: main;
+    padding: 2rem;
+    overflow-y: auto;
+    background: #f8f9fa;
+}
+
+/* Responsive dashboard */
+@media (max-width: 64rem) {    /* 1024px */
+    .dashboard {
+        grid-template-areas: 
+            "header"
+            "main";
+        grid-template-columns: 1fr;
+    }
+    
+    .sidebar {
+        display: none;         /* Hide on mobile */
+    }
+}
+                        </div>
+                    </div>
+
+                    <div class="unit-card">
+                        <h3>📝 Typography жүйесі</h3>
+                        
+                        <div class="code-example">
+                            <button class="copy-btn" onclick="copyCode(this)">Көшіру</button>
+/* Professional typography */
+:root {
+    --font-size-xs: 0.75rem;    /* 12px */
+    --font-size-sm: 0.875rem;   /* 14px */
+    --font-size-base: 1rem;     /* 16px */
+    --font-size-lg: 1.125rem;   /* 18px */
+    --font-size-xl: 1.25rem;    /* 20px */
+    --font-size-2xl: 1.5rem;    /* 24px */
+    --font-size-3xl: 1.875rem;  /* 30px */
+    --font-size-4xl: 2.25rem;   /* 36px */
+}
+
+/* Spacing scale */
+:root {
+    --space-1: 0.25rem;         /* 4px */
+    --space-2: 0.5rem;          /* 8px */
+    --space-3: 0.75rem;         /* 12px */
+    --space-4: 1rem;            /* 16px */
+    --space-6: 1.5rem;          /* 24px */
+    --space-8: 2rem;            /* 32px */
+    --space-12: 3rem;           /* 48px */
+    --space-16: 4rem;           /* 64px */
+}
+
+/* Components */
+.button {
+    font-size: var(--font-size-base);
+    padding: var(--space-3) var(--space-6);
+    border-radius: var(--space-1);
+}
+
+.card {
+    padding: var(--space-6);
+    margin-bottom: var(--space-4);
+    border-radius: var(--space-2);
+}
+
+/* Fluid typography */
+.headline {
+    font-size: clamp(
+        var(--font-size-2xl),    /* Minimum */
+        5vw,                     /* Preferred */
+        var(--font-size-4xl)     /* Maximum */
+    );
+}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Assignment -->
+            <div class="section">
+                <h2>💪 Практикалық тапсырма</h2>
+                
+                <div style="background: linear-gradient(135deg, #ffe8e8, #ffb3b3); padding: 25px; border-radius: 15px; border-left: 5px solid #e74c3c;">
+                    <h3 style="color: #c0392b; margin-bottom: 20px;">🎯 Тапсырма: Responsive typography жүйесі</h3>
+                    
+                    <div style="background: white; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                        <h4 style="color: #2c3e50; margin-bottom: 15px;">📋 Құру керектері:</h4>
+                        <ol style="color: #2c3e50; line-height: 1.8; margin-left: 20px;">
+                            <li><strong>Typography scale:</strong> REM негізіндегі heading жүйесі</li>
+                            <li><strong>Spacing system:</strong> Consistent margin/padding</li>
+                            <li><strong>Responsive containers:</strong> Viewport бірліктерімен</li>
+                            <li><strong>Flexible layout:</strong> % және fr бірліктері</li>
+                            <li><strong>Mobile optimization:</strong> Adaptive font sizes</li>
+                        </ol>
+                    </div>
+                    
+                    <div style="text-align: center; margin: 20px 0;">
+                        <button class="btn" onclick="generateUnitsCheatsheet()">📄 Cheatsheet генерациялау</button>
+                        <button class="btn" onclick="showUnitCalculator()">🧮 Өлшем калькуляторы</button>
+                        <button class="btn" onclick="openUnitsPlayground()">🎮 Units Playground</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Common Mistakes -->
+            <div class="section">
+                <h2>⚠️ Жиі кездесетін қателер</h2>
+                
+                <div class="step-by-step">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div>
+                            <h4 style="color: #e74c3c; margin-bottom: 10px;">Барлық жерде px пайдалану</h4>
+                            <p style="color: #555; margin-bottom: 10px;"><strong>Қате:</strong> Responsive емес дизайн</p>
+                            <div style="background: #2d3748; color: #e2e8f0; padding: 10px; border-radius: 4px; font-family: monospace; font-size: 12px;">
+/* ҚАТЕ ❌ */
+.header { height: 80px; }
+.text { font-size: 16px; margin: 20px; }
+.container { width: 1200px; }
+
+/* ДҰРЫС ✅ */
+.header { height: 5rem; }
+.text { font-size: 1rem; margin: 1.25rem; }
+.container { max-width: 75rem; width: 100%; }
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div>
+                            <h4 style="color: #e74c3c; margin-bottom: 10px;">EM compounding effect</h4>
+                            <p style="color: #555; margin-bottom: 10px;"><strong>Қате:</strong> Nested elements-те ем үлкейіп кетеді</p>
+                            <div style="background: #2d3748; color: #e2e8f0; padding: 10px; border-radius: 4px; font-family: monospace; font-size: 12px;">
+/* ҚАТЕ ❌ */
+.parent { font-size: 1.2em; }
+.child { font-size: 1.2em; }    /* 1.44em болады! */
+.grandchild { font-size: 1.2em; } /* 1.73em! */
+
+/* ДҰРЫС ✅ */
+.parent { font-size: 1.2rem; }
+.child { font-size: 1.2rem; }
+.grandchild { font-size: 1.2rem; }
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div>
+                            <h4 style="color: #e74c3c; margin-bottom: 10px;">Viewport units-ті дұрыс пайдаланбау</h4>
+                            <p style="color: #555; margin-bottom: 10px;"><strong>Қате:</strong> Min/max шектеулерсіз vw/vh</p>
+                            <div style="background: #2d3748; color: #e2e8f0; padding: 10px; border-radius: 4px; font-family: monospace; font-size: 12px;">
+/* ҚАТЕ ❌ */
+.text { font-size: 5vw; }  /* Mobile-да өте кішкентай! */
+
+/* ДҰРЫС ✅ */
+.text { 
+    font-size: clamp(1rem, 5vw, 3rem); 
+    /* немесе */
+    font-size: calc(1rem + 2vw);
+    min-font-size: 1rem;
+    max-font-size: 3rem;
+}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <div>
+                            <h4 style="color: #e74c3c; margin-bottom: 10px;">100vw horizontal scroll жасайды</h4>
+                            <p style="color: #555; margin-bottom: 10px;"><strong>Қате:</strong> Scrollbar-дың енін ескермеу</p>
+                            <div style="background: #2d3748; color: #e2e8f0; padding: 10px; border-radius: 4px; font-family: monospace; font-size: 12px;">
+/* ҚАТЕ ❌ */
+.full-width { width: 100vw; }  /* Horizontal scroll! */
+
+/* ДҰРЫС ✅ */
+.full-width { 
+    width: 100%; 
+    /* немесе */
+    width: calc(100vw - 15px); /* Scrollbar үшін */
+}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Units Calculator Modal -->
+            <div id="calculator-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; padding: 20px; overflow-y: auto;">
+                <div style="max-width: 800px; margin: 50px auto; background: white; border-radius: 15px; padding: 30px; position: relative;">
+                    <button onclick="closeCalculator()" style="position: absolute; top: 15px; right: 20px; background: none; border: none; font-size: 24px; cursor: pointer;">✕</button>
+                    
+                    <h3 style="color: #2c3e50; margin-bottom: 20px;">🧮 CSS Өлшем Калькуляторы</h3>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0;">
+                        <div style="background: #f8f9fa; padding: 20px; border-radius: 10px;">
+                            <h4>Базалық параметрлер</h4>
+                            <div style="margin: 10px 0;">
+                                <label>Root font size: </label>
+                                <input type="number" id="calcRootSize" value="16" min="8" max="32" style="width: 60px; padding: 5px;">px
+                            </div>
+                            <div style="margin: 10px 0;">
+                                <label>Parent font size: </label>
+                                <input type="number" id="calcParentSize" value="18" min="8" max="48" style="width: 60px; padding: 5px;">px
+                            </div>
+                            <div style="margin: 10px 0;">
+                                <label>Container width: </label>
+                                <input type="number" id="calcContainerWidth" value="400" min="100" max="1200" style="width: 80px; padding: 5px;">px
+                            </div>
+                            <div style="margin: 10px 0;">
+                                <label>Viewport width: </label>
+                                <input type="number" id="calcViewportWidth" value="1024" min="320" max="1920" style="width: 80px; padding: 5px;">px
+                            </div>
+                        </div>
+                        
+                        <div style="background: #f8f9fa; padding: 20px; border-radius: 10px;">
+                            <h4>Есептеулер</h4>
+                            <div id="calculationResults">
+                                <div>1rem = <span id="remResult">16px</span></div>
+                                <div>1em = <span id="emResult">18px</span></div>
+                                <div>50% = <span id="percentResult">200px</span></div>
+                                <div>10vw = <span id="vwResult">102.4px</span></div>
+                                <div>1vh = <span id="vhResult">7.68px</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="background: #e8f5e8; padding: 15px; border-radius: 8px; margin: 20px 0;">
+                        <h4 style="color: #27ae60;">💡 Пайдалы формулалар:</h4>
+                        <div style="font-family: monospace; font-size: 14px; color: #2c3e50; margin: 10px 0;">
+                            • 1rem = root font size<br>
+                            • 1em = parent font size<br>
+                            • 1vw = viewport width / 100<br>
+                            • 1vh = viewport height / 100<br>
+                            • 1% = parent dimension / 100
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script>
+        // Global variables
+        let baseFontSize = 16;
+        let containerWidth = 500;
+        let viewportWidth = 768;
+
+        // Copy code function
+        function copyCode(button) {
+            const codeBlock = button.parentElement;
+            const code = codeBlock.textContent.replace('Көшіру', '').trim();
+            
+            navigator.clipboard.writeText(code).then(function() {
+                showToast('📋 Код сәтті көшірілді!');
+                button.textContent = 'Көшірілді!';
+                setTimeout(() => button.textContent = 'Көшіру', 2000);
+            }).catch(function(err) {
+                showToast('❌ Көшіру қатесі!');
+            });
+        }
+
+        // Update interactive demo
+        function updateDemo() {
+            baseFontSize = document.getElementById('baseFontSize').value;
+            containerWidth = document.getElementById('containerWidth').value;
+            viewportWidth = document.getElementById('viewportWidth').value;
+
+            // Update display values
+            document.getElementById('fontSizeValue').textContent = baseFontSize + 'px';
+            document.getElementById('containerWidthValue').textContent = containerWidth + 'px';
+            document.getElementById('viewportWidthValue').textContent = viewportWidth + 'px';
+
+            // Update demo area
+            const demoArea = document.getElementById('demoArea');
+            demoArea.style.fontSize = baseFontSize + 'px';
+            demoArea.style.width = containerWidth + 'px';
+
+            // Calculate values
+            const pxWidth = 100;
+            const emWidth = 6 * baseFontSize;
+            const remWidth = 6 * baseFontSize;
+            const percentWidth = containerWidth * 0.5;
+            const vwWidth = viewportWidth * 0.2;
+
+            // Update demo boxes
+            document.getElementById('pxDemo').style.width = pxWidth + 'px';
+            document.getElementById('emDemo').style.width = emWidth + 'px';
+            document.getElementById('remDemo').style.width = remWidth + 'px';
+            document.getElementById('percentDemo').style.width = percentWidth + 'px';
+            document.getElementById('vwDemo').style.width = vwWidth + 'px';
+
+            // Update calculated values
+            document.getElementById('calculatedValues').textContent = `/* Есептелген мәндер */
+1px = 1px
+1em = ${baseFontSize}px
+1rem = ${baseFontSize}px
+50% = ${percentWidth}px
+20vw = ${vwWidth}px`;
+        }
+
+        // Calculator functions
+        function showUnitCalculator() {
+            document.getElementById('calculator-modal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            updateCalculator();
+            
+            // Add event listeners
+            ['calcRootSize', 'calcParentSize', 'calcContainerWidth', 'calcViewportWidth'].forEach(id => {
+                document.getElementById(id).addEventListener('input', updateCalculator);
+            });
+        }
+
+        function closeCalculator() {
+            document.getElementById('calculator-modal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function updateCalculator() {
+            const rootSize = document.getElementById('calcRootSize').value;
+            const parentSize = document.getElementById('calcParentSize').value;
+            const containerWidth = document.getElementById('calcContainerWidth').value;
+            const viewportWidth = document.getElementById('calcViewportWidth').value;
+
+            document.getElementById('remResult').textContent = rootSize + 'px';
+            document.getElementById('emResult').textContent = parentSize + 'px';
+            document.getElementById('percentResult').textContent = (containerWidth * 0.5) + 'px';
+            document.getElementById('vwResult').textContent = (viewportWidth * 0.1) + 'px';
+            document.getElementById('vhResult').textContent = (viewportWidth * 0.01 * 0.75) + 'px'; // Assuming 4:3 ratio
+        }
+
+        // Generate cheatsheet
+        function generateUnitsCheatsheet() {
+            const cheatsheet = `/* CSS ӨЛШЕМ БІРЛІКТЕРІ CHEATSHEET */
+
+/* TYPOGRAPHY */
+html { font-size: 16px; }
+h1 { font-size: 2rem; }     /* 32px */
+h2 { font-size: 1.5rem; }   /* 24px */
+p { font-size: 1rem; }      /* 16px */
+
+/* SPACING */
+.small { margin: 0.5rem; }  /* 8px */
+.medium { margin: 1rem; }   /* 16px */
+.large { margin: 2rem; }    /* 32px */
+
+/* LAYOUT */
+.container { max-width: 75rem; margin: 0 auto; }
+.full-height { height: 100vh; }
+.half-width { width: 50%; }
+
+/* RESPONSIVE */
+.fluid-text { font-size: calc(1rem + 2vw); }
+.responsive-grid { 
+    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr)); 
+}
+
+/* BORDERS & SHADOWS */
+.card { 
+    border: 1px solid #ddd; 
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}`;
+
+            navigator.clipboard.writeText(cheatsheet).then(function() {
+                showToast('📄 Cheatsheet көшірілді!');
+            });
+        }
+
+        // Open playground
+        function openUnitsPlayground() {
+            showToast('🎮 Units Playground ашылуда...');
+            setTimeout(() => {
+                showToast('💡 Интерактивті демо жоғарыда орналасқан!');
+            }, 1500);
+        }
+
+        // Toast function
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(function() {
+                toast.classList.remove('show');
+            }, 4000);
+        }
+
+        // Modal close on outside click
+        document.getElementById('calculator-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeCalculator();
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateDemo();
+        });
+    </script>
+</body>
+</html>

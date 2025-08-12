@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Forms және Input - Интерактивті сабақ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .lesson-nav {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .nav-btn:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .nav-btn.active {
+            background: #764ba2;
+        }
+
+        .lesson-section {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .lesson-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-demo {
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            background: #f8fafc;
+        }
+
+        .demo-form {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #4a5568;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-control:invalid {
+            border-color: #e53e3e;
+        }
+
+        .form-control:valid {
+            border-color: #38a169;
+        }
+
+        .code-example {
+            background: #1a202c;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+
+        .code-example .tag { color: #f687b3; }
+        .code-example .attr { color: #63b3ed; }
+        .code-example .value { color: #68d391; }
+        .code-example .comment { color: #a0aec0; }
+
+        .explanation {
+            background: #ebf8ff;
+            border-left: 4px solid #3182ce;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .input-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .input-card {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .input-card:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .input-card h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .radio-group, .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .radio-item, .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #5a67d8;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #4a5568;
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e0;
+        }
+
+        .quiz {
+            background: #f0fff4;
+            border: 2px solid #68d391;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .quiz-question {
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .quiz-options {
+            list-style: none;
+        }
+
+        .quiz-options li {
+            margin: 10px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .quiz-options li:hover {
+            background: #e6fffa;
+            border-color: #38b2ac;
+        }
+
+        .quiz-options li.correct {
+            background: #c6f6d5;
+            border-color: #38a169;
+        }
+
+        .quiz-options li.incorrect {
+            background: #fed7d7;
+            border-color: #e53e3e;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .validation-demo {
+            border: 2px solid #f7fafc;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .error-message {
+            color: #e53e3e;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .success-message {
+            color: #38a169;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .form-output {
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 20px;
+            min-height: 50px;
+        }
+
+        .highlight {
+            background: #fef5e7;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .content { padding: 15px; }
+            .header { padding: 20px; }
+            .header h1 { font-size: 2em; }
+            .input-showcase { grid-template-columns: 1fr; }
+            .nav-btn { padding: 8px 16px; font-size: 12px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>HTML Forms және Input</h1>
+            <p>Интерактивті сабақ - пайдаланушыдан мәліметтер алу</p>
+        </div>
+
+        <div class="content">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <div class="lesson-nav">
+                <button class="nav-btn active" onclick="showSection('intro')">Кіріспе</button>
+                <button class="nav-btn" onclick="showSection('form-basics')">Form негіздері</button>
+                <button class="nav-btn" onclick="showSection('input-types')">Input түрлері</button>
+                <button class="nav-btn" onclick="showSection('form-elements')">Басқа элементтер</button>
+                <button class="nav-btn" onclick="showSection('validation')">Валидация</button>
+                <button class="nav-btn" onclick="showSection('practice')">Практика</button>
+                <button class="nav-btn" onclick="showSection('quiz')">Тест</button>
+            </div>
+
+            <!-- Кіріспе -->
+            <div id="intro" class="lesson-section active">
+                <h2>HTML Forms туралы</h2>
+                <div class="explanation">
+                    <p><strong>HTML Forms</strong> - веб-беттерде пайдаланушылардан мәліметтер жинау үшін қолданылатын элементтер жиынтығы. Форма арқылы мәтін, сандар, файлдар және басқа деректерді жібереуге болады.</p>
+                </div>
+
+                <h3>Формалардың маңызды элементтері:</h3>
+                <ul style="padding-left: 30px; margin: 20px 0;">
+                    <li><strong>&lt;form&gt;</strong> - форманың негізгі контейнері</li>
+                    <li><strong>&lt;input&gt;</strong> - мәліметтер енгізу өрісі</li>
+                    <li><strong>&lt;textarea&gt;</strong> - көп жолды мәтін өрісі</li>
+                    <li><strong>&lt;select&gt;</strong> - тізімнен таңдау</li>
+                    <li><strong>&lt;button&gt;</strong> - форманы жіберу батырмасы</li>
+                    <li><strong>&lt;label&gt;</strong> - өрістердің атауы</li>
+                </ul>
+
+                <div class="form-demo">
+                    <h4>Қарапайым форма мысалы:</h4>
+                    <div class="demo-form">
+                        <form>
+                            <div class="form-group">
+                                <label for="intro-name">Атыңыз:</label>
+                                <input type="text" id="intro-name" class="form-control" placeholder="Атыңызды енгізіңіз">
+                            </div>
+                            <div class="form-group">
+                                <label for="intro-email">Email:</label>
+                                <input type="email" id="intro-email" class="form-control" placeholder="example@email.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="intro-message">Хабарлама:</label>
+                                <textarea id="intro-message" class="form-control" rows="3" placeholder="Хабарламаңызды жазыңыз"></textarea>
+                            </div>
+                            <button type="submit" class="btn">Жіберу</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form негіздері -->
+            <div id="form-basics" class="lesson-section">
+                <h2>Form элементінің негіздері</h2>
+                <div class="explanation">
+                    <p><strong>&lt;form&gt;</strong> тегі барлық форма элементтерін орайды. Ол екі маңызды атрибутқа ие:</p>
+                    <ul style="margin-top: 10px;">
+                        <li><span class="highlight">action</span> - деректер қайда жіберілетінін көрсетеді</li>
+                        <li><span class="highlight">method</span> - деректер қалай жіберілетінін көрсетеді (GET немесе POST)</li>
+                    </ul>
+                </div>
+
+                <div class="code-example">
+<span class="comment">&lt;!-- Негізгі форма құрылымы --&gt;</span>
+<span class="tag">&lt;form</span> <span class="attr">action</span>=<span class="value">"/submit"</span> <span class="attr">method</span>=<span class="value">"POST"</span><span class="tag">&gt;</span>
+    <span class="comment">&lt;!-- Форма элементтері осында болады --&gt;</span>
+    
+    <span class="tag">&lt;label</span> <span class="attr">for</span>=<span class="value">"username"</span><span class="tag">&gt;</span>Пайдаланушы аты:<span class="tag">&lt;/label&gt;</span>
+    <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="value">"text"</span> <span class="attr">id</span>=<span class="value">"username"</span> <span class="attr">name</span>=<span class="value">"username"</span><span class="tag">&gt;</span>
+    
+    <span class="tag">&lt;button</span> <span class="attr">type</span>=<span class="value">"submit"</span><span class="tag">&gt;</span>Жіберу<span class="tag">&lt;/button&gt;</span>
+<span class="tag">&lt;/form&gt;</span>
+                </div>
+
+                <div class="form-demo">
+                    <h4>Method айырмашылығы:</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div class="input-card">
+                            <h4>GET Method</h4>
+                            <p><strong>Ерекшеліктері:</strong></p>
+                            <ul style="padding-left: 20px; margin-top: 10px;">
+                                <li>URL-да көрінеді</li>
+                                <li>Қауіпсіз емес</li>
+                                <li>Іздеу үшін жақсы</li>
+                                <li>Кіші деректер үшін</li>
+                            </ul>
+                            <div style="margin-top: 15px; padding: 10px; background: #f7fafc; border-radius: 4px; font-family: monospace; font-size: 12px;">
+                                example.com/search?q=HTML+forms
+                            </div>
+                        </div>
+                        <div class="input-card">
+                            <h4>POST Method</h4>
+                            <p><strong>Ерекшеліктері:</strong></p>
+                            <ul style="padding-left: 20px; margin-top: 10px;">
+                                <li>URL-да көрінбейді</li>
+                                <li>Қауіпсіз</li>
+                                <li>Деректерді жіберу үшін</li>
+                                <li>Үлкен деректер үшін</li>
+                            </ul>
+                            <div style="margin-top: 15px; padding: 10px; background: #f7fafc; border-radius: 4px; font-family: monospace; font-size: 12px;">
+                                Деректер HTTP body-да жіберіледі
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Input түрлері -->
+            <div id="input-types" class="lesson-section">
+                <h2>Input элементінің түрлері</h2>
+                <div class="explanation">
+                    <p><strong>type</strong> атрибуты арқылы input элементінің түрін анықтайды. Әртүрлі типтер әртүрлі мүмкіндіктер береді.</p>
+                </div>
+
+                <div class="input-showcase">
+                    <div class="input-card">
+                        <h4>text - Қарапайым мәтін</h4>
+                        <input type="text" class="form-control" placeholder="Мәтін енгізіңіз">
+                        <div class="code-example" style="margin: 10px 0; font-size: 12px;">
+&lt;input type="text" placeholder="Мәтін"&gt;
+                        </div>
+                    </div>
+
+                    <div class="input-card">
+                        <h4>email - Электрондық пошта</h4>
+                        <input type="email" class="form-control" placeholder="email@example.com">
+                        <div class="code-example" style="margin: 10px 0; font-size: 12px;">
+&lt;input type="email" placeholder="email"&gt;
+                        </div>
+                    </div>
+
+                    <div class="input-card">
+                        <h4>password - Құпия сөз</h4>
+                        <input type="password" class="form-control" placeholder="Құпия сөз">
+                        <div class="code-example" style="margin: 10px 0; font-size: 12px;">
+&lt;input type="password"&gt;
+                        </div>
+                    </div>
+
+                    <div class="input-card">
+                        <h4>number - Сан</h4>
+                        <input type="number" class="form-control" min="1" max="100" placeholder="1-100">
+                        <div class="code-example" style="margin: 10px 0; font-size: 12px;">
+&lt;input type="number" min="1" max="100"&gt;
+                        </div>
+                    </div>
+
+                    <div class="input-card">
+                        <h4>date - Күн</h4>
+                        <input type="date" class="form-control">
+                        <div class="code-example" style="margin: 10px 0; font-size: 12px;">
+&lt;input type="date"&gt;
+                        </div>
+                    </div>
+
+                    <div class="input-card">
+                        <h4>time - Уақыт</h4>
+                        <input type="time" class="form-control">
+                        <div class="code-example" style="margin: 10px 0; font-size: 12px;">
+&lt;input type="time"&gt;
+                        </div>
+                    </div>
+
+                    <div class="input-card">
+                        <h4>tel - Телефон</h4>
+                        <input type="tel" class="form-control" placeholder="+7 (777) 123-45-67">
+                        <div class="code-example" style="margin: 10px 0; font-size: 12px;">
+&lt;input type="tel"&gt;
+                        </div>
+                    </div>
+
+                    <div class="input-card">
+                        <h4>url - Веб-сайт</h4>
+                        <input type="url" class="form-control" placeholder="https://example.com">
+                        <div class="code-example" style="margin: 10px 0; font-size: 12px;">
+&lt;input type="url"&gt;
+                        </div>
+                    </div>
+
+                    <div class="input-card">
+                        <h4>color - Түс таңдау</h4>
+                        <input type="color" class="form-control" value="#667eea">
+                        <div class="code-example" style="margin: 10px 0; font-size: 12px;">
+&lt;input type="color"&gt;
+                        </div>
+                    </div>
+
+                    <div class="input-card">
+                        <h4>range - Диапазон</h4>
+                        <input type="range" class="form-control" min="0" max="100" value="50">
+                        <div class="code-example" style="margin: 10px 0; font-size: 12px;">
+&lt;input type="range" min="0" max="100"&gt;
+                        </div>
+                    </div>
+
+                    <div class="input-card">
+                        <h4>file - Файл таңдау</h4>
+                        <input type="file" class="form-control">
+                        <div class="code-example" style="margin: 10px 0; font-size: 12px;">
+&lt;input type="file"&gt;
+                        </div>
+                    </div>
+
+                    <div class="input-card">
+                        <h4>search - Іздеу</h4>
+                        <input type="search" class="form-control" placeholder="Іздеу...">
+                        <div class="code-example" style="margin: 10px 0; font-size: 12px;">
+&lt;input type="search"&gt;
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Басқа форма элементтері -->
+            <div id="form-elements" class="lesson-section">
+                <h2>Басқа форма элементтері</h2>
+                
+                <div class="input-showcase">
+                    <div class="input-card">
+                        <h4>Radio Button - Бір таңдау</h4>
+                        <div class="radio-group">
+                            <div class="radio-item">
+                                <input type="radio" id="size-s" name="size" value="s">
+                                <label for="size-s">Кіші (S)</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="size-m" name="size" value="m" checked>
+                                <label for="size-m">Орташа (M)</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="size-l" name="size" value="l">
+                                <label for="size-l">Үлкен (L)</label>
+                            </div>
+                        </div>
+                        <div class="code-example" style="margin: 10px 0; font-size: 12px;">
+&lt;input type="radio" name="size" value="m"&gt;
+&lt;label&gt;Орташа&lt;/label&gt;
+                        </div>
+                    </div>
+
+                    <div class="input-card">
+                        <h4>Checkbox - Көп таңдау</h4>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="hobby1" value="sports">
+                                <label for="hobby1">Спорт</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="hobby2" value="music" checked>
+                                <label for="hobby2">Музыка</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="hobby3" value="reading">
+                                <label for="hobby3">Кітап оқу</label>
+                            </div>
+                        </div>
+                        <div class="code-example" style="margin: 10px 0; font-size: 12px;">
+&lt;input type="checkbox" value="music"&gt;
+&lt;label&gt;Музыка&lt;/label&gt;
+                        </div>
+                    </div>
+
+                    <div class="input-card">
+                        <h4>Select - Тізімнен таңдау</h4>
+                        <select class="form-control">
+                            <option value="">Қала таңдаңыз</option>
+                            <option value="almaty">Алматы</option>
+                            <option value="astana">Астана</option>
+                            <option value="shymkent">Шымкент</option>
+                            <option value="aktobe">Ақтөбе</option>
+                        </select>
+                        <div class="code-example" style="margin: 10px 0; font-size: 12px;">
+&lt;select&gt;
+  &lt;option value="almaty"&gt;Алматы&lt;/option&gt;
+&lt;/select&gt;
+                        </div>
+                    </div>
+
+                    <div class="input-card">
+                        <h4>Textarea - Көп жолды мәтін</h4>
+                        <textarea class="form-control" rows="4" placeholder="Пікіріңізді жазыңыз..."></textarea>
+                        <div class="code-example" style="margin: 10px 0; font-size: 12px;">
+&lt;textarea rows="4" cols="50"&gt;
+&lt;/textarea&gt;
+                        </div>
+                    </div>
+
+                    <div class="input-card">
+                        <h4>Button түрлері</h4>
+                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                            <button type="submit" class="btn">Submit - Жіберу</button>
+                            <button type="reset" class="btn btn-secondary">Reset - Тазалау</button>
+                            <button type="button" class="btn btn-secondary">Button - Қарапайым</button>
+                        </div>
+                        <div class="code-example" style="margin: 10px 0; font-size: 12px;">
+&lt;button type="submit"&gt;Жіберу&lt;/button&gt;
+&lt;button type="reset"&gt;Тазалау&lt;/button&gt;
+                        </div>
+                    </div>
+
+                    <div class="input-card">
+                        <h4>Fieldset - Топтастыру</h4>
+                        <fieldset style="border: 2px solid #e2e8f0; border-radius: 6px; padding: 15px;">
+                            <legend style="font-weight: 600; color: #667eea;">Жеке мәліметтер</legend>
+                            <div style="margin-bottom: 10px;">
+                                <input type="text" class="form-control" placeholder="Аты-жөні" style="margin-bottom: 10px;">
+                                <input type="email" class="form-control" placeholder="Email">
+                            </div>
+                        </fieldset>
+                        <div class="code-example" style="margin: 10px 0; font-size: 12px;">
+&lt;fieldset&gt;
+  &lt;legend&gt;Жеке мәліметтер&lt;/legend&gt;
+  &lt;!-- Өрістер --&gt;
+&lt;/fieldset&gt;
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Валидация -->
+            <div id="validation" class="lesson-section">
+                <h2>Форма валидациясы</h2>
+                <div class="explanation">
+                    <p>HTML-да кіру деректерін тексеру үшін арнайы атрибуттар бар. Бұл пайдаланушыға дұрыс деректер енгізуге көмектеседі.</p>
+                </div>
+
+                <div class="validation-demo">
+                    <h4>Валидация атрибуттары:</h4>
+                    <form id="validationForm" novalidate>
+                        <div class="form-group">
+                            <label>Required - Міндетті өріс</label>
+                            <input type="text" class="form-control" required placeholder="Бұл өрісті толтыру міндетті">
+                            <div class="error-message">Бұл өрісті толтыру қажет</div>
+                            <div class="success-message">Дұрыс!</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Minlength - Минимал ұзындық (3 символ)</label>
+                            <input type="text" class="form-control" minlength="3" placeholder="Кемінде 3 символ">
+                            <div class="error-message">Кемінде 3 символ енгізіңіз</div>
+                            <div class="success-message">Дұрыс!</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Pattern - Үлгі (тек сандар)</label>
+                            <input type="text" class="form-control" pattern="[0-9]+" placeholder="Тек сандар: 123456">
+                            <div class="error-message">Тек сандар енгізуге болады</div>
+                            <div class="success-message">Дұрыс!</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Min/Max - Сан диапазоны (1-100)</label>
+                            <input type="number" class="form-control" min="1" max="100" placeholder="1 мен 100 арасындағы сан">
+                            <div class="error-message">1 мен 100 арасындағы сан енгізіңіз</div>
+                            <div class="success-message">Дұрыс!</div>
+                        </div>
+
+                        <button type="submit" class="btn">Валидацияны тексеру</button>
+                    </form>
+                </div>
+
+                <div class="code-example">
+<span class="comment">&lt;!-- Валидация атрибуттары --&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="value">"text"</span> <span class="attr">required</span> <span class="attr">minlength</span>=<span class="value">"3"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="value">"number"</span> <span class="attr">min</span>=<span class="value">"1"</span> <span class="attr">max</span>=<span class="value">"100"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="value">"email"</span> <span class="attr">pattern</span>=<span class="value">"[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"</span><span class="tag">&gt;</span>
+                </div>
+
+                <div style="background: #fffbf0; border: 2px solid #f6ad55; padding: 15px; border-radius: 8px; margin: 20px 0;">
+                    <h4 style="color: #c05621; margin-bottom: 10px;">💡 Валидация кеңестері:</h4>
+                    <ul style="padding-left: 20px;">
+                        <li><strong>required</strong> - өрісті міндетті етеді</li>
+                        <li><strong>minlength/maxlength</strong> - мәтін ұзындығын шектейді</li>
+                        <li><strong>min/max</strong> - сандық мәндерді шектейді</li>
+                        <li><strong>pattern</strong> - regex үлгісі арқылы тексереді</li>
+                        <li><strong>type="email"</strong> - email форматын тексереді</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Практика -->
+            <div id="practice" class="lesson-section">
+                <h2>Практикалық жаттығу</h2>
+                <div class="explanation">
+                    <p>Енді барлық үйренген элементтерді қолданып, толыққанды форма жасайық. Форма деректерін нақты уақытта көре аласыз.</p>
+                </div>
+
+                <div class="form-demo">
+                    <h4>Тіркелу формасы</h4>
+                    <div class="demo-form">
+                        <form id="practiceForm">
+                            <fieldset style="border: 2px solid #e2e8f0; border-radius: 8px; padding: 20px; margin-bottom: 20px;">
+                                <legend style="font-weight: 600; color: #667eea; padding: 0 10px;">Жеке мәліметтер</legend>
+                                
+                                <div class="form-group">
+                                    <label for="fullName">Толық аты-жөні *</label>
+                                    <input type="text" id="fullName" name="fullName" class="form-control" required minlength="2" placeholder="Мысалы: Айжан Серікова">
+                                </div>
+
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                                    <div class="form-group">
+                                        <label for="birthDate">Туған күні *</label>
+                                        <input type="date" id="birthDate" name="birthDate" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="gender">Жынысы</label>
+                                        <select id="gender" name="gender" class="form-control">
+                                            <option value="">Таңдаңыз</option>
+                                            <option value="male">Ер</option>
+                                            <option value="female">Әйел</option>
+                                            <option value="other">Басқа</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <fieldset style="border: 2px solid #e2e8f0; border-radius: 8px; padding: 20px; margin-bottom: 20px;">
+                                <legend style="font-weight: 600; color: #667eea; padding: 0 10px;">Байланыс мәліметтері</legend>
+                                
+                                <div class="form-group">
+                                    <label for="email">Email мекен-жайы *</label>
+                                    <input type="email" id="email" name="email" class="form-control" required placeholder="example@email.com">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="phone">Телефон нөмірі</label>
+                                    <input type="tel" id="phone" name="phone" class="form-control" pattern="[+]?[0-9\s\-\(\)]+" placeholder="+7 (777) 123-45-67">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="website">Веб-сайт</label>
+                                    <input type="url" id="website" name="website" class="form-control" placeholder="https://mywebsite.com">
+                                </div>
+                            </fieldset>
+
+                            <fieldset style="border: 2px solid #e2e8f0; border-radius: 8px; padding: 20px; margin-bottom: 20px;">
+                                <legend style="font-weight: 600; color: #667eea; padding: 0 10px;">Қосымша мәліметтер</legend>
+                                
+                                <div class="form-group">
+                                    <label>Қызығушылықтар (бірнешеуін таңдауға болады)</label>
+                                    <div class="checkbox-group">
+                                        <div class="checkbox-item">
+                                            <input type="checkbox" id="int1" name="interests" value="programming">
+                                            <label for="int1">Программалау</label>
+                                        </div>
+                                        <div class="checkbox-item">
+                                            <input type="checkbox" id="int2" name="interests" value="design">
+                                            <label for="int2">Дизайн</label>
+                                        </div>
+                                        <div class="checkbox-item">
+                                            <input type="checkbox" id="int3" name="interests" value="marketing">
+                                            <label for="int3">Маркетинг</label>
+                                        </div>
+                                        <div class="checkbox-item">
+                                            <input type="checkbox" id="int4" name="interests" value="business">
+                                            <label for="int4">Бизнес</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Тәжірибе деңгейі</label>
+                                    <div class="radio-group">
+                                        <div class="radio-item">
+                                            <input type="radio" id="exp1" name="experience" value="beginner">
+                                            <label for="exp1">Бастаушы</label>
+                                        </div>
+                                        <div class="radio-item">
+                                            <input type="radio" id="exp2" name="experience" value="intermediate">
+                                            <label for="exp2">Орташа</label>
+                                        </div>
+                                        <div class="radio-item">
+                                            <input type="radio" id="exp3" name="experience" value="advanced">
+                                            <label for="exp3">Жоғары</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="bio">Өзі туралы қысқаша</label>
+                                    <textarea id="bio" name="bio" class="form-control" rows="4" maxlength="500" placeholder="Өзіңіз туралы қысқаша жазыңыз (500 символға дейін)"></textarea>
+                                    <div style="text-align: right; font-size: 12px; color: #666; margin-top: 5px;">
+                                        <span id="charCount">0</span>/500 символ
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="favoriteColor">Сүйікті түс</label>
+                                    <input type="color" id="favoriteColor" name="favoriteColor" class="form-control" value="#667eea">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="priority">Басымдық деңгейі (1-10)</label>
+                                    <input type="range" id="priority" name="priority" class="form-control" min="1" max="10" value="5">
+                                    <div style="text-align: center; margin-top: 5px;">
+                                        Мән: <span id="priorityValue">5</span>
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <div style="display: flex; gap: 15px; justify-content: center;">
+                                <button type="submit" class="btn">Тіркелу</button>
+                                <button type="reset" class="btn btn-secondary">Тазалау</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="form-output" id="formOutput">
+                        <h4>Форма мәліметтері:</h4>
+                        <p>Форманы толтыра бастаған кезде мұнда нақты уақытта көрсетіледі...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Тест -->
+            <div id="quiz" class="lesson-section">
+                <h2>Білімді тексеру</h2>
+                
+                <div class="quiz">
+                    <div class="quiz-question">1. Форма деректерін жіберу үшін қай method қауіпсіз?</div>
+                    <ul class="quiz-options" data-correct="1">
+                        <li onclick="selectAnswer(this, 0)">GET</li>
+                        <li onclick="selectAnswer(this, 1)">POST</li>
+                        <li onclick="selectAnswer(this, 0)">PUT</li>
+                        <li onclick="selectAnswer(this, 0)">DELETE</li>
+                    </ul>
+                </div>
+
+                <div class="quiz">
+                    <div class="quiz-question">2. Қай input type автоматты түрде email форматын тексереді?</div>
+                    <ul class="quiz-options" data-correct="2">
+                        <li onclick="selectAnswer(this, 0)">text</li>
+                        <li onclick="selectAnswer(this, 0)">url</li>
+                        <li onclick="selectAnswer(this, 1)">email</li>
+                        <li onclick="selectAnswer(this, 0)">tel</li>
+                    </ul>
+                </div>
+
+                <div class="quiz">
+                    <div class="quiz-question">3. Radio button-дар арасында бір ғана таңдауға мүмкіндік беру үшін не істеу керек?</div>
+                    <ul class="quiz-options" data-correct="1">
+                        <li onclick="selectAnswer(this, 0)">Бірдей id беру</li>
+                        <li onclick="selectAnswer(this, 1)">Бірдей name беру</li>
+                        <li onclick="selectAnswer(this, 0)">Бірдей class беру</li>
+                        <li onclick="selectAnswer(this, 0)">Бірдей value беру</li>
+                    </ul>
+                </div>
+
+                <div class="quiz">
+                    <div class="quiz-question">4. Өрісті міндетті ету үшін қай атрибут қолданылады?</div>
+                    <ul class="quiz-options" data-correct="0">
+                        <li onclick="selectAnswer(this, 1)">required</li>
+                        <li onclick="selectAnswer(this, 0)">mandatory</li>
+                        <li onclick="selectAnswer(this, 0)">necessary</li>
+                        <li onclick="selectAnswer(this, 0)">important</li>
+                    </ul>
+                </div>
+
+                <div class="quiz">
+                    <div class="quiz-question">5. &lt;label&gt; элементі неге қолданылады?</div>
+                    <ul class="quiz-options" data-correct="2">
+                        <li onclick="selectAnswer(this, 0)">Форманы безендіру үшін</li>
+                        <li onclick="selectAnswer(this, 0)">Валидация үшін</li>
+                        <li onclick="selectAnswer(this, 1)">Input өрістеріне атау беру үшін</li>
+                        <li onclick="selectAnswer(this, 0)">Форманы жіберу үшін</li>
+                    </ul>
+                </div>
+
+                <div class="quiz">
+                    <div class="quiz-question">6. Көп жолды мәтін енгізу үшін қай элемент қолданылады?</div>
+                    <ul class="quiz-options" data-correct="3">
+                        <li onclick="selectAnswer(this, 0)">&lt;input type="text"&gt;</li>
+                        <li onclick="selectAnswer(this, 0)">&lt;input type="longtext"&gt;</li>
+                        <li onclick="selectAnswer(this, 0)">&lt;textbox&gt;</li>
+                        <li onclick="selectAnswer(this, 1)">&lt;textarea&gt;</li>
+                    </ul>
+                </div>
+
+                <div id="quizResult" style="margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; display: none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentSection = 0;
+        const sections = ['intro', 'form-basics', 'input-types', 'form-elements', 'validation', 'practice', 'quiz'];
+        let quizScore = 0;
+        let quizAnswered = 0;
+
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.lesson-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remove active class from all nav buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+            
+            // Update progress
+            currentSection = sections.indexOf(sectionId);
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const progress = (currentSection / (sections.length - 1)) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        // Quiz functionality
+        function selectAnswer(element, answerIndex) {
+            const options = element.parentNode;
+            const correct = parseInt(options.getAttribute('data-correct'));
+            
+            // Remove previous selections
+            options.querySelectorAll('li').forEach(li => {
+                li.classList.remove('correct', 'incorrect');
+            });
+            
+            // Mark the correct answer
+            if (answerIndex === correct) {
+                element.classList.add('correct');
+                if (!element.hasAttribute('data-answered')) {
+                    quizScore++;
+                    element.setAttribute('data-answered', 'true');
+                }
+            } else {
+                element.classList.add('incorrect');
+                options.children[correct].classList.add('correct');
+            }
+            
+            // Check if this question was already answered
+            if (!options.hasAttribute('data-completed')) {
+                quizAnswered++;
+                options.setAttribute('data-completed', 'true');
+            }
+            
+            // Show result if all questions answered
+            if (quizAnswered >= 6) {
+                showQuizResult();
+            }
+        }
+
+        function showQuizResult() {
+            const result = document.getElementById('quizResult');
+            const percentage = (quizScore / 6) * 100;
+            
+            let message = '';
+            let bgColor = '';
+            
+            if (percentage >= 80) {
+                message = `Керемет! ${quizScore}/6 дұрыс жауап. HTML Forms туралы өте жақсы білім!`;
+                bgColor = '#c6f6d5';
+            } else if (percentage >= 60) {
+                message = `Жақсы! ${quizScore}/6 дұрыс жауап. Кейбір тақырыптарды қайталап көріңіз.`;
+                bgColor = '#fef5e7';
+            } else {
+                message = `${quizScore}/6 дұрыс жауап. HTML Forms туралы қайта оқып, практика жасаңыз.`;
+                bgColor = '#fed7d7';
+            }
+            
+            result.innerHTML = `<h3>Тест нәтижесі</h3><p>${message}</p>`;
+            result.style.background = bgColor;
+            result.style.display = 'block';
+        }
+
+        // Form validation functionality
+        function initializeValidation() {
+            const validationForm = document.getElementById('validationForm');
+            if (validationForm) {
+                validationForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    validateForm();
+                });
+
+                // Real-time validation
+                const inputs = validationForm.querySelectorAll('input');
+                inputs.forEach(input => {
+                    input.addEventListener('input', function() {
+                        validateField(this);
+                    });
+                    input.addEventListener('blur', function() {
+                        validateField(this);
+                    });
+                });
+            }
+        }
+
+        function validateField(field) {
+            const formGroup = field.closest('.form-group');
+            const errorMsg = formGroup.querySelector('.error-message');
+            const successMsg = formGroup.querySelector('.success-message');
+            
+            if (field.validity.valid && field.value.trim() !== '') {
+                field.style.borderColor = '#38a169';
+                errorMsg.style.display = 'none';
+                successMsg.style.display = 'block';
+            } else if (field.value.trim() === '' && !field.hasAttribute('required')) {
+                field.style.borderColor = '#e2e8f0';
+                errorMsg.style.display = 'none';
+                successMsg.style.display = 'none';
+            } else {
+                field.style.borderColor = '#e53e3e';
+                errorMsg.style.display = 'block';
+                successMsg.style.display = 'none';
+            }
+        }
+
+        function validateForm() {
+            const form = document.getElementById('validationForm');
+            const inputs = form.querySelectorAll('input');
+            let isValid = true;
+
+            inputs.forEach(input => {
+                validateField(input);
+                if (!input.validity.valid) {
+                    isValid = false;
+                }
+            });
+
+            if (isValid) {
+                alert('Барлық өрістер дұрыс толтырылған!');
+            } else {
+                alert('Кейбір өрістерде қателер бар. Түзетіп көріңіз.');
+            }
+        }
+
+        // Practice form functionality
+        function initializePracticeForm() {
+            const practiceForm = document.getElementById('practiceForm');
+            const formOutput = document.getElementById('formOutput');
+            const charCount = document.getElementById('charCount');
+            const priorityValue = document.getElementById('priorityValue');
+
+            if (practiceForm) {
+                // Character counter for textarea
+                const bioTextarea = document.getElementById('bio');
+                if (bioTextarea && charCount) {
+                    bioTextarea.addEventListener('input', function() {
+                        charCount.textContent = this.value.length;
+                    });
+                }
+
+                // Range slider value display
+                const prioritySlider = document.getElementById('priority');
+                if (prioritySlider && priorityValue) {
+                    prioritySlider.addEventListener('input', function() {
+                        priorityValue.textContent = this.value;
+                    });
+                }
+
+                // Real-time form data display
+                practiceForm.addEventListener('input', function() {
+                    updateFormOutput();
+                });
+
+                practiceForm.addEventListener('change', function() {
+                    updateFormOutput();
+                });
+
+                // Form submission
+                practiceForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    if (practiceForm.checkValidity()) {
+                        alert('Форма сәтті жіберілді! (Бұл тек демо)');
+                    } else {
+                        alert('Міндетті өрістерді толтырыңыз!');
+                    }
+                });
+            }
+        }
+
+        function updateFormOutput() {
+            const form = document.getElementById('practiceForm');
+            const output = document.getElementById('formOutput');
+            const formData = new FormData(form);
+            
+            let html = '<h4>Форма мәліметтері:</h4><ul>';
+            
+            // Get all form data
+            for (let [key, value] of formData.entries()) {
+                if (value.trim() !== '') {
+                    // Special handling for checkboxes
+                    if (key === 'interests') {
+                        const existingInterests = html.includes('Қызығушылықтар:');
+                        if (!existingInterests) {
+                            html += `<li><strong>Қызығушылықтар:</strong> ${value}`;
+                        } else {
+                            html = html.replace(/(<li><strong>Қызығушылықтар:<\/strong> [^<]+)/, `$1, ${value}`);
+                        }
+                    } else {
+                        const fieldNames = {
+                            'fullName': 'Толық аты-жөні',
+                            'birthDate': 'Туған күні',
+                            'gender': 'Жынысы',
+                            'email': 'Email',
+                            'phone': 'Телефон',
+                            'website': 'Веб-сайт',
+                            'experience': 'Тәжірибе деңгейі',
+                            'bio': 'Өзі туралы',
+                            'favoriteColor': 'Сүйікті түс',
+                            'priority': 'Басымдық деңгейі'
+                        };
+                        
+                        const fieldName = fieldNames[key] || key;
+                        html += `<li><strong>${fieldName}:</strong> ${value}</li>`;
+                    }
+                }
+            }
+            
+            // Close any open interests line
+            if (html.includes('Қызығушылықтар:') && !html.includes('</li>')) {
+                html += '</li>';
+            }
+            
+            html += '</ul>';
+            
+            if (html === '<h4>Форма мәліметтері:</h4><ul></ul>') {
+                html = '<h4>Форма мәліметтері:</h4><p>Форманы толтыра бастаған кезде мұнда нақты уақытта көрсетіледі...</p>';
+            }
+            
+            output.innerHTML = html;
+        }
+
+        // Initialize when DOM is loaded
+        function initializeAll() {
+            updateProgress();
+            initializeValidation();
+            initializePracticeForm();
+        }
+
+        // Wait for DOM to be ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeAll);
+        } else {
+            initializeAll();
+        }
+    </script>
+</body>
+</html>

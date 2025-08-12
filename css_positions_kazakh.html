@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Positions - Интерактивті сабақ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .lesson-nav {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .nav-btn:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .nav-btn.active {
+            background: #764ba2;
+        }
+
+        .lesson-section {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .lesson-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .position-demo {
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            background: #f8fafc;
+            position: relative;
+            min-height: 200px;
+        }
+
+        .demo-container {
+            position: relative;
+            background: #e2e8f0;
+            height: 150px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .demo-box {
+            width: 80px;
+            height: 60px;
+            background: #667eea;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .demo-box:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .static-box { position: static; }
+        .relative-box { position: relative; top: 20px; left: 30px; background: #48bb78; }
+        .absolute-box { position: absolute; top: 10px; right: 10px; background: #ed8936; }
+        .fixed-box { position: fixed; top: 50px; right: 20px; background: #e53e3e; z-index: 1000; }
+        .sticky-box { position: sticky; top: 0; background: #9f7aea; }
+
+        .controls {
+            margin: 20px 0;
+            padding: 20px;
+            background: #f7fafc;
+            border-radius: 8px;
+        }
+
+        .control-group {
+            margin: 15px 0;
+        }
+
+        .control-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #4a5568;
+        }
+
+        .slider {
+            width: 100%;
+            -webkit-appearance: none;
+            height: 8px;
+            border-radius: 4px;
+            background: #e2e8f0;
+            outline: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+        }
+
+        .code-example {
+            background: #1a202c;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+        }
+
+        .code-example .property { color: #63b3ed; }
+        .code-example .value { color: #68d391; }
+        .code-example .selector { color: #fbb6ce; }
+
+        .explanation {
+            background: #ebf8ff;
+            border-left: 4px solid #3182ce;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .quiz {
+            background: #f0fff4;
+            border: 2px solid #68d391;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .quiz-question {
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .quiz-options {
+            list-style: none;
+        }
+
+        .quiz-options li {
+            margin: 10px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .quiz-options li:hover {
+            background: #e6fffa;
+            border-color: #38b2ac;
+        }
+
+        .quiz-options li.correct {
+            background: #c6f6d5;
+            border-color: #38a169;
+        }
+
+        .quiz-options li.incorrect {
+            background: #fed7d7;
+            border-color: #e53e3e;
+        }
+
+        .scrollable-content {
+            height: 300px;
+            overflow-y: auto;
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .scroll-item {
+            height: 80px;
+            background: #e2e8f0;
+            margin: 10px 0;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .content { padding: 15px; }
+            .header { padding: 20px; }
+            .header h1 { font-size: 2em; }
+            .demo-container { height: 120px; }
+            .demo-box { width: 60px; height: 45px; font-size: 12px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>CSS Position қасиеті</h1>
+            <p>Интерактивті сабақ - элементтерді орналастыру</p>
+        </div>
+
+        <div class="content">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <div class="lesson-nav">
+                <button class="nav-btn active" onclick="showSection('intro')">Кіріспе</button>
+                <button class="nav-btn" onclick="showSection('static')">Static</button>
+                <button class="nav-btn" onclick="showSection('relative')">Relative</button>
+                <button class="nav-btn" onclick="showSection('absolute')">Absolute</button>
+                <button class="nav-btn" onclick="showSection('fixed')">Fixed</button>
+                <button class="nav-btn" onclick="showSection('sticky')">Sticky</button>
+                <button class="nav-btn" onclick="showSection('quiz')">Тест</button>
+            </div>
+
+            <!-- Кіріспе -->
+            <div id="intro" class="lesson-section active">
+                <h2>CSS Position қасиеті туралы</h2>
+                <div class="explanation">
+                    <p><strong>Position</strong> қасиеті элементтің веб-беттегі орналасуын анықтайды. Бұл CSS-тің ең маңызды қасиеттерінің бірі болып табылады.</p>
+                </div>
+
+                <h3>Position мәндері:</h3>
+                <ul style="padding-left: 30px; margin: 20px 0;">
+                    <li><strong>static</strong> - әдепкі мән (default)</li>
+                    <li><strong>relative</strong> - қатысты орналастыру</li>
+                    <li><strong>absolute</strong> - абсолютті орналастыру</li>
+                    <li><strong>fixed</strong> - тұрақты орналастыру</li>
+                    <li><strong>sticky</strong> - жабысқақ орналастыру</li>
+                </ul>
+
+                <div class="position-demo">
+                    <h4>Барлық түрлердің мысалы:</h4>
+                    <div class="demo-container">
+                        <div class="demo-box static-box">Static</div>
+                        <div class="demo-box relative-box">Relative</div>
+                        <div class="demo-box absolute-box">Absolute</div>
+                        <div class="demo-box sticky-box">Sticky</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Static -->
+            <div id="static" class="lesson-section">
+                <h2>Static Position</h2>
+                <div class="explanation">
+                    <p><strong>Static</strong> - барлық элементтердің әдепкі орналасуы. Элемент құжат ағынында (document flow) қалыпты түрде орналасады.</p>
+                    <p>Top, right, bottom, left қасиеттері static элементтерге әсер етпейді.</p>
+                </div>
+
+                <div class="code-example">
+<span class="selector">.static-element</span> {
+    <span class="property">position</span>: <span class="value">static</span>;
+    /* top, left қасиеттері жұмыс істемейді */
+}
+                </div>
+
+                <div class="position-demo">
+                    <h4>Static мысалы:</h4>
+                    <div class="demo-container">
+                        <div class="demo-box" style="position: static; background: #4299e1;">Бірінші блок</div>
+                        <div class="demo-box" style="position: static; background: #48bb78; margin-top: 10px;">Екінші блок</div>
+                        <div class="demo-box" style="position: static; background: #ed8936; margin-top: 10px;">Үшінші блок</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Relative -->
+            <div id="relative" class="lesson-section">
+                <h2>Relative Position</h2>
+                <div class="explanation">
+                    <p><strong>Relative</strong> - элемент өзінің қалыпты орнына қатысты жылжытылады. Бастапқы орны сақталады (басқа элементтер оның орнын алмайды).</p>
+                </div>
+
+                <div class="code-example">
+<span class="selector">.relative-element</span> {
+    <span class="property">position</span>: <span class="value">relative</span>;
+    <span class="property">top</span>: <span class="value">20px</span>;
+    <span class="property">left</span>: <span class="value">30px</span>;
+}
+                </div>
+
+                <div class="position-demo">
+                    <h4>Relative интерактивті мысал:</h4>
+                    <div class="controls">
+                        <div class="control-group">
+                            <label>Top: <span id="relativeTopValue">0</span>px</label>
+                            <input type="range" class="slider" min="-50" max="50" value="0" id="relativeTop">
+                        </div>
+                        <div class="control-group">
+                            <label>Left: <span id="relativeLeftValue">0</span>px</label>
+                            <input type="range" class="slider" min="-50" max="50" value="0" id="relativeLeft">
+                        </div>
+                    </div>
+                    <div class="demo-container">
+                        <div class="demo-box" style="background: #e2e8f0; color: #666;">Бірінші (static)</div>
+                        <div class="demo-box" id="relativeBox" style="position: relative; background: #48bb78; margin-top: 10px;">Екінші (relative)</div>
+                        <div class="demo-box" style="background: #e2e8f0; color: #666; margin-top: 10px;">Үшінші (static)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Absolute -->
+            <div id="absolute" class="lesson-section">
+                <h2>Absolute Position</h2>
+                <div class="explanation">
+                    <p><strong>Absolute</strong> - элемент құжат ағынынан шығарылады және ең жақын positioned parent элементіне (position: static емес) қатысты орналастырылады.</p>
+                    <p>Егер positioned parent болмаса, онда body элементіне қатысты орналасады.</p>
+                </div>
+
+                <div class="code-example">
+<span class="selector">.absolute-element</span> {
+    <span class="property">position</span>: <span class="value">absolute</span>;
+    <span class="property">top</span>: <span class="value">10px</span>;
+    <span class="property">right</span>: <span class="value">20px</span>;
+}
+                </div>
+
+                <div class="position-demo">
+                    <h4>Absolute интерактивті мысал:</h4>
+                    <div class="controls">
+                        <div class="control-group">
+                            <label>Top: <span id="absoluteTopValue">10</span>px</label>
+                            <input type="range" class="slider" min="0" max="100" value="10" id="absoluteTop">
+                        </div>
+                        <div class="control-group">
+                            <label>Right: <span id="absoluteRightValue">10</span>px</label>
+                            <input type="range" class="slider" min="0" max="100" value="10" id="absoluteRight">
+                        </div>
+                    </div>
+                    <div class="demo-container" style="position: relative;">
+                        <div class="demo-box" style="background: #e2e8f0; color: #666;">Қалыпты блок</div>
+                        <div class="demo-box" id="absoluteBox" style="position: absolute; background: #ed8936; top: 10px; right: 10px;">Absolute блок</div>
+                        <div class="demo-box" style="background: #e2e8f0; color: #666; margin-top: 10px;">Тағы бір блок</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fixed -->
+            <div id="fixed" class="lesson-section">
+                <h2>Fixed Position</h2>
+                <div class="explanation">
+                    <p><strong>Fixed</strong> - элемент viewport-қа (браузер терезесіне) қатысты тұрақты орналастырылады. Беттің scroll болуына қарамастан бір жерде қалады.</p>
+                </div>
+
+                <div class="code-example">
+<span class="selector">.fixed-element</span> {
+    <span class="property">position</span>: <span class="value">fixed</span>;
+    <span class="property">top</span>: <span class="value">0</span>;
+    <span class="property">right</span>: <span class="value">0</span>;
+}
+                </div>
+
+                <div class="position-demo">
+                    <h4>Fixed мысалы:</h4>
+                    <p>Оң жоғарғы бұрыштағы қызыл блокты қараңыз. Ол fixed position қолданады және бет scroll болған кезде де сол жерде қалады.</p>
+                    <button onclick="toggleFixedDemo()" style="background: #e53e3e; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">Fixed блокты көрсету/жасыру</button>
+                </div>
+            </div>
+
+            <!-- Sticky -->
+            <div id="sticky" class="lesson-section">
+                <h2>Sticky Position</h2>
+                <div class="explanation">
+                    <p><strong>Sticky</strong> - элемент relative және fixed арасындағы гибридті position. Белгілі бір нүктеге дейін relative, содан кейін fixed ретінде әрекет етеді.</p>
+                </div>
+
+                <div class="code-example">
+<span class="selector">.sticky-element</span> {
+    <span class="property">position</span>: <span class="value">sticky</span>;
+    <span class="property">top</span>: <span class="value">0</span>;
+}
+                </div>
+
+                <div class="position-demo">
+                    <h4>Sticky мысалы:</h4>
+                    <div class="scrollable-content">
+                        <div class="demo-box" style="position: sticky; top: 0; background: #9f7aea; margin: 0 0 20px 0; z-index: 10;">Мен sticky элементмін!</div>
+                        <div class="scroll-item">Scroll мазмұны 1</div>
+                        <div class="scroll-item">Scroll мазмұны 2</div>
+                        <div class="scroll-item">Scroll мазмұны 3</div>
+                        <div class="scroll-item">Scroll мазмұны 4</div>
+                        <div class="scroll-item">Scroll мазмұны 5</div>
+                        <div class="scroll-item">Scroll мазмұны 6</div>
+                        <div class="scroll-item">Scroll мазмұны 7</div>
+                        <div class="scroll-item">Scroll мазмұны 8</div>
+                    </div>
+                    <p style="margin-top: 15px;"><em>Жоғарыдағы аймақты scroll жасап көріңіз. Күлгін блок жоғарыда қалатынын байқаңыз.</em></p>
+                </div>
+            </div>
+
+            <!-- Тест -->
+            <div id="quiz" class="lesson-section">
+                <h2>Білімді тексеру</h2>
+                
+                <div class="quiz">
+                    <div class="quiz-question">1. Қай position мәні элементті құжат ағынынан толықтай шығарады?</div>
+                    <ul class="quiz-options" data-correct="1">
+                        <li onclick="selectAnswer(this, 0)">relative</li>
+                        <li onclick="selectAnswer(this, 1)">absolute</li>
+                        <li onclick="selectAnswer(this, 0)">static</li>
+                        <li onclick="selectAnswer(this, 0)">sticky</li>
+                    </ul>
+                </div>
+
+                <div class="quiz">
+                    <div class="quiz-question">2. Fixed элементтер неге қатысты орналасады?</div>
+                    <ul class="quiz-options" data-correct="2">
+                        <li onclick="selectAnswer(this, 0)">Parent элементке</li>
+                        <li onclick="selectAnswer(this, 0)">Body элементке</li>
+                        <li onclick="selectAnswer(this, 1)">Viewport-қа (браузер терезесі)</li>
+                        <li onclick="selectAnswer(this, 0)">Ештеңеге</li>
+                    </ul>
+                </div>
+
+                <div class="quiz">
+                    <div class="quiz-question">3. Барлық HTML элементтерінің әдепкі position мәні қандай?</div>
+                    <ul class="quiz-options" data-correct="0">
+                        <li onclick="selectAnswer(this, 1)">static</li>
+                        <li onclick="selectAnswer(this, 0)">relative</li>
+                        <li onclick="selectAnswer(this, 0)">absolute</li>
+                        <li onclick="selectAnswer(this, 0)">fixed</li>
+                    </ul>
+                </div>
+
+                <div class="quiz">
+                    <div class="quiz-question">4. Sticky position қашан fixed ретінде әрекет етеді?</div>
+                    <ul class="quiz-options" data-correct="1">
+                        <li onclick="selectAnswer(this, 0)">Әрқашан</li>
+                        <li onclick="selectAnswer(this, 1)">Scroll кезінде белгілі нүктеге жеткенде</li>
+                        <li onclick="selectAnswer(this, 0)">Ешқашан</li>
+                        <li onclick="selectAnswer(this, 0)">Тек мобильді құрылғыларда</li>
+                    </ul>
+                </div>
+
+                <div id="quizResult" style="margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; display: none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentSection = 0;
+        const sections = ['intro', 'static', 'relative', 'absolute', 'fixed', 'sticky', 'quiz'];
+        let quizScore = 0;
+        let quizAnswered = 0;
+        let fixedDemoVisible = true;
+
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.lesson-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remove active class from all nav buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+            
+            // Update progress
+            currentSection = sections.indexOf(sectionId);
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const progress = (currentSection / (sections.length - 1)) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        // Initialize controls when DOM is ready
+        function initializeControls() {
+            // Relative position controls
+            const relativeTop = document.getElementById('relativeTop');
+            const relativeLeft = document.getElementById('relativeLeft');
+            const relativeBox = document.getElementById('relativeBox');
+            const relativeTopValue = document.getElementById('relativeTopValue');
+            const relativeLeftValue = document.getElementById('relativeLeftValue');
+
+            if (relativeTop && relativeBox && relativeTopValue) {
+                relativeTop.addEventListener('input', function() {
+                    const value = this.value;
+                    relativeBox.style.top = value + 'px';
+                    relativeTopValue.textContent = value;
+                });
+            }
+
+            if (relativeLeft && relativeBox && relativeLeftValue) {
+                relativeLeft.addEventListener('input', function() {
+                    const value = this.value;
+                    relativeBox.style.left = value + 'px';
+                    relativeLeftValue.textContent = value;
+                });
+            }
+
+            // Absolute position controls
+            const absoluteTop = document.getElementById('absoluteTop');
+            const absoluteRight = document.getElementById('absoluteRight');
+            const absoluteBox = document.getElementById('absoluteBox');
+            const absoluteTopValue = document.getElementById('absoluteTopValue');
+            const absoluteRightValue = document.getElementById('absoluteRightValue');
+
+            if (absoluteTop && absoluteBox && absoluteTopValue) {
+                absoluteTop.addEventListener('input', function() {
+                    const value = this.value;
+                    absoluteBox.style.top = value + 'px';
+                    absoluteTopValue.textContent = value;
+                });
+            }
+
+            if (absoluteRight && absoluteBox && absoluteRightValue) {
+                absoluteRight.addEventListener('input', function() {
+                    const value = this.value;
+                    absoluteBox.style.right = value + 'px';
+                    absoluteRightValue.textContent = value;
+                });
+            }
+        }
+
+        // Fixed demo toggle
+        function toggleFixedDemo() {
+            const fixedBox = document.querySelector('.fixed-box');
+            if (fixedBox) {
+                if (fixedDemoVisible) {
+                    fixedBox.style.display = 'none';
+                    fixedDemoVisible = false;
+                } else {
+                    fixedBox.style.display = 'flex';
+                    fixedDemoVisible = true;
+                }
+            }
+        }
+
+        // Quiz functionality
+        function selectAnswer(element, answerIndex) {
+            const options = element.parentNode;
+            const correct = parseInt(options.getAttribute('data-correct'));
+            
+            // Remove previous selections
+            options.querySelectorAll('li').forEach(li => {
+                li.classList.remove('correct', 'incorrect');
+            });
+            
+            // Mark the correct answer
+            if (answerIndex === correct) {
+                element.classList.add('correct');
+                if (!element.hasAttribute('data-answered')) {
+                    quizScore++;
+                    element.setAttribute('data-answered', 'true');
+                }
+            } else {
+                element.classList.add('incorrect');
+                options.children[correct].classList.add('correct');
+            }
+            
+            // Check if this question was already answered
+            if (!options.hasAttribute('data-completed')) {
+                quizAnswered++;
+                options.setAttribute('data-completed', 'true');
+            }
+            
+            // Show result if all questions answered
+            if (quizAnswered >= 4) {
+                showQuizResult();
+            }
+        }
+
+        function showQuizResult() {
+            const result = document.getElementById('quizResult');
+            const percentage = (quizScore / 4) * 100;
+            
+            let message = '';
+            let bgColor = '';
+            
+            if (percentage >= 75) {
+                message = `Өте жақсы! ${quizScore}/4 дұрыс жауап. CSS Position туралы жақсы түсінігіңіз бар!`;
+                bgColor = '#c6f6d5';
+            } else if (percentage >= 50) {
+                message = `Жақсы! ${quizScore}/4 дұрыс жауап. Тағы да жаттығу керек.`;
+                bgColor = '#fef5e7';
+            } else {
+                message = `${quizScore}/4 дұрыс жауап. CSS Position туралы қайта оқып, жаттығу жасаңыз.`;
+                bgColor = '#fed7d7';
+            }
+            
+            result.innerHTML = `<h3>Тест нәтижесі</h3><p>${message}</p>`;
+            result.style.background = bgColor;
+            result.style.display = 'block';
+        }
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeControls();
+            updateProgress();
+        });
+
+        // Also initialize if DOM is already loaded
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                initializeControls();
+                updateProgress();
+            });
+        } else {
+            initializeControls();
+            updateProgress();
+        }
+    </script>
+</body>
+</html>

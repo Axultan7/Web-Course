@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Filters - Интерактивті сабақ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .lesson-nav {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .nav-btn:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .nav-btn.active {
+            background: #764ba2;
+        }
+
+        .lesson-section {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .lesson-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .filter-demo {
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            background: #f8fafc;
+        }
+
+        .demo-image {
+            width: 200px;
+            height: 150px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 150"><defs><linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23ff6b6b;stop-opacity:1" /><stop offset="25%" style="stop-color:%234ecdc4;stop-opacity:1" /><stop offset="50%" style="stop-color:%2345b7d1;stop-opacity:1" /><stop offset="75%" style="stop-color:%23a55eea;stop-opacity:1" /><stop offset="100%" style="stop-color:%23feca57;stop-opacity:1" /></linearGradient></defs><rect width="200" height="150" fill="url(%23grad1)"/><circle cx="50" cy="40" r="15" fill="white" opacity="0.8"/><circle cx="150" cy="110" r="20" fill="white" opacity="0.6"/><polygon points="20,120 60,80 100,100 140,60 180,80 180,150 20,150" fill="white" opacity="0.4"/><text x="100" y="80" text-anchor="middle" fill="white" font-family="Arial" font-size="16" font-weight="bold">DEMO</text></svg>') center/cover;
+            border-radius: 8px;
+            margin: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: inline-block;
+            position: relative;
+        }
+
+        .demo-image:hover {
+            transform: scale(1.05);
+        }
+
+        .filter-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .filter-card {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .filter-card:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .filter-card h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .controls {
+            margin: 20px 0;
+            padding: 20px;
+            background: #f7fafc;
+            border-radius: 8px;
+        }
+
+        .control-group {
+            margin: 15px 0;
+        }
+
+        .control-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #4a5568;
+        }
+
+        .slider {
+            width: 100%;
+            -webkit-appearance: none;
+            height: 8px;
+            border-radius: 4px;
+            background: #e2e8f0;
+            outline: none;
+            margin: 10px 0;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+            border: none;
+        }
+
+        .code-example {
+            background: #1a202c;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+
+        .code-example .property { color: #63b3ed; }
+        .code-example .value { color: #68d391; }
+        .code-example .selector { color: #fbb6ce; }
+
+        .explanation {
+            background: #ebf8ff;
+            border-left: 4px solid #3182ce;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .interactive-demo {
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+
+        .demo-controls {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .demo-preview {
+            flex: 1;
+            min-width: 300px;
+            text-align: center;
+        }
+
+        .preview-image {
+            width: 300px;
+            height: 200px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200"><defs><linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23ff9a9e;stop-opacity:1" /><stop offset="25%" style="stop-color:%23fecfef;stop-opacity:1" /><stop offset="50%" style="stop-color:%23fecfef;stop-opacity:1" /><stop offset="75%" style="stop-color:%23a8edea;stop-opacity:1" /><stop offset="100%" style="stop-color:%23fed6e3;stop-opacity:1" /></linearGradient></defs><rect width="300" height="200" fill="url(%23grad2)"/><circle cx="80" cy="60" r="20" fill="%23ff6b6b" opacity="0.8"/><circle cx="220" cy="140" r="25" fill="%234ecdc4" opacity="0.7"/><rect x="120" y="40" width="60" height="40" fill="%23a55eea" opacity="0.6"/><polygon points="50,150 100,120 150,130 200,100 250,120 250,200 50,200" fill="%23feca57" opacity="0.5"/><text x="150" y="110" text-anchor="middle" fill="white" font-family="Arial" font-size="20" font-weight="bold">CSS FILTERS</text></svg>') center/cover;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            margin: 20px auto;
+        }
+
+        .filter-value {
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .reset-btn {
+            background: #e53e3e;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .reset-btn:hover {
+            background: #c53030;
+            transform: translateY(-1px);
+        }
+
+        .quiz {
+            background: #f0fff4;
+            border: 2px solid #68d391;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .quiz-question {
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .quiz-options {
+            list-style: none;
+        }
+
+        .quiz-options li {
+            margin: 10px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .quiz-options li:hover {
+            background: #e6fffa;
+            border-color: #38b2ac;
+        }
+
+        .quiz-options li.correct {
+            background: #c6f6d5;
+            border-color: #38a169;
+        }
+
+        .quiz-options li.incorrect {
+            background: #fed7d7;
+            border-color: #e53e3e;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .presets {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .preset-btn {
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .preset-btn:hover {
+            border-color: #667eea;
+            background: #ebf8ff;
+        }
+
+        .preset-btn.active {
+            border-color: #667eea;
+            background: #667eea;
+            color: white;
+        }
+
+        .highlight {
+            background: #fef5e7;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+
+        .practice-area {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .practice-image {
+            width: 250px;
+            height: 167px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 167"><defs><radialGradient id="grad3" cx="50%" cy="50%" r="50%"><stop offset="0%" style="stop-color:%23ff7675;stop-opacity:1" /><stop offset="50%" style="stop-color:%2374b9ff;stop-opacity:1" /><stop offset="100%" style="stop-color:%2300b894;stop-opacity:1" /></radialGradient></defs><rect width="250" height="167" fill="url(%23grad3)"/><circle cx="60" cy="50" r="15" fill="%23fdcb6e" opacity="0.9"/><circle cx="190" cy="120" r="20" fill="%23e17055" opacity="0.8"/><rect x="100" y="30" width="50" height="30" fill="%236c5ce7" opacity="0.7"/><text x="125" y="90" text-anchor="middle" fill="white" font-family="Arial" font-size="18" font-weight="bold">PRACTICE</text></svg>') center/cover;
+            border-radius: 8px;
+            margin: 20px auto;
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .content { padding: 15px; }
+            .header { padding: 20px; }
+            .header h1 { font-size: 2em; }
+            .interactive-demo { flex-direction: column; }
+            .preview-image { width: 250px; height: 167px; }
+            .filter-showcase { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>CSS Filter қасиеті</h1>
+            <p>Интерактивті сабақ - суреттер мен элементтерге эффекттер қосу</p>
+        </div>
+
+        <div class="content">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <div class="lesson-nav">
+                <button class="nav-btn active" onclick="showSection('intro')">Кіріспе</button>
+                <button class="nav-btn" onclick="showSection('basic-filters')">Негізгі Filter-лер</button>
+                <button class="nav-btn" onclick="showSection('advanced-filters')">Кешенді Filter-лер</button>
+                <button class="nav-btn" onclick="showSection('interactive')">Интерактивті Demo</button>
+                <button class="nav-btn" onclick="showSection('presets')">Дайын эффекттер</button>
+                <button class="nav-btn" onclick="showSection('practice')">Практика</button>
+                <button class="nav-btn" onclick="showSection('quiz')">Тест</button>
+            </div>
+
+            <!-- Кіріспе -->
+            <div id="intro" class="lesson-section active">
+                <h2>CSS Filter қасиеті туралы</h2>
+                <div class="explanation">
+                    <p><strong>CSS Filter</strong> қасиеті HTML элементтеріне (әсіресе суреттерге) визуалды эффекттер қосуға мүмкіндік береді. Photoshop сияқты графикалық редакторлардағы эффекттерді CSS арқылы қолдануға болады.</p>
+                </div>
+
+                <h3>Filter қасиетінің артықшылықтары:</h3>
+                <ul style="padding-left: 30px; margin: 20px 0;">
+                    <li><strong>Жылдамдық</strong> - браузерде тікелей өңделеді</li>
+                    <li><strong>Интерактивтілік</strong> - JavaScript арқылы динамикалық өзгертуге болады</li>
+                    <li><strong>Кеңістік үнемдеу</strong> - бірнеше сурет файлдары керек емес</li>
+                    <li><strong>SEO-оңтайландыру</strong> - бастапқы сурет сақталады</li>
+                    <li><strong>Responsive дизайн</strong> - барлық экран өлшемдерінде жұмыс істейді</li>
+                </ul>
+
+                <div class="filter-demo">
+                    <h4>Filter эффекттерінің мысалдары:</h4>
+                    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;">
+                        <div style="text-align: center;">
+                            <div class="demo-image" style="filter: none;"></div>
+                            <p><strong>Бастапқы</strong></p>
+                        </div>
+                        <div style="text-align: center;">
+                            <div class="demo-image" style="filter: blur(3px);"></div>
+                            <p><strong>Blur</strong></p>
+                        </div>
+                        <div style="text-align: center;">
+                            <div class="demo-image" style="filter: brightness(1.5);"></div>
+                            <p><strong>Brightness</strong></p>
+                        </div>
+                        <div style="text-align: center;">
+                            <div class="demo-image" style="filter: sepia(1);"></div>
+                            <p><strong>Sepia</strong></p>
+                        </div>
+                        <div style="text-align: center;">
+                            <div class="demo-image" style="filter: hue-rotate(180deg);"></div>
+                            <p><strong>Hue Rotate</strong></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="code-example">
+<span class="selector">.image</span> {
+    <span class="property">filter</span>: <span class="value">blur(5px) brightness(1.2) contrast(1.5)</span>;
+}
+                </div>
+            </div>
+
+            <!-- Негізгі Filter-лер -->
+            <div id="basic-filters" class="lesson-section">
+                <h2>Негізгі CSS Filter функциялары</h2>
+                
+                <div class="filter-showcase">
+                    <div class="filter-card">
+                        <h4>blur() - Бұлдырлау</h4>
+                        <div class="demo-image" style="filter: blur(2px);"></div>
+                        <p><strong>Мақсаты:</strong> Элементті бұлдырлату</p>
+                        <p><strong>Мәндер:</strong> px, rem (0px - бұлдырлау жоқ)</p>
+                        <div class="code-example" style="margin: 10px 0; font-size: 12px;">
+<span class="property">filter</span>: <span class="value">blur(5px)</span>;
+                        </div>
+                    </div>
+
+                    <div class="filter-card">
+                        <h4>brightness() - Жарықтық</h4>
+                        <div class="demo-image" style="filter: brightness(1.5);"></div>
+                        <p><strong>Мақсаты:</strong> Жарықтықты реттеу</p>
+                        <p><strong>Мәндер:</strong> сан немесе % (1 = 100% - қалыпты)</p>
+                        <div class="code-example" style="margin: 10px 0; font-size: 12px;">
+<span class="property">filter</span>: <span class="value">brightness(150%)</span>;
+                        </div>
+                    </div>
+
+                    <div class="filter-card">
+                        <h4>contrast() - Контраст</h4>
+                        <div class="demo-image" style="filter: contrast(2);"></div>
+                        <p><strong>Мақсаты:</strong> Контрастты өзгерту</p>
+                        <p><strong>Мәндер:</strong> сан немесе % (1 = 100% - қалыпты)</p>
+                        <div class="code-example" style="margin: 10px 0; font-size: 12px;">
+<span class="property">filter</span>: <span class="value">contrast(200%)</span>;
+                        </div>
+                    </div>
+
+                    <div class="filter-card">
+                        <h4>grayscale() - Сұр түс</h4>
+                        <div class="demo-image" style="filter: grayscale(1);"></div>
+                        <p><strong>Мақсаты:</strong> Сұр түске айналдыру</p>
+                        <p><strong>Мәндер:</strong> 0-1 немесе 0%-100% (0 - түрлі-түсті, 1 - сұр)</p>
+                        <div class="code-example" style="margin: 10px 0; font-size: 12px;">
+<span class="property">filter</span>: <span class="value">grayscale(100%)</span>;
+                        </div>
+                    </div>
+
+                    <div class="filter-card">
+                        <h4>sepia() - Сепия эффектісі</h4>
+                        <div class="demo-image" style="filter: sepia(1);"></div>
+                        <p><strong>Мақсаты:</strong> Ескі фото эффектісі</p>
+                        <p><strong>Мәндер:</strong> 0-1 немесе 0%-100% (0 - эффект жоқ, 1 - толық сепия)</p>
+                        <div class="code-example" style="margin: 10px 0; font-size: 12px;">
+<span class="property">filter</span>: <span class="value">sepia(80%)</span>;
+                        </div>
+                    </div>
+
+                    <div class="filter-card">
+                        <h4>saturate() - Қанықтық</h4>
+                        <div class="demo-image" style="filter: saturate(2);"></div>
+                        <p><strong>Мақсаты:</strong> Түс қанықтығын өзгерту</p>
+                        <p><strong>Мәндер:</strong> сан немесе % (1 = 100% - қалыпты)</p>
+                        <div class="code-example" style="margin: 10px 0; font-size: 12px;">
+<span class="property">filter</span>: <span class="value">saturate(200%)</span>;
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: #fffbf0; border: 2px solid #f6ad55; padding: 15px; border-radius: 8px; margin: 20px 0;">
+                    <h4 style="color: #c05621; margin-bottom: 10px;">💡 Маңызды ескертулер:</h4>
+                    <ul style="padding-left: 20px;">
+                        <li>Filter мәндері <span class="highlight">0</span> болса - эффект өшіріледі</li>
+                        <li>Brightness пен contrast үшін <span class="highlight">1</span> - қалыпты мән</li>
+                        <li>Grayscale пен sepia үшін <span class="highlight">0-1</span> аралығында</li>
+                        <li>Бірнеше filter-ді <span class="highlight">бос орынмен</span> бөліп жазуға болады</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Кешенді Filter-лер -->
+            <div id="advanced-filters" class="lesson-section">
+                <h2>Кешенді Filter функциялары</h2>
+                
+                <div class="filter-showcase">
+                    <div class="filter-card">
+                        <h4>hue-rotate() - Түс айналдыру</h4>
+                        <div class="demo-image" style="filter: hue-rotate(90deg);"></div>
+                        <p><strong>Мақсаты:</strong> Түс спектрін айналдыру</p>
+                        <p><strong>Мәндер:</strong> градуспен (0deg - 360deg)</p>
+                        <div class="code-example" style="margin: 10px 0; font-size: 12px;">
+<span class="property">filter</span>: <span class="value">hue-rotate(90deg)</span>;
+                        </div>
+                    </div>
+
+                    <div class="filter-card">
+                        <h4>invert() - Түстерді кері айналдыру</h4>
+                        <div class="demo-image" style="filter: invert(1);"></div>
+                        <p><strong>Мақсаты:</strong> Негатив эффектісі</p>
+                        <p><strong>Мәндер:</strong> 0-1 немесе 0%-100% (0 - кері айналдыру жоқ)</p>
+                        <div class="code-example" style="margin: 10px 0; font-size: 12px;">
+<span class="property">filter</span>: <span class="value">invert(100%)</span>;
+                        </div>
+                    </div>
+
+                    <div class="filter-card">
+                        <h4>opacity() - Мөлдірлік</h4>
+                        <div class="demo-image" style="filter: opacity(0.5);"></div>
+                        <p><strong>Мақсаты:</strong> Элементті мөлдір ету</p>
+                        <p><strong>Мәндер:</strong> 0-1 немесе 0%-100% (1 - толық көрінеді)</p>
+                        <div class="code-example" style="margin: 10px 0; font-size: 12px;">
+<span class="property">filter</span>: <span class="value">opacity(50%)</span>;
+                        </div>
+                    </div>
+
+                    <div class="filter-card">
+                        <h4>drop-shadow() - Көлеңке</h4>
+                        <div class="demo-image" style="filter: drop-shadow(5px 5px 10px rgba(0,0,0,0.5));"></div>
+                        <p><strong>Мақсаты:</strong> Көлеңке қосу</p>
+                        <p><strong>Мәндер:</strong> x y blur color</p>
+                        <div class="code-example" style="margin: 10px 0; font-size: 12px;">
+<span class="property">filter</span>: <span class="value">drop-shadow(5px 5px 10px #000)</span>;
+                        </div>
+                    </div>
+
+                    <div class="filter-card">
+                        <h4>url() - SVG Filter</h4>
+                        <div class="demo-image" style="border: 3px dashed #667eea;"></div>
+                        <p><strong>Мақсаты:</strong> SVG filter-дерін қолдану</p>
+                        <p><strong>Мәндер:</strong> SVG элементіне сілтеме</p>
+                        <div class="code-example" style="margin: 10px 0; font-size: 12px;">
+<span class="property">filter</span>: <span class="value">url(#my-filter)</span>;
+                        </div>
+                    </div>
+
+                    <div class="filter-card">
+                        <h4>Бірнеше filter бірге</h4>
+                        <div class="demo-image" style="filter: blur(1px) brightness(1.3) contrast(1.2) saturate(1.5);"></div>
+                        <p><strong>Мақсаты:</strong> Күрделі эффекттер жасау</p>
+                        <p><strong>Қолданылуы:</strong> бос орынмен бөліп жазу</p>
+                        <div class="code-example" style="margin: 10px 0; font-size: 12px;">
+<span class="property">filter</span>: <span class="value">blur(1px) brightness(1.3) saturate(1.5)</span>;
+                        </div>
+                    </div>
+                </div>
+
+                <div class="explanation">
+                    <h4>Filter функцияларының орындалу реті:</h4>
+                    <p>CSS-та filter функциялары солдан оңға қарай орындалады. Мысалы:</p>
+                    <code style="background: #f7fafc; padding: 5px; border-radius: 3px;">filter: brightness(1.5) blur(2px);</code>
+                    <p style="margin-top: 10px;">Алдымен brightness, содан кейін blur қолданылады. Реттілік маңызды!</p>
+                </div>
+            </div>
+
+            <!-- Интерактивті Demo -->
+            <div id="interactive" class="lesson-section">
+                <h2>Интерактивті Filter Demo</h2>
+                <div class="explanation">
+                    <p>Төмендегі басқару элементтерін пайдаланып filter эффекттерін нақты уақытта көре аласыз. Сурет үстінде өзгерістер дереу көрсетіледі.</p>
+                </div>
+
+                <div class="interactive-demo">
+                    <div class="demo-controls">
+                        <div class="controls">
+                            <div class="control-group">
+                                <label for="blurSlider">Blur (бұлдырлау): <span class="filter-value" id="blurValue">0px</span></label>
+                                <input type="range" id="blurSlider" class="slider" min="0" max="20" value="0" step="0.5">
+                            </div>
+
+                            <div class="control-group">
+                                <label for="brightnessSlider">Brightness (жарықтық): <span class="filter-value" id="brightnessValue">100%</span></label>
+                                <input type="range" id="brightnessSlider" class="slider" min="0" max="200" value="100" step="5">
+                            </div>
+
+                            <div class="control-group">
+                                <label for="contrastSlider">Contrast (контраст): <span class="filter-value" id="contrastValue">100%</span></label>
+                                <input type="range" id="contrastSlider" class="slider" min="0" max="200" value="100" step="5">
+                            </div>
+
+                            <div class="control-group">
+                                <label for="saturateSlider">Saturate (қанықтық): <span class="filter-value" id="saturateValue">100%</span></label>
+                                <input type="range" id="saturateSlider" class="slider" min="0" max="200" value="100" step="5">
+                            </div>
+
+                            <div class="control-group">
+                                <label for="grayscaleSlider">Grayscale (сұр түс): <span class="filter-value" id="grayscaleValue">0%</span></label>
+                                <input type="range" id="grayscaleSlider" class="slider" min="0" max="100" value="0" step="5">
+                            </div>
+
+                            <div class="control-group">
+                                <label for="sepiaSlider">Sepia (сепия): <span class="filter-value" id="sepiaValue">0%</span></label>
+                                <input type="range" id="sepiaSlider" class="slider" min="0" max="100" value="0" step="5">
+                            </div>
+
+                            <div class="control-group">
+                                <label for="hueSlider">Hue Rotate (түс айналдыру): <span class="filter-value" id="hueValue">0deg</span></label>
+                                <input type="range" id="hueSlider" class="slider" min="0" max="360" value="0" step="5">
+                            </div>
+
+                            <div class="control-group">
+                                <label for="invertSlider">Invert (кері айналдыру): <span class="filter-value" id="invertValue">0%</span></label>
+                                <input type="range" id="invertSlider" class="slider" min="0" max="100" value="0" step="5">
+                            </div>
+
+                            <button class="reset-btn" onclick="resetFilters()">Бастапқы күйге қайтару</button>
+                        </div>
+
+                        <div class="code-example" id="currentCode">
+<span class="selector">.image</span> {
+    <span class="property">filter</span>: <span class="value" id="filterCode">none</span>;
+}
+                        </div>
+                    </div>
+
+                    <div class="demo-preview">
+                        <h3>Нәтиже:</h3>
+                        <div class="preview-image" id="previewImage"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Дайын эффекттер -->
+            <div id="presets" class="lesson-section">
+                <h2>Дайын Filter эффекттері</h2>
+                <div class="explanation">
+                    <p>Жиі қолданылатын filter комбинацияларын дайын түрде пайдалануға болады. Төмендегі эффекттерді басып көріңіз:</p>
+                </div>
+
+                <div class="presets">
+                    <div class="preset-btn" onclick="applyPreset('none')">Бастапқы</div>
+                    <div class="preset-btn" onclick="applyPreset('vintage')">Винтаж</div>
+                    <div class="preset-btn" onclick="applyPreset('blackwhite')">Ақ-қара</div>
+                    <div class="preset-btn" onclick="applyPreset('warm')">Жылы</div>
+                    <div class="preset-btn" onclick="applyPreset('cool')">Салқын</div>
+                    <div class="preset-btn" onclick="applyPreset('dramatic')">Драматикалық</div>
+                    <div class="preset-btn" onclick="applyPreset('dreamy')">Арманшыл</div>
+                    <div class="preset-btn" onclick="applyPreset('retro')">Ретро</div>
+                </div>
+
+                <div style="text-align: center; margin: 30px 0;">
+                    <div class="preview-image" id="presetPreview"></div>
+                </div>
+
+                <div class="code-example" id="presetCode">
+<span class="selector">.image</span> {
+    <span class="property">filter</span>: <span class="value">none</span>;
+}
+                </div>
+
+                <div style="background: #f0f9ff; border: 2px solid #0ea5e9; padding: 15px; border-radius: 8px; margin: 20px 0;">
+                    <h4 style="color: #0c4a6e; margin-bottom: 10px;">📱 Практикалық кеңестер:</h4>
+                    <ul style="padding-left: 20px;">
+                        <li><strong>Instagram стилі:</strong> sepia + contrast + brightness комбинациясы</li>
+                        <li><strong>Ескі фото:</strong> sepia + blur + brightness(0.8)</li>
+                        <li><strong>Неон эффектісі:</strong> brightness + saturate + hue-rotate</li>
+                        <li><strong>Түнгі режим:</strong> invert + hue-rotate(180deg)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Практика -->
+            <div id="practice" class="lesson-section">
+                <h2>Практикалық тапсырмалар</h2>
+                <div class="explanation">
+                    <p>Енді өз білімдеріңізді тексеріп көріңіз. Төмендегі тапсырмаларды орындаңыз:</p>
+                </div>
+
+                <div class="practice-area">
+                    <h3>Тапсырма 1: Винтаж эффектісін жасаңыз</h3>
+                    <p>Төмендегі суретке винтаж эффектісін қосыңыз (sepia + contrast + brightness)</p>
+                    <div class="practice-image" id="practiceImage1"></div>
+                    <div class="controls">
+                        <div class="control-group">
+                            <label>Sepia: <span id="practiceSepia1">0%</span></label>
+                            <input type="range" id="practiceSepia1Slider" class="slider" min="0" max="100" value="0" step="5" onchange="updatePractice1()">
+                        </div>
+                        <div class="control-group">
+                            <label>Contrast: <span id="practiceContrast1">100%</span></label>
+                            <input type="range" id="practiceContrast1Slider" class="slider" min="50" max="200" value="100" step="5" onchange="updatePractice1()">
+                        </div>
+                        <div class="control-group">
+                            <label>Brightness: <span id="practiceBrightness1">100%</span></label>
+                            <input type="range" id="practiceBrightness1Slider" class="slider" min="50" max="150" value="100" step="5" onchange="updatePractice1()">
+                        </div>
+                    </div>
+                    <div class="code-example" id="practiceCode1">
+<span class="selector">.vintage-image</span> {
+    <span class="property">filter</span>: <span class="value">sepia(0%) contrast(100%) brightness(100%)</span>;
+}
+                    </div>
+                    <button class="reset-btn" onclick="checkPractice1()">Тексеру</button>
+                    <div id="practice1Result" style="margin-top: 10px;"></div>
+                </div>
+
+                <div class="practice-area">
+                    <h3>Тапсырма 2: Неон эффектісін жасаңыз</h3>
+                    <p>Жарқын неон эффектісін жасаңыз (brightness + saturate + hue-rotate)</p>
+                    <div class="practice-image" id="practiceImage2"></div>
+                    <div class="controls">
+                        <div class="control-group">
+                            <label>Brightness: <span id="practiceBrightness2">100%</span></label>
+                            <input type="range" id="practiceBrightness2Slider" class="slider" min="100" max="200" value="100" step="5" onchange="updatePractice2()">
+                        </div>
+                        <div class="control-group">
+                            <label>Saturate: <span id="practiceSaturate2">100%</span></label>
+                            <input type="range" id="practiceSaturate2Slider" class="slider" min="100" max="300" value="100" step="10" onchange="updatePractice2()">
+                        </div>
+                        <div class="control-group">
+                            <label>Hue Rotate: <span id="practiceHue2">0deg</span></label>
+                            <input type="range" id="practiceHue2Slider" class="slider" min="0" max="360" value="0" step="10" onchange="updatePractice2()">
+                        </div>
+                    </div>
+                    <div class="code-example" id="practiceCode2">
+<span class="selector">.neon-image</span> {
+    <span class="property">filter</span>: <span class="value">brightness(100%) saturate(100%) hue-rotate(0deg)</span>;
+}
+                    </div>
+                    <button class="reset-btn" onclick="checkPractice2()">Тексеру</button>
+                    <div id="practice2Result" style="margin-top: 10px;"></div>
+                </div>
+            </div>
+
+            <!-- Тест -->
+            <div id="quiz" class="lesson-section">
+                <h2>Білім тексеру тесті</h2>
+                <div class="explanation">
+                    <p>CSS Filter қасиеті туралы алған білімдеріңізді тексеріп көріңіз:</p>
+                </div>
+
+                <div class="quiz">
+                    <div class="quiz-question">1. CSS Filter қасиетінің қай мәні суретті бұлдырлатады?</div>
+                    <ul class="quiz-options" data-question="1">
+                        <li onclick="selectAnswer(this, false)">opacity()</li>
+                        <li onclick="selectAnswer(this, true)">blur()</li>
+                        <li onclick="selectAnswer(this, false)">brightness()</li>
+                        <li onclick="selectAnswer(this, false)">contrast()</li>
+                    </ul>
+                </div>
+
+                <div class="quiz">
+                    <div class="quiz-question">2. brightness(1.5) дегеніміз не?</div>
+                    <ul class="quiz-options" data-question="2">
+                        <li onclick="selectAnswer(this, false)">Жарықтықты 15%-ға арттыру</li>
+                        <li onclick="selectAnswer(this, true)">Жарықтықты 50%-ға арттыру</li>
+                        <li onclick="selectAnswer(this, false)">Жарықтықты 150%-ға арттыру</li>
+                        <li onclick="selectAnswer(this, false)">Жарықтықты 1.5 есе кему</li>
+                    </ul>
+                </div>
+
+                <div class="quiz">
+                    <div class="quiz-question">3. Суретті сұр түске айналдыру үшін қандай filter қолданылады?</div>
+                    <ul class="quiz-options" data-question="3">
+                        <li onclick="selectAnswer(this, false)">sepia()</li>
+                        <li onclick="selectAnswer(this, true)">grayscale()</li>
+                        <li onclick="selectAnswer(this, false)">invert()</li>
+                        <li onclick="selectAnswer(this, false)">saturate()</li>
+                    </ul>
+                </div>
+
+                <div class="quiz">
+                    <div class="quiz-question">4. hue-rotate() функциясы нені өзгертеді?</div>
+                    <ul class="quiz-options" data-question="4">
+                        <li onclick="selectAnswer(this, false)">Жарықтықты</li>
+                        <li onclick="selectAnswer(this, false)">Контрастты</li>
+                        <li onclick="selectAnswer(this, true)">Түс спектрін</li>
+                        <li onclick="selectAnswer(this, false)">Мөлдірлікті</li>
+                    </ul>
+                </div>
+
+                <div class="quiz">
+                    <div class="quiz-question">5. Бірнеше filter функциясын қалай біріктіруге болады?</div>
+                    <ul class="quiz-options" data-question="5">
+                        <li onclick="selectAnswer(this, false)">Үтірмен бөліп</li>
+                        <li onclick="selectAnswer(this, true)">Бос орынмен бөліп</li>
+                        <li onclick="selectAnswer(this, false)">Нүктелі үтірмен бөліп</li>
+                        <li onclick="selectAnswer(this, false)">+ белгісімен бөліп</li>
+                    </ul>
+                </div>
+
+                <div style="text-align: center; margin: 30px 0;">
+                    <div id="quizResult" style="font-size: 1.2em; font-weight: bold;"></div>
+                    <button class="reset-btn" onclick="resetQuiz()" style="background: #667eea;">Тестті қайталау</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentSection = 'intro';
+        let quizScore = 0;
+        let quizAnswered = 0;
+
+        // Навигация функциясы
+        function showSection(sectionId) {
+            // Барлық секцияларды жасыру
+            const sections = document.querySelectorAll('.lesson-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Барлық навигация батырмаларынан active класын алып тастау
+            const navBtns = document.querySelectorAll('.nav-btn');
+            navBtns.forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Таңдалған секцияны көрсету
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Сәйкес навигация батырмасын белсенді ету
+            event.target.classList.add('active');
+
+            currentSection = sectionId;
+            updateProgress();
+        }
+
+        // Прогресс барын жаңарту
+        function updateProgress() {
+            const sections = ['intro', 'basic-filters', 'advanced-filters', 'interactive', 'presets', 'practice', 'quiz'];
+            const currentIndex = sections.indexOf(currentSection);
+            const progress = ((currentIndex + 1) / sections.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        // Интерактивті демо функциялары
+        function updateFilters() {
+            const blur = document.getElementById('blurSlider').value;
+            const brightness = document.getElementById('brightnessSlider').value;
+            const contrast = document.getElementById('contrastSlider').value;
+            const saturate = document.getElementById('saturateSlider').value;
+            const grayscale = document.getElementById('grayscaleSlider').value;
+            const sepia = document.getElementById('sepiaSlider').value;
+            const hue = document.getElementById('hueSlider').value;
+            const invert = document.getElementById('invertSlider').value;
+
+            // Мәндерді жаңарту
+            document.getElementById('blurValue').textContent = blur + 'px';
+            document.getElementById('brightnessValue').textContent = brightness + '%';
+            document.getElementById('contrastValue').textContent = contrast + '%';
+            document.getElementById('saturateValue').textContent = saturate + '%';
+            document.getElementById('grayscaleValue').textContent = grayscale + '%';
+            document.getElementById('sepiaValue').textContent = sepia + '%';
+            document.getElementById('hueValue').textContent = hue + 'deg';
+            document.getElementById('invertValue').textContent = invert + '%';
+
+            // Filter стилін жасау
+            let filterStyle = '';
+            if (blur > 0) filterStyle += `blur(${blur}px) `;
+            if (brightness != 100) filterStyle += `brightness(${brightness}%) `;
+            if (contrast != 100) filterStyle += `contrast(${contrast}%) `;
+            if (saturate != 100) filterStyle += `saturate(${saturate}%) `;
+            if (grayscale > 0) filterStyle += `grayscale(${grayscale}%) `;
+            if (sepia > 0) filterStyle += `sepia(${sepia}%) `;
+            if (hue > 0) filterStyle += `hue-rotate(${hue}deg) `;
+            if (invert > 0) filterStyle += `invert(${invert}%) `;
+
+            filterStyle = filterStyle.trim() || 'none';
+
+            // Суретке filter қолдану
+            document.getElementById('previewImage').style.filter = filterStyle;
+            
+            // Код мысалын жаңарту
+            document.getElementById('filterCode').textContent = filterStyle;
+        }
+
+        // Filter-лерді бастапқы күйге қайтару
+        function resetFilters() {
+            document.getElementById('blurSlider').value = 0;
+            document.getElementById('brightnessSlider').value = 100;
+            document.getElementById('contrastSlider').value = 100;
+            document.getElementById('saturateSlider').value = 100;
+            document.getElementById('grayscaleSlider').value = 0;
+            document.getElementById('sepiaSlider').value = 0;
+            document.getElementById('hueSlider').value = 0;
+            document.getElementById('invertSlider').value = 0;
+            updateFilters();
+        }
+
+        // Дайын эффекттер
+        const presets = {
+            none: 'none',
+            vintage: 'sepia(50%) contrast(120%) brightness(90%)',
+            blackwhite: 'grayscale(100%) contrast(110%)',
+            warm: 'brightness(110%) saturate(120%) hue-rotate(15deg)',
+            cool: 'brightness(95%) saturate(110%) hue-rotate(180deg)',
+            dramatic: 'contrast(150%) saturate(130%) brightness(90%)',
+            dreamy: 'blur(1px) brightness(110%) saturate(80%)',
+            retro: 'sepia(80%) contrast(130%) brightness(85%) saturate(120%)'
+        };
+
+        function applyPreset(preset) {
+            // Активті preset батырмасын өзгерту
+            document.querySelectorAll('.preset-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Filter қолдану
+            const filterValue = presets[preset];
+            document.getElementById('presetPreview').style.filter = filterValue;
+            
+            // Код мысалын жаңарту
+            document.querySelector('#presetCode .value').textContent = filterValue;
+        }
+
+        // Практика функциялары
+        function updatePractice1() {
+            const sepia = document.getElementById('practiceSepia1Slider').value;
+            const contrast = document.getElementById('practiceContrast1Slider').value;
+            const brightness = document.getElementById('practiceBrightness1Slider').value;
+
+            document.getElementById('practiceSepia1').textContent = sepia + '%';
+            document.getElementById('practiceContrast1').textContent = contrast + '%';
+            document.getElementById('practiceBrightness1').textContent = brightness + '%';
+
+            const filterValue = `sepia(${sepia}%) contrast(${contrast}%) brightness(${brightness}%)`;
+            document.getElementById('practiceImage1').style.filter = filterValue;
+            document.querySelector('#practiceCode1 .value').textContent = filterValue;
+        }
+
+        function checkPractice1() {
+            const sepia = parseInt(document.getElementById('practiceSepia1Slider').value);
+            const contrast = parseInt(document.getElementById('practiceContrast1Slider').value);
+            const brightness = parseInt(document.getElementById('practiceBrightness1Slider').value);
+
+            let result = '';
+            if (sepia >= 40 && sepia <= 70 && contrast >= 110 && contrast <= 140 && brightness >= 80 && brightness <= 100) {
+                result = '<span style="color: #38a169; font-weight: bold;">✅ Дұрыс! Винтаж эффектісі сәтті жасалды!</span>';
+            } else {
+                result = '<span style="color: #e53e3e; font-weight: bold;">❌ Тағы көруге болады. Кеңес: sepia 50-60%, contrast 120-130%, brightness 85-95%</span>';
+            }
+            document.getElementById('practice1Result').innerHTML = result;
+        }
+
+        function updatePractice2() {
+            const brightness = document.getElementById('practiceBrightness2Slider').value;
+            const saturate = document.getElementById('practiceSaturate2Slider').value;
+            const hue = document.getElementById('practiceHue2Slider').value;
+
+            document.getElementById('practiceBrightness2').textContent = brightness + '%';
+            document.getElementById('practiceSaturate2').textContent = saturate + '%';
+            document.getElementById('practiceHue2').textContent = hue + 'deg';
+
+            const filterValue = `brightness(${brightness}%) saturate(${saturate}%) hue-rotate(${hue}deg)`;
+            document.getElementById('practiceImage2').style.filter = filterValue;
+            document.querySelector('#practiceCode2 .value').textContent = filterValue;
+        }
+
+        function checkPractice2() {
+            const brightness = parseInt(document.getElementById('practiceBrightness2Slider').value);
+            const saturate = parseInt(document.getElementById('practiceSaturate2Slider').value);
+            const hue = parseInt(document.getElementById('practiceHue2Slider').value);
+
+            let result = '';
+            if (brightness >= 140 && saturate >= 180 && (hue >= 250 || hue <= 50)) {
+                result = '<span style="color: #38a169; font-weight: bold;">✅ Керемет! Неон эффектісі жақсы шықты!</span>';
+            } else {
+                result = '<span style="color: #e53e3e; font-weight: bold;">❌ Көбірек жарқыраңыз! Кеңес: brightness 150%+, saturate 200%+, hue 300deg немесе 30deg</span>';
+            }
+            document.getElementById('practice2Result').innerHTML = result;
+        }
+
+        // Тест функциялары
+        function selectAnswer(element, isCorrect) {
+            const question = element.parentElement;
+            const options = question.querySelectorAll('li');
+            
+            // Егер әлдеқашан жауап берілген болса, қайтару
+            if (question.classList.contains('answered')) return;
+            
+            // Дұрыс/бұрыс класс қосу
+            options.forEach(option => {
+                option.style.pointerEvents = 'none';
+            });
+            
+            if (isCorrect) {
+                element.classList.add('correct');
+                quizScore++;
+            } else {
+                element.classList.add('incorrect');
+                // Дұрыс жауапты көрсету
+                options.forEach(option => {
+                    if (option.onclick.toString().includes('true')) {
+                        option.classList.add('correct');
+                    }
+                });
+            }
+            
+            question.classList.add('answered');
+            quizAnswered++;
+            
+            // Барлық сұрақтарға жауап берілген болса, нәтижені көрсету
+            if (quizAnswered === 5) {
+                showQuizResult();
+            }
+        }
+
+        function showQuizResult() {
+            const percentage = (quizScore / 5) * 100;
+            let message = '';
+            
+            if (percentage >= 80) {
+                message = `🎉 Керемет! ${quizScore}/5 дұрыс жауап (${percentage}%)`;
+            } else if (percentage >= 60) {
+                message = `👍 Жақсы! ${quizScore}/5 дұрыс жауап (${percentage}%)`;
+            } else {
+                message = `📚 Тағы жаттығу керек! ${quizScore}/5 дұрыс жауап (${percentage}%)`;
+            }
+            
+            document.getElementById('quizResult').innerHTML = message;
+        }
+
+        function resetQuiz() {
+            quizScore = 0;
+            quizAnswered = 0;
+            
+            document.querySelectorAll('.quiz-options').forEach(question => {
+                question.classList.remove('answered');
+                question.querySelectorAll('li').forEach(option => {
+                    option.classList.remove('correct', 'incorrect');
+                    option.style.pointerEvents = 'auto';
+                });
+            });
+            
+            document.getElementById('quizResult').innerHTML = '';
+        }
+
+        // Event listener-лер қосу
+        document.addEventListener('DOMContentLoaded', function() {
+            // Интерактивті демо slider-лары
+            const sliders = ['blur', 'brightness', 'contrast', 'saturate', 'grayscale', 'sepia', 'hue', 'invert'];
+            sliders.forEach(slider => {
+                const element = document.getElementById(slider + 'Slider');
+                if (element) {
+                    element.addEventListener('input', updateFilters);
+                }
+            });
+
+            // Басу үшін дайын preset көрсету
+            applyPreset('none');
+            
+            // Бастапқы filter state
+            updateFilters();
+            
+            // Прогресс барын жаңарту
+            updateProgress();
+        });
+    </script>
+</body>
+</html>

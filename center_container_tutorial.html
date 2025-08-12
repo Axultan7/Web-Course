@@ -1,0 +1,1679 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS-те орталық контейнер - толық сабақ</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #e74c3c, #8e44ad);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .content {
+            padding: 40px;
+            display: grid;
+            gap: 30px;
+        }
+
+        .section {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 5px solid #e74c3c;
+        }
+
+        .section h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .methods-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .method-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border-left: 4px solid;
+        }
+
+        .method-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .flexbox-method { border-left-color: #e74c3c; }
+        .grid-method { border-left-color: #3498db; }
+        .positioning-method { border-left-color: #27ae60; }
+        .margin-method { border-left-color: #f39c12; }
+
+        .method-card h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .code-example {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            margin: 15px 0;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 11px;
+        }
+
+        .copy-btn:hover {
+            background: #c0392b;
+        }
+
+        .demo-container {
+            background: #f8f9fa;
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            min-height: 200px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .demo-box {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            min-width: 120px;
+        }
+
+        .interactive-demo {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .control-group {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .control-group h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #e74c3c, #8e44ad);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn.active {
+            background: linear-gradient(135deg, #27ae60, #16a085);
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #ff6b6b 0%, #feca57 100%);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .pros-cons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .pros, .cons {
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .pros {
+            background: #e8f5e8;
+            border-left: 4px solid #27ae60;
+        }
+
+        .cons {
+            background: #ffeaea;
+            border-left: 4px solid #e74c3c;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .comparison-table th {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            font-weight: bold;
+        }
+
+        .comparison-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #e74c3c;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            z-index: 1000;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .step-by-step {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .step {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .step-number {
+            background: #e74c3c;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 768px) {
+            .methods-grid, .controls, .pros-cons {
+                grid-template-columns: 1fr;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+        }
+
+        /* Demo styles for interactive examples */
+        .demo-flexbox {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .demo-grid {
+            display: grid;
+            place-items: center;
+        }
+
+        .demo-absolute {
+            position: relative;
+        }
+
+        .demo-absolute .demo-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .demo-margin {
+            text-align: center;
+        }
+
+        .demo-margin .demo-box {
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📐 CSS-те орталық контейнер</h1>
+            <p>Элементтерді орталықта орналастырудың барлық әдістері</p>
+        </div>
+
+        <div class="content">
+            <!-- Introduction -->
+            <div class="section">
+                <h2>🎯 Кіріспе</h2>
+                
+                <p style="font-size: 1.1rem; margin-bottom: 20px;">
+                    Элементтерді орталықта орналастыру - <span class="highlight">веб-дизайнның негізгі дағдысы</span>. Бұл CSS-тің ең көп қолданылатын техникаларының бірі болып табылады.
+                </p>
+
+                <div style="background: #ffe8e8; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                    <h3 style="color: #c0392b; margin-bottom: 15px;">🎯 Осы сабақта үйренетініміз:</h3>
+                    <ul style="color: #2c3e50; line-height: 1.8; margin-left: 20px;">
+                        <li>Flexbox арқылы орталықтау</li>
+                        <li>CSS Grid көмегімен</li>
+                        <li>Position мен Transform</li>
+                        <li>Margin auto әдісі</li>
+                        <li>Responsive орталықтау</li>
+                        <li>Қашан қандай әдісті пайдалану</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Methods Overview -->
+            <div class="section">
+                <h2>⚡ Орталықтау әдістері</h2>
+                
+                <div class="methods-grid">
+                    <div class="method-card flexbox-method">
+                        <h3>🔄 Flexbox</h3>
+                        <p><strong>Ең танымал әдіс:</strong> Икемді және күшті</p>
+                        
+                        <div class="code-example">
+                            <button class="copy-btn" onclick="copyCode(this)">Көшіру</button>
+/* Flexbox орталықтау */
+.parent {
+    display: flex;
+    justify-content: center; /* Горизонталь орталықтау */
+    align-items: center;     /* Вертикаль орталықтау */
+    height: 100vh;          /* Толық биіктік */
+}
+
+.child {
+    /* Автоматты орталықта болады */
+    width: 200px;
+    height: 100px;
+    background: #3498db;
+}
+
+/* Бірнеше элемент үшін */
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;              /* Элементтер арасы */
+    flex-wrap: wrap;        /* Responsive үшін */
+}
+                        </div>
+
+                        <div class="demo-container demo-flexbox" id="flexDemo">
+                            <div class="demo-box">Flexbox</div>
+                        </div>
+
+                        <div class="pros-cons">
+                            <div class="pros">
+                                <h4 style="color: #27ae60;">✅ Артықшылықтары:</h4>
+                                <ul style="font-size: 0.9rem;">
+                                    <li>Оңай және интуитивті</li>
+                                    <li>Responsive дизайн үшін жақсы</li>
+                                    <li>Gap арқылы space control</li>
+                                    <li>Барлық браузерлерде жұмыс істейді</li>
+                                </ul>
+                            </div>
+                            <div class="cons">
+                                <h4 style="color: #e74c3c;">❌ Кемшіліктері:</h4>
+                                <ul style="font-size: 0.9rem;">
+                                    <li>IE11-де кейбір мәселелер</li>
+                                    <li>Кейде күтпеген layout өзгерістері</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="method-card grid-method">
+                        <h3>📊 CSS Grid</h3>
+                        <p><strong>Заманауи әдіс:</strong> 2D layout үшін</p>
+                        
+                        <div class="code-example">
+                            <button class="copy-btn" onclick="copyCode(this)">Көшіру</button>
+/* CSS Grid орталықтау */
+.parent {
+    display: grid;
+    place-items: center;    /* justify-items + align-items */
+    height: 100vh;
+}
+
+/* Немесе жеке-жеке */
+.grid-center {
+    display: grid;
+    justify-items: center;  /* Горизонталь */
+    align-items: center;    /* Вертикаль */
+}
+
+/* Grid area арқылы */
+.grid-area {
+    display: grid;
+    grid-template-areas: 
+        ". . ."
+        ". center ."
+        ". . .";
+}
+
+.centered-item {
+    grid-area: center;
+}
+
+/* Бірнеше элемент */
+.grid-multi {
+    display: grid;
+    place-items: center;
+    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+                        </div>
+
+                        <div class="demo-container demo-grid" id="gridDemo">
+                            <div class="demo-box">CSS Grid</div>
+                        </div>
+
+                        <div class="pros-cons">
+                            <div class="pros">
+                                <h4 style="color: #27ae60;">✅ Артықшылықтары:</h4>
+                                <ul style="font-size: 0.9rem;">
+                                    <li>Өте қысқа синтаксис</li>
+                                    <li>2D layout үшін идеал</li>
+                                    <li>place-items жеңілдік береді</li>
+                                </ul>
+                            </div>
+                            <div class="cons">
+                                <h4 style="color: #e74c3c;">❌ Кемшіліктері:</h4>
+                                <ul style="font-size: 0.9rem;">
+                                    <li>Ескі браузерлерде жұмыс істемейді</li>
+                                    <li>Күрделі grid болуы мүмкін</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="method-card positioning-method">
+                        <h3>📍 Position + Transform</h3>
+                        <p><strong>Классикалық әдіс:</strong> Дәл орналастыру</p>
+                        
+                        <div class="code-example">
+                            <button class="copy-btn" onclick="copyCode(this)">Көшіру</button>
+/* Position + Transform */
+.parent {
+    position: relative;
+    height: 100vh;
+}
+
+.child {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    /* Элемент өлшемдері */
+    width: 200px;
+    height: 100px;
+}
+
+/* Тек горизонталь орталықтау */
+.horizontal-only {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* Тек вертикаль орталықтау */
+.vertical-only {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* Fixed position орталықтау */
+.fixed-center {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+                        </div>
+
+                        <div class="demo-container demo-absolute" id="absoluteDemo">
+                            <div class="demo-box">Position</div>
+                        </div>
+
+                        <div class="pros-cons">
+                            <div class="pros">
+                                <h4 style="color: #27ae60;">✅ Артықшылықтары:</h4>
+                                <ul style="font-size: 0.9rem;">
+                                    <li>Барлық браузерлерде жұмыс істейді</li>
+                                    <li>Дәл орналастыру</li>
+                                    <li>Z-index-пен layering</li>
+                                </ul>
+                            </div>
+                            <div class="cons">
+                                <h4 style="color: #e74c3c;">❌ Кемшіліктері:</h4>
+                                <ul style="font-size: 0.9rem;">
+                                    <li>Parent-та position керек</li>
+                                    <li>Responsive-та қиындықтар</li>
+                                    <li>Overlay жасайды</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="method-card margin-method">
+                        <h3>📏 Margin Auto</h3>
+                        <p><strong>Қарапайым әдіс:</strong> Тек горизонталь орталықтау</p>
+                        
+                        <div class="code-example">
+                            <button class="copy-btn" onclick="copyCode(this)">Көшіру</button>
+/* Margin auto орталықтау */
+.child {
+    width: 200px;           /* Ені белгілі болуы керек */
+    margin: 0 auto;         /* Горизонталь орталықтау */
+}
+
+/* Вертикаль + горизонталь */
+.parent {
+    height: 100vh;
+    display: table-cell;    /* Ескі әдіс */
+    vertical-align: middle;
+    text-align: center;
+}
+
+.child {
+    width: 200px;
+    margin: 0 auto;
+    display: inline-block;  /* немесе block */
+}
+
+/* Modern margin орталықтау */
+.modern-margin {
+    width: fit-content;     /* Content-ке сәйкес ені */
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Max-width арқылы */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;         /* Контейнер орталықтау */
+    padding: 0 20px;        /* Responsive padding */
+}
+                        </div>
+
+                        <div class="demo-container demo-margin" id="marginDemo">
+                            <div class="demo-box">Margin Auto</div>
+                        </div>
+
+                        <div class="pros-cons">
+                            <div class="pros">
+                                <h4 style="color: #27ae60;">✅ Артықшылықтары:</h4>
+                                <ul style="font-size: 0.9rem;">
+                                    <li>Өте қарапайым</li>
+                                    <li>Контейнерлер үшін идеал</li>
+                                    <li>Барлық браузерлерде жұмыс істейді</li>
+                                </ul>
+                            </div>
+                            <div class="cons">
+                                <h4 style="color: #e74c3c;">❌ Кемшіліктері:</h4>
+                                <ul style="font-size: 0.9rem;">
+                                    <li>Тек горизонталь орталықтау</li>
+                                    <li>Ені белгілі болуы керек</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Demo -->
+            <div class="section">
+                <h2>🎮 Интерактивті демо</h2>
+                
+                <div class="interactive-demo">
+                    <h3 style="color: #2c3e50; margin-bottom: 20px;">🔧 Орталықтау әдістерін салыстыру</h3>
+                    
+                    <div class="controls">
+                        <div class="control-group">
+                            <h4>Орталықтау әдісі</h4>
+                            <div class="btn-group">
+                                <button class="btn active" onclick="changeMethod('flexbox')">Flexbox</button>
+                                <button class="btn" onclick="changeMethod('grid')">Grid</button>
+                                <button class="btn" onclick="changeMethod('absolute')">Position</button>
+                                <button class="btn" onclick="changeMethod('margin')">Margin</button>
+                            </div>
+                        </div>
+                        
+                        <div class="control-group">
+                            <h4>Контейнер өлшемі</h4>
+                            <div class="btn-group">
+                                <button class="btn" onclick="changeSize('small')">Кішкентай</button>
+                                <button class="btn active" onclick="changeSize('medium')">Орташа</button>
+                                <button class="btn" onclick="changeSize('large')">Үлкен</button>
+                            </div>
+                        </div>
+                        
+                        <div class="control-group">
+                            <h4>Элемент саны</h4>
+                            <div class="btn-group">
+                                <button class="btn active" onclick="changeCount(1)">1</button>
+                                <button class="btn" onclick="changeCount(2)">2</button>
+                                <button class="btn" onclick="changeCount(3)">3</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="demo-container" id="interactiveDemo" style="height: 300px;">
+                        <div class="demo-box">Орталық элемент</div>
+                    </div>
+                    
+                    <div style="background: #2d3748; color: #e2e8f0; padding: 15px; border-radius: 8px; margin-top: 20px; font-family: monospace; font-size: 13px;" id="currentCSS">
+/* Ағымдағы CSS */
+display: flex;
+justify-content: center;
+align-items: center;
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comparison Table -->
+            <div class="section">
+                <h2>⚖️ Әдістерді салыстыру</h2>
+                
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Әдіс</th>
+                            <th>Қолдау</th>
+                            <th>Responsive</th>
+                            <th>Қолдану аясы</th>
+                            <th>Қиындық</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Flexbox</strong></td>
+                            <td>✅ Жақсы (IE11+)</td>
+                            <td>✅ Өте жақсы</td>
+                            <td>Компоненттер, layouts</td>
+                            <td>🟢 Оңай</td>
+                        </tr>
+                        <tr>
+                            <td><strong>CSS Grid</strong></td>
+                            <td>✅ Жақсы (IE11 Edge)</td>
+                            <td>✅ Өте жақсы</td>
+                            <td>2D layouts, complex grids</td>
+                            <td>🟢 Оңай</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Position + Transform</strong></td>
+                            <td>✅ Керемет (IE9+)</td>
+                            <td>🟡 Орташа</td>
+                            <td>Modals, overlays, tooltips</td>
+                            <td>🟡 Орташа</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Margin Auto</strong></td>
+                            <td>✅ Керемет (Барлығы)</td>
+                            <td>✅ Жақсы</td>
+                            <td>Контейнерлер, horizontal-only</td>
+                            <td>🟢 Өте оңай</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Practical Examples -->
+            <div class="section">
+                <h2>🛠️ Практикалық мысалдар</h2>
+                
+                <div class="methods-grid">
+                    <div class="method-card">
+                        <h3>🌐 Веб-сайт контейнері</h3>
+                        
+                        <div class="code-example">
+                            <button class="copy-btn" onclick="copyCode(this)">Көшіру</button>
+/* Веб-сайт негізгі контейнері */
+.main-container {
+    max-width: 1200px;      /* Максимум ені */
+    margin: 0 auto;         /* Орталықта орналастыру */
+    padding: 0 20px;        /* Жиектерден padding */
+    width: 100%;            /* Responsive үшін */
+}
+
+/* Мобил responsive */
+@media (max-width: 768px) {
+    .main-container {
+        max-width: 100%;
+        padding: 0 15px;
+    }
+}
+
+/* Content орталықтау */
+.content-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    padding: 3rem 0;
+}
+
+/* Hero section */
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    text-align: center;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+}
+                        </div>
+                    </div>
+
+                    <div class="method-card">
+                        <h3>🎨 Card орталықтау</h3>
+                        
+                        <div class="code-example">
+                            <button class="copy-btn" onclick="copyCode(this)">Көшіру</button>
+/* Card grid орталықтау */
+.cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    justify-items: center;   /* Cards орталықта */
+    padding: 2rem;
+}
+
+.card {
+    width: 100%;
+    max-width: 350px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+/* Card content орталықтау */
+.card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1.5rem;
+    gap: 1rem;
+}
+
+/* Button орталықтау */
+.card-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: auto;
+}
+                        </div>
+                    </div>
+
+                    <div class="method-card">
+                        <h3>🔮 Modal орталықтау</h3>
+                        
+                        <div class="code-example">
+                            <button class="copy-btn" onclick="copyCode(this)">Көшіру</button>
+/* Modal overlay */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    
+    /* Modal орталықтау - Flexbox */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Modal box */
+.modal {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    max-width: 500px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    
+    /* Animation */
+    transform: scale(0.9);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.modal.show {
+    transform: scale(1);
+    opacity: 1;
+}
+
+/* Alternative - Position орталықтау */
+.modal-positioned {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1001;
+}
+                        </div>
+                    </div>
+
+                    <div class="method-card">
+                        <h3>📱 Navigation орталықтау</h3>
+                        
+                        <div class="code-example">
+                            <button class="copy-btn" onclick="copyCode(this)">Көшіру</button>
+/* Header navigation */
+.header {
+    background: #2c3e50;
+    padding: 1rem 0;
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Logo орталықтау */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Navigation menu */
+.nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    list-style: none;
+}
+
+/* Mobile орталықтау */
+@media (max-width: 768px) {
+    .nav-container {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .nav-menu {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Common Mistakes -->
+            <div class="section">
+                <h2>⚠️ Жиі кездесетін қателер</h2>
+                
+                <div class="step-by-step">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div>
+                            <h4 style="color: #e74c3c; margin-bottom: 10px;">Height белгіленбеген</h4>
+                            <p style="color: #555; margin-bottom: 10px;"><strong>Қате:</strong> Parent контейнерінде height көрсетілмеген</p>
+                            <div style="background: #2d3748; color: #e2e8f0; padding: 10px; border-radius: 4px; font-family: monospace; font-size: 12px;">
+/* ҚАТЕ ❌ */
+.parent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* height: 100vh; - ЖОҚ! */
+}
+
+/* ДҰРЫС ✅ */
+.parent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* немесе height: 400px; */
+}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div>
+                            <h4 style="color: #e74c3c; margin-bottom: 10px;">Width көрсетілмеген (margin auto үшін)</h4>
+                            <p style="color: #555; margin-bottom: 10px;"><strong>Қате:</strong> margin: auto пайдаланғанда width белгіленбеген</p>
+                            <div style="background: #2d3748; color: #e2e8f0; padding: 10px; border-radius: 4px; font-family: monospace; font-size: 12px;">
+/* ҚАТЕ ❌ */
+.centered {
+    margin: 0 auto;
+    /* width: 200px; - ЖОҚ! */
+}
+
+/* ДҰРЫС ✅ */
+.centered {
+    width: 200px;     /* немесе max-width */
+    margin: 0 auto;
+}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div>
+                            <h4 style="color: #e74c3c; margin-bottom: 10px;">Position relative жоқ</h4>
+                            <p style="color: #555; margin-bottom: 10px;"><strong>Қате:</strong> absolute position пайдаланғанда parent-та relative жоқ</p>
+                            <div style="background: #2d3748; color: #e2e8f0; padding: 10px; border-radius: 4px; font-family: monospace; font-size: 12px;">
+/* ҚАТЕ ❌ */
+.parent {
+    /* position: relative; - ЖОҚ! */
+}
+.child {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* ДҰРЫС ✅ */
+.parent {
+    position: relative;
+    height: 100vh;
+}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Best Practices -->
+            <div class="section">
+                <h2>🏆 Ең жақсы практикалар</h2>
+                
+                <div style="background: linear-gradient(135deg, #e8f5e8, #c8e6c9); padding: 25px; border-radius: 15px; border-left: 5px solid #27ae60;">
+                    <h3 style="color: #1b5e20; margin-bottom: 20px;">✅ Ұсыныстар:</h3>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                        <div style="background: white; padding: 20px; border-radius: 10px;">
+                            <h4 style="color: #2c3e50; margin-bottom: 15px;">🎯 Қашан қайсысын пайдалану</h4>
+                            <ul style="color: #555; line-height: 1.8;">
+                                <li><strong>Flexbox:</strong> Компоненттер, responsive layouts</li>
+                                <li><strong>Grid:</strong> 2D layouts, complex grids</li>
+                                <li><strong>Position:</strong> Overlays, tooltips, modals</li>
+                                <li><strong>Margin:</strong> Контейнерлер, қарапайым орталықтау</li>
+                            </ul>
+                        </div>
+                        
+                        <div style="background: white; padding: 20px; border-radius: 10px;">
+                            <h4 style="color: #2c3e50; margin-bottom: 15px;">📱 Responsive ұсыныстары</h4>
+                            <ul style="color: #555; line-height: 1.8;">
+                                <li>Mobile-first дизайн жасаңыз</li>
+                                <li>min-height пайдаланыңыз</li>
+                                <li>Gap арқылы spacing басқарыңыз</li>
+                                <li>Flexbox wrap қосыңыз</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Assignment -->
+            <div class="section">
+                <h2>💪 Практикалық тапсырма</h2>
+                
+                <div style="background: linear-gradient(135deg, #ffe8e8, #ffb3b3); padding: 25px; border-radius: 15px; border-left: 5px solid #e74c3c;">
+                    <h3 style="color: #c0392b; margin-bottom: 20px;">🎯 Тапсырма: Responsive орталықтау жүйесі</h3>
+                    
+                    <div style="background: white; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                        <h4 style="color: #2c3e50; margin-bottom: 15px;">📋 Құру керектері:</h4>
+                        <ol style="color: #2c3e50; line-height: 1.8; margin-left: 20px;">
+                            <li><strong>Header:</strong> Logo мен navigation орталықта</li>
+                            <li><strong>Hero section:</strong> Мәтін мен батырма орталықта</li>
+                            <li><strong>Cards section:</strong> 3 карта grid-те орталықта</li>
+                            <li><strong>Modal:</strong> Батырма басқанда орталық modal</li>
+                            <li><strong>Responsive:</strong> Mobile/desktop нұсқалары</li>
+                        </ol>
+                    </div>
+                    
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                        <h4 style="color: #2c3e50; margin-bottom: 10px;">🎨 Дизайн талаптары:</h4>
+                        <ul style="color: #666; margin-left: 20px;">
+                            <li>Flexbox негізгі navigation үшін</li>
+                            <li>Grid cards үшін пайдаланыңыз</li>
+                            <li>Position modal үшін қолданыңыз</li>
+                            <li>Margin auto контейнер үшін</li>
+                            <li>Hover эффекттері қосыңыз</li>
+                            <li>Smooth transition анимациялары</li>
+                        </ul>
+                    </div>
+                    
+                    <div style="text-align: center; margin: 20px 0;">
+                        <button class="btn" onclick="showTaskSolution()">💡 Шешімді көру</button>
+                        <button class="btn" onclick="generateCenteringCode()">🔧 Код генератор</button>
+                        <button class="btn" onclick="openTaskInCodePen()">🔗 CodePen-де ашу</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <!-- Task Solution Modal -->
+    <div id="task-solution-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; padding: 20px; overflow-y: auto;">
+        <div style="max-width: 1000px; margin: 50px auto; background: white; border-radius: 15px; padding: 30px; position: relative;">
+            <button onclick="closeTaskSolution()" style="position: absolute; top: 15px; right: 20px; background: none; border: none; font-size: 24px; cursor: pointer;">✕</button>
+            
+            <h3 style="color: #2c3e50; margin-bottom: 20px;">💡 Орталықтау тапсырмасының шешімі</h3>
+            
+            <div class="code-example">
+                <button class="copy-btn" onclick="copyCode(this)">Көшіру</button>
+&lt;!DOCTYPE html&gt;
+&lt;html lang="kk"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Responsive орталықтау жүйесі&lt;/title&gt;
+    
+    &lt;style&gt;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+        }
+        
+        /* Header - Flexbox орталықтау */
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;        /* Контейнер орталықтау */
+            padding: 0 2rem;
+            
+            display: flex;          /* Flexbox layout */
+            justify-content: space-between;  /* Logo мен menu арасы */
+            align-items: center;    /* Вертикаль орталықтау */
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .nav-menu {
+            display: flex;          /* Горизонталь menu */
+            gap: 2rem;
+            list-style: none;
+        }
+        
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .nav-menu a:hover {
+            color: #3498db;
+        }
+        
+        /* Hero Section - Flexbox орталықтау */
+        .hero {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            min-height: 100vh;
+            
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .hero-content {
+            max-width: 600px;
+            padding: 2rem;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .btn {
+            background: #e74c3c;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
+        
+        /* Cards Section - Grid орталықтау */
+        .cards-section {
+            padding: 5rem 0;
+            background: #f8f9fa;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;        /* Контейнер орталықтау */
+            padding: 0 2rem;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #2c3e50;
+        }
+        
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            justify-items: center;  /* Cards орталықтау */
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            width: 100%;
+            max-width: 350px;
+            
+            /* Card content орталықтау */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+        
+        .card p {
+            color: #7f8c8d;
+            margin-bottom: 1.5rem;
+        }
+        
+        /* Modal - Position орталықтау */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            
+            /* Modal орталықтау - Flexbox */
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            
+            /* Modal content орталықтау */
+            text-align: center;
+            
+            /* Animation */
+            transform: scale(0.9);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .modal.show {
+            transform: scale(1);
+            opacity: 1;
+        }
+        
+        .modal h2 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+        
+        .modal p {
+            color: #7f8c8d;
+            margin-bottom: 2rem;
+        }
+        
+        .modal-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+        
+        .btn-secondary {
+            background: #95a5a6;
+        }
+        
+        .btn-secondary:hover {
+            background: #7f8c8d;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal {
+                margin: 1rem;
+                width: calc(100% - 2rem);
+            }
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- Header - Flexbox орталықтау --&gt;
+    &lt;header class="header"&gt;
+        &lt;div class="nav-container"&gt;
+            &lt;div class="logo"&gt;🎯 CenterApp&lt;/div&gt;
+            &lt;nav&gt;
+                &lt;ul class="nav-menu"&gt;
+                    &lt;li&gt;&lt;a href="#"&gt;Басты бет&lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;a href="#"&gt;Қызметтер&lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;a href="#"&gt;Байланыс&lt;/a&gt;&lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/nav&gt;
+        &lt;/div&gt;
+    &lt;/header&gt;
+
+    &lt;!-- Hero Section - Flexbox орталықтау --&gt;
+    &lt;section class="hero"&gt;
+        &lt;div class="hero-content"&gt;
+            &lt;h1&gt;CSS Орталықтау&lt;/h1&gt;
+            &lt;p&gt;Элементтерді орталықта орналастырудың барлық әдістерін үйреніңіз&lt;/p&gt;
+            &lt;button class="btn" onclick="openModal()"&gt;Modal ашу&lt;/button&gt;
+        &lt;/div&gt;
+    &lt;/section&gt;
+
+    &lt;!-- Cards Section - Grid орталықтау --&gt;
+    &lt;section class="cards-section"&gt;
+        &lt;div class="container"&gt;
+            &lt;h2 class="section-title"&gt;Орталықтау әдістері&lt;/h2&gt;
+            &lt;div class="cards-grid"&gt;
+                &lt;div class="card"&gt;
+                    &lt;div class="card-icon"&gt;🔄&lt;/div&gt;
+                    &lt;h3&gt;Flexbox&lt;/h3&gt;
+                    &lt;p&gt;Заманауи және икемді орталықтау әдісі&lt;/p&gt;
+                    &lt;button class="btn"&gt;Толығырақ&lt;/button&gt;
+                &lt;/div&gt;
+                
+                &lt;div class="card"&gt;
+                    &lt;div class="card-icon"&gt;📊&lt;/div&gt;
+                    &lt;h3&gt;CSS Grid&lt;/h3&gt;
+                    &lt;p&gt;2D layouts үшін керемет шешім&lt;/p&gt;
+                    &lt;button class="btn"&gt;Толығырақ&lt;/button&gt;
+                &lt;/div&gt;
+                
+                &lt;div class="card"&gt;
+                    &lt;div class="card-icon"&gt;📍&lt;/div&gt;
+                    &lt;h3&gt;Position&lt;/h3&gt;
+                    &lt;p&gt;Дәл орналастыру үшін классикалық әдіс&lt;/p&gt;
+                    &lt;button class="btn"&gt;Толығырақ&lt;/button&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/section&gt;
+
+    &lt;!-- Modal - Position орталықтау --&gt;
+    &lt;div class="modal-overlay" id="modalOverlay"&gt;
+        &lt;div class="modal" id="modal"&gt;
+            &lt;h2&gt;🎉 Табыс!&lt;/h2&gt;
+            &lt;p&gt;Сіз modal терезені сәтті орталықта ашып отырсыз!&lt;/p&gt;
+            &lt;div class="modal-actions"&gt;
+                &lt;button class="btn btn-secondary" onclick="closeModal()"&gt;Жабу&lt;/button&gt;
+                &lt;button class="btn" onclick="closeModal()"&gt;OK&lt;/button&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;script&gt;
+        function openModal() {
+            const overlay = document.getElementById('modalOverlay');
+            const modal = document.getElementById('modal');
+            
+            overlay.style.display = 'flex';
+            setTimeout(() => {
+                modal.classList.add('show');
+            }, 10);
+        }
+        
+        function closeModal() {
+            const overlay = document.getElementById('modalOverlay');
+            const modal = document.getElementById('modal');
+            
+            modal.classList.remove('show');
+            setTimeout(() => {
+                overlay.style.display = 'none';
+            }, 300);
+        }
+        
+        // Modal сыртын басқанда жабу
+        document.getElementById('modalOverlay').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentMethod = 'flexbox';
+        let currentSize = 'medium';
+        let currentCount = 1;
+        
+        // Copy code function
+        function copyCode(button) {
+            const codeBlock = button.parentElement;
+            const code = codeBlock.textContent.replace('Көшіру', '').trim();
+            
+            navigator.clipboard.writeText(code).then(function() {
+                showToast('📋 Код сәтті көшірілді!');
+                button.textContent = 'Көшірілді!';
+                setTimeout(() => button.textContent = 'Көшіру', 2000);
+            }).catch(function(err) {
+                showToast('❌ Көшіру қатесі!');
+            });
+        }
+        
+        // Interactive demo functions
+        function changeMethod(method) {
+            currentMethod = method;
+            updateDemo();
+            updateActiveButton('.control-group:nth-child(1) .btn', method);
+        }
+        
+        function changeSize(size) {
+            currentSize = size;
+            updateDemo();
+            updateActiveButton('.control-group:nth-child(2) .btn', size);
+        }
+        
+        function changeCount(count) {
+            currentCount = count;
+            updateDemo();
+            updateActiveButton('.control-group:nth-child(3) .btn', count.toString());
+        }
+        
+        function updateActiveButton(selector, activeValue) {
+            const buttons = document.querySelectorAll(selector);
+            buttons.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.toLowerCase().includes(activeValue.toLowerCase()) || 
+                    btn.onclick.toString().includes(activeValue)) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+        
+        function updateDemo() {
+            const demo = document.getElementById('interactiveDemo');
+            const cssCode = document.getElementById('currentCSS');
+            
+            // Clear existing content
+            demo.innerHTML = '';
+            demo.className = 'demo-container';
+            
+            // Set height based on size
+            const heights = { small: '200px', medium: '300px', large: '400px' };
+            demo.style.height = heights[currentSize];
+            
+            // Generate boxes
+            for (let i = 0; i < currentCount; i++) {
+                const box = document.createElement('div');
+                box.className = 'demo-box';
+                box.textContent = `Элемент ${i + 1}`;
+                demo.appendChild(box);
+            }
+            
+            // Apply centering method
+            let css = '';
+            switch (currentMethod) {
+                case 'flexbox':
+                    demo.classList.add('demo-flexbox');
+                    if (currentCount > 1) {
+                        demo.style.gap = '20px';
+                        demo.style.flexWrap = 'wrap';
+                    }
+                    css = `display: flex;
+justify-content: center;
+align-items: center;${currentCount > 1 ? '\ngap: 20px;\nflex-wrap: wrap;' : ''}`;
+                    break;
+                    
+                case 'grid':
+                    demo.classList.add('demo-grid');
+                    if (currentCount > 1) {
+                        demo.style.gridTemplateColumns = `repeat(${currentCount}, 1fr)`;
+                        demo.style.gap = '20px';
+                    }
+                    css = `display: grid;
+place-items: center;${currentCount > 1 ? `\ngrid-template-columns: repeat(${currentCount}, 1fr);\ngap: 20px;` : ''}`;
+                    break;
+                    
+                case 'absolute':
+                    demo.classList.add('demo-absolute');
+                    if (currentCount > 1) {
+                        // Position multiple elements
+                        demo.querySelectorAll('.demo-box').forEach((box, i) => {
+                            box.style.position = 'absolute';
+                            box.style.top = '50%';
+                            box.style.left = `${30 + (i * 40)}%`;
+                            box.style.transform = 'translate(-50%, -50%)';
+                        });
+                    }
+                    css = `position: relative;
+
+.child {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}`;
+                    break;
+                    
+                case 'margin':
+                    demo.classList.add('demo-margin');
+                    css = `text-align: center;
+
+.child {
+    width: 200px;
+    margin: 0 auto;
+}`;
+                    break;
+            }
+            
+            cssCode.textContent = css;
+        }
+        
+        // Task functions
+        function showTaskSolution() {
+            document.getElementById('task-solution-modal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeTaskSolution() {
+            document.getElementById('task-solution-modal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        
+        function generateCenteringCode() {
+            const methods = ['flexbox', 'grid', 'absolute', 'margin'];
+            const randomMethod = methods[Math.floor(Math.random() * methods.length)];
+            
+            let code = '';
+            switch (randomMethod) {
+                case 'flexbox':
+                    code = `.parent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}`;
+                    break;
+                case 'grid':
+                    code = `.parent {
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+}`;
+                    break;
+                case 'absolute':
+                    code = `.parent {
+    position: relative;
+    height: 100vh;
+}
+
+.child {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}`;
+                    break;
+                case 'margin':
+                    code = `.parent {
+    text-align: center;
+    padding: 2rem 0;
+}
+
+.child {
+    width: 300px;
+    margin: 0 auto;
+}`;
+                    break;
+            }
+            
+            navigator.clipboard.writeText(code).then(function() {
+                showToast(`🔧 ${randomMethod.toUpperCase()} коды генерацияланды!`);
+            });
+        }
+        
+        function openTaskInCodePen() {
+            showToast('💡 CodePen ашылуда...');
+            setTimeout(() => {
+                showToast('📝 Жоғарыдағы кодты CodePen-ге көшіріп пайдаланыңыз!');
+            }, 1500);
+        }
+        
+        // Toast function
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(function() {
+                toast.classList.remove('show');
+            }, 4000);
+        }
+        
+        // Modal close on outside click
+        document.getElementById('task-solution-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeTaskSolution();
+            }
+        });
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateDemo();
+        });
+    </script>
+</body>
+</html>

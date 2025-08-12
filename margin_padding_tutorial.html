@@ -1,0 +1,2866 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Margin және Padding - толық сабақ</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #8e44ad, #3498db);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .content {
+            padding: 40px;
+            display: grid;
+            gap: 30px;
+        }
+
+        .section {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 5px solid #8e44ad;
+        }
+
+        .section h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .methods-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .method-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border-left: 4px solid;
+        }
+
+        .method-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .margin-cards { border-left-color: #e74c3c; }
+        .padding-cards { border-left-color: #3498db; }
+        .box-model-cards { border-left-color: #27ae60; }
+        .advanced-cards { border-left-color: #f39c12; }
+
+        .method-card h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .code-example {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            margin: 15px 0;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #8e44ad;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 11px;
+        }
+
+        .copy-btn:hover {
+            background: #7d3c98;
+        }
+
+        .visual-demo {
+            background: #f8f9fa;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .box-model-visual {
+            display: inline-block;
+            background: #fff3cd;
+            border: 8px solid #dc3545;
+            padding: 20px;
+            margin: 20px;
+            text-align: center;
+            position: relative;
+            font-weight: bold;
+        }
+
+        .box-model-labels {
+            position: absolute;
+            font-size: 12px;
+            font-weight: normal;
+            color: #666;
+        }
+
+        .margin-label {
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #dc3545;
+        }
+
+        .padding-label {
+            top: 5px;
+            right: 5px;
+            color: #007bff;
+        }
+
+        .spacing-examples {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .spacing-sample {
+            background: #ecf0f1;
+            border: 2px solid #bdc3c7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #2c3e50;
+            min-height: 80px;
+        }
+
+        .spacing-sample:hover {
+            transform: scale(1.05);
+            background: #d5dbdb;
+        }
+
+        .interactive-demo {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .spacing-controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .control-group {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .control-group h4 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .control-input {
+            width: 100%;
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            margin: 5px 0;
+        }
+
+        .spacing-preview {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 40px;
+            margin: 20px 0;
+            text-align: center;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .preview-element {
+            background: #3498db;
+            color: white;
+            border-radius: 8px;
+            display: inline-block;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #8e44ad 0%, #3498db 100%);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .comparison-item {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .tips-section {
+            background: #e8f4fd;
+            border: 2px solid #3498db;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #8e44ad, #3498db);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #8e44ad;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            z-index: 1000;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        /* Margin мысалдары */
+        .margin-small { margin: 5px; background: #ffebee; }
+        .margin-medium { margin: 15px; background: #e3f2fd; }
+        .margin-large { margin: 30px; background: #e8f5e8; }
+        .margin-auto { margin: 0 auto; background: #fff3e0; width: 60%; }
+
+        /* Padding мысалдары */
+        .padding-small { padding: 5px; background: #fce4ec; }
+        .padding-medium { padding: 15px; background: #e1f5fe; }
+        .padding-large { padding: 30px; background: #f1f8e9; }
+        .padding-asymmetric { padding: 10px 20px; background: #fafafa; }
+
+        /* Negative margin мысалдары */
+        .negative-margin { margin: -10px; background: #ffcdd2; }
+
+        /* Responsive spacing */
+        .responsive-spacing {
+            margin: 10px;
+            padding: 10px;
+            background: #e8eaf6;
+        }
+
+        @media (max-width: 768px) {
+            .methods-grid, .spacing-controls, .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .spacing-examples {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+            
+            .responsive-spacing {
+                margin: 5px;
+                padding: 5px;
+            }
+        }
+
+        /* Collapsing margin визуализациясы */
+        .collapse-demo {
+            background: #f8f9fa;
+            border: 1px dashed #6c757d;
+            margin: 20px 0;
+        }
+
+        .collapse-item {
+            background: #007bff;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            margin: 15px 0;
+        }
+
+        /* Box model анимациясы */
+        @keyframes boxGlow {
+            0%, 100% { box-shadow: 0 0 5px rgba(52, 152, 219, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(52, 152, 219, 0.8); }
+        }
+
+        .animated-box {
+            animation: boxGlow 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏗️ CSS Margin & Padding</h1>
+            <p>Элементтер арасындағы аралық пен ішкі кеңістікті басқару</p>
+        </div>
+
+        <div class="content">
+            <!-- Introduction -->
+            <div class="section">
+                <h2>📚 Кіріспе</h2>
+                
+                <p style="font-size: 1.1rem; margin-bottom: 20px;">
+                    Margin және Padding - веб-дизайндағы ең маңызды аралық құралдары. <span class="highlight">Дұрыс қолданылған spacing</span> дизайнды таза, оқуға ыңғайлы және кәсіби етеді.
+                </p>
+
+                <div style="background: #f0e6ff; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                    <h3 style="color: #7d3c98; margin-bottom: 15px;">🎯 Осы сабақта үйренетініміз:</h3>
+                    <ul style="color: #2c3e50; line-height: 1.8; margin-left: 20px;">
+                        <li>Margin vs Padding айырмашылығы</li>
+                        <li>Box Model және оның құрылысы</li>
+                        <li>Shorthand нотациялары</li>
+                        <li>Auto margin және центрлеу</li>
+                        <li>Negative margin техникалары</li>
+                        <li>Margin collapsing ережелері</li>
+                        <li>Responsive spacing стратегиялары</li>
+                        <li>CSS Grid және Flexbox-тағы spacing</li>
+                    </ul>
+                </div>
+
+                <div class="visual-demo">
+                    <h4 style="margin-bottom: 20px; color: #2c3e50;">🔍 Box Model визуализациясы</h4>
+                    <div class="box-model-visual animated-box">
+                        CONTENT
+                        <div class="box-model-labels margin-label">Margin (сыртқы аралық)</div>
+                        <div class="box-model-labels padding-label">Padding (ішкі аралық)</div>
+                    </div>
+                    <p style="color: #666; margin-top: 15px;">
+                        <strong>Margin:</strong> Элементтің сыртқы жағындағы аралық<br>
+                        <strong>Padding:</strong> Элементтің ішкі жағындағы аралық
+                    </p>
+                </div>
+            </div>
+
+            <!-- Margin Basics -->
+            <div class="section">
+                <h2>📏 Margin негіздері</h2>
+                
+                <div class="methods-grid">
+                    <div class="method-card margin-cards">
+                        <h3>🔴 Margin қасиеттері</h3>
+                        <p><strong>Сыртқы аралық:</strong> Элементтердің арасындағы қашықтық</p>
+                        
+                        <div class="code-example">
+                            <button class="copy-btn" onclick="copyCode(this)">Көшіру</button>
+/* Жеке жақтардың margin-дері */
+.margin-top { margin-top: 20px; }
+.margin-right { margin-right: 20px; }
+.margin-bottom { margin-bottom: 20px; }
+.margin-left { margin-left: 20px; }
+
+/* Қысқа жазу - барлық жақтар */
+.margin-all { margin: 20px; }
+
+/* Қысқа жазу - 2 мән (vertical horizontal) */
+.margin-vh { margin: 20px 10px; }
+
+/* Қысқа жазу - 4 мән (top right bottom left) */
+.margin-full { margin: 10px 15px 20px 5px; }
+
+/* Пиксель емес өлшемдер */
+.margin-em { margin: 1em; }
+.margin-rem { margin: 1.5rem; }
+.margin-percent { margin: 5%; }
+
+/* Автоматты margin */
+.margin-auto { margin: 0 auto; } /* Горизонталь центр */
+
+/* Negative margin */
+.margin-negative { margin: -10px; }
+
+/* Жекелеген жағына negative */
+.margin-negative-top { margin-top: -15px; }
+                        </div>
+
+                        <div class="visual-demo">
+                            <h4 style="margin-bottom: 15px;">Margin мысалдары:</h4>
+                            <div class="spacing-examples">
+                                <div class="spacing-sample margin-small" onclick="copySpacingStyle('margin: 5px')">Margin 5px</div>
+                                <div class="spacing-sample margin-medium" onclick="copySpacingStyle('margin: 15px')">Margin 15px</div>
+                                <div class="spacing-sample margin-large" onclick="copySpacingStyle('margin: 30px')">Margin 30px</div>
+                                <div class="spacing-sample margin-auto" onclick="copySpacingStyle('margin: 0 auto')">Auto Center</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="method-card margin-cards">
+                        <h3>🎯 Auto margin және центрлеу</h3>
+                        <p><strong>Автоматты орналасу:</strong> Элементтерді центрлеу және орналастыру</p>
+                        
+                        <div class="code-example">
+                            <button class="copy-btn" onclick="copyCode(this)">Көшіру</button>
+/* Горизонталь центрлеу */
+.center-horizontal {
+    margin: 0 auto;
+    width: 300px; /* Міндетті: анықталған ені */
+}
+
+/* Тек оң жаққа итеру */
+.push-right {
+    margin-left: auto;
+}
+
+/* Тек сол жаққа итеру */
+.push-left {
+    margin-right: auto;
+}
+
+/* Flexbox-тағы auto margin */
+.flex-container {
+    display: flex;
+}
+
+.flex-item-right {
+    margin-left: auto; /* Оң жаққа итеру */
+}
+
+.flex-item-center {
+    margin: 0 auto; /* Центрге орналастыру */
+}
+
+/* Grid-тағы auto margin */
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 200px 1fr;
+}
+
+.grid-center {
+    margin: 0 auto;
+    grid-column: 2;
+}
+
+/* Вертикалдық центрлеү (сирек) */
+.vertical-center {
+    margin-top: auto;
+    margin-bottom: auto;
+    height: 100px; /* Анықталған биіктік */
+}
+
+/* Толық центрлеу */
+.full-center {
+    margin: auto;
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    width: 200px;
+    height: 100px;
+}
+                        </div>
+
+                        <div style="background: #f0fff0; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                            <h4 style="color: #2c3e50; margin-bottom: 10px;">💡 Auto margin ережелері:</h4>
+                            <ul style="color: #34495e; line-height: 1.8;">
+                                <li><strong>Horizontal auto:</strong> Элементтің ені анықталған болуы керек</li>
+                                <li><strong>margin: 0 auto:</strong> Горизонталь центрлеу</li>
+                                <li><strong>margin-left: auto:</strong> Оң жаққа итеру</li>
+                                <li><strong>Flexbox-та:</strong> Auto margin әртүрлі жұмыс істейді</li>
+                                <li><strong>Inline элементтер:</strong> Auto margin жұмыс істемейді</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Padding Basics -->
+            <div class="section">
+                <h2>📦 Padding негіздері</h2>
+                
+                <div class="methods-grid">
+                    <div class="method-card padding-cards">
+                        <h3>🔵 Padding қасиеттері</h3>
+                        <p><strong>Ішкі аралық:</strong> Контент пен border арасындағы кеңістік</p>
+                        
+                        <div class="code-example">
+                            <button class="copy-btn" onclick="copyCode(this)">Көшіру</button>
+/* Жеке жақтардың padding-дері */
+.padding-top { padding-top: 20px; }
+.padding-right { padding-right: 20px; }
+.padding-bottom { padding-bottom: 20px; }
+.padding-left { padding-left: 20px; }
+
+/* Қысқа жазу - барлық жақтар */
+.padding-all { padding: 20px; }
+
+/* Қысқа жазу - 2 мән (vertical horizontal) */
+.padding-vh { padding: 20px 15px; }
+
+/* Қысқа жазу - 3 мән (top horizontal bottom) */
+.padding-three { padding: 10px 15px 20px; }
+
+/* Қысқа жазу - 4 мән (top right bottom left) */
+.padding-full { padding: 10px 15px 20px 5px; }
+
+/* Пиксель емес өлшемдер */
+.padding-em { padding: 1em; }
+.padding-rem { padding: 1.5rem; }
+.padding-percent { padding: 5%; }
+
+/* Батырмалар үшін padding */
+.button-padding {
+    padding: 12px 24px; /* vertical horizontal */
+}
+
+/* Card стильдері */
+.card-padding {
+    padding: 24px; /* Барлық жағына бірдей */
+}
+
+/* Input элементтері */
+.input-padding {
+    padding: 10px 15px; /* Ыңғайлы енгізу */
+}
+
+/* Asymmetric padding */
+.asymmetric-padding {
+    padding-top: 30px;
+    padding-bottom: 15px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+                        </div>
+
+                        <div class="visual-demo">
+                            <h4 style="margin-bottom: 15px;">Padding мысалдары:</h4>
+                            <div class="spacing-examples">
+                                <div class="spacing-sample padding-small" onclick="copySpacingStyle('padding: 5px')">Padding 5px</div>
+                                <div class="spacing-sample padding-medium" onclick="copySpacingStyle('padding: 15px')">Padding 15px</div>
+                                <div class="spacing-sample padding-large" onclick="copySpacingStyle('padding: 30px')">Padding 30px</div>
+                                <div class="spacing-sample padding-asymmetric" onclick="copySpacingStyle('padding: 10px 20px')">Asymmetric</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="method-card padding-cards">
+                        <h3>🎨 Практикалық padding мысалдары</h3>
+                        <p><strong>Нақты қолдану:</strong> Әртүрлі элементтерде padding</p>
+                        
+                        <div class="code-example">
+                            <button class="copy-btn" onclick="copyCode(this)">Көшіру</button>
+/* Батырма стильдері */
+.btn-small { padding: 6px 12px; }
+.btn-medium { padding: 10px 20px; }
+.btn-large { padding: 15px 30px; }
+
+/* Input элементтері */
+.input-text { padding: 8px 12px; }
+.input-large { padding: 12px 16px; }
+.textarea { padding: 12px; }
+
+/* Карта элементтері */
+.card-header { padding: 16px 20px; }
+.card-body { padding: 20px; }
+.card-footer { padding: 12px 20px; }
+
+/* Навигация */
+.nav-item { padding: 10px 15px; }
+.nav-dropdown { padding: 8px 20px; }
+
+/* Список элементтері */
+.list-item { padding: 8px 0; }
+.list-item-clickable { padding: 12px 16px; }
+
+/* Modal/Dialog */
+.modal-header { padding: 20px 24px 16px; }
+.modal-body { padding: 0 24px 20px; }
+.modal-footer { padding: 16px 24px 20px; }
+
+/* Tooltip */
+.tooltip { padding: 6px 10px; }
+
+/* Badge/Tag */
+.badge { padding: 4px 8px; }
+.tag { padding: 6px 12px; }
+
+/* Alert messages */
+.alert { padding: 12px 16px; }
+.alert-large { padding: 16px 20px; }
+
+/* Table cells */
+.table-cell { padding: 8px 12px; }
+.table-header { padding: 12px; }
+
+/* Responsive padding */
+.responsive-element {
+    padding: 16px;
+}
+
+@media (max-width: 768px) {
+    .responsive-element {
+        padding: 12px; /* Мобилде кішірек */
+    }
+}
+
+@media (min-width: 1200px) {
+    .responsive-element {
+        padding: 24px; /* Үлкен экранда көбірек */
+    }
+}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Margin vs Padding -->
+            <div class="section">
+                <h2>⚖️ Margin vs Padding</h2>
+                
+                <div class="comparison-grid">
+                    <div class="comparison-item">
+                        <h3 style="color: #e74c3c; margin-bottom: 15px;">🔴 Margin</h3>
+                        <ul style="color: #2c3e50; line-height: 1.8;">
+                            <li><strong>Орналасуы:</strong> Элементтің сыртынан</li>
+                            <li><strong>Background:</strong> Фон түсіне әсер етпейді</li>
+                            <li><strong>Clickable:</strong> Басуға келмейді</li>
+                            <li><strong>Collapsing:</strong> Margin collapse болады</li>
+                            <li><strong>Negative мәндер:</strong> Қолдауы бар</li>
+                            <li><strong>Auto мәні:</strong> Қолдауы бар</li>
+                            <li><strong>Пайдаланылады:</strong> Элементтер арасындағы аралық</li>
+                        </ul>
+                        
+                        <div style="background: #ffebee; padding: 15px; border-radius: 8px; margin: 15px 0; text-align: center;">
+                            <div style="background: #f44336; color: white; padding: 10px; margin: 20px;">
+                                Margin мысалы
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="comparison-item">
+                        <h3 style="color: #3498db; margin-bottom: 15px;">🔵 Padding</h3>
+                        <ul style="color: #2c3e50; line-height: 1.8;">
+                            <li><strong>Орналасуы:</strong> Элементтің ішінен</li>
+                            <li><strong>Background:</strong> Фон түсін қабылдайды</li>
+                            <li><strong>Clickable:</strong> Басуға келеді</li>
+                            <li><strong>Collapsing:</strong> Collapse болмайды</li>
+                            <li><strong>Negative мәндер:</strong> Қолдауы жоқ</li>
+                            <li><strong>Auto мәні:</strong> Қолдауы жоқ</li>
+                            <li><strong>Пайдаланылады:</strong> Контент пен border арасы</li>
+                        </ul>
+                        
+                        <div style="background: #e3f2fd; padding: 15px; border-radius: 8px; margin: 15px 0; text-align: center;">
+                            <div style="background: #2196f3; color: white; padding: 20px;">
+                                Padding мысалы
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: #fff3e0; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                    <h4 style="color: #e65100; margin-bottom: 15px;">🤔 Қашан қайсысын қолдану керек?</h4>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">
+                        <div>
+                            <h5 style="color: #e74c3c;">Margin пайдалану:</h5>
+                            <ul style="color: #666; font-size: 14px; line-height: 1.6;">
+                                <li>Элементтер арасындағы аралық</li>
+                                <li>Блоктарды центрлеу</li>
+                                <li>Layout spacing</li>
+                                <li>Responsive breakpoints</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h5 style="color: #3498db;">Padding пайдалану:</h5>
+                            <ul style="color: #666; font-size: 14px; line-height: 1.6;">
+                                <li>Контент пен border арасы</li>
+                                <li>Clickable area ұлғайту</li>
+                                <li>Батырма, карта ішкі кеңістігі</li>
+                                <li>Background area ұлғайту</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Spacing Builder -->
+            <div class="section">
+                <h2>🛠️ Интерактивті Spacing құрастырғыш</h2>
+                
+                <div class="interactive-demo">
+                    <h3 style="color: #2c3e50; margin-bottom: 20px;">🎛️ Margin мен Padding-ды тест етіңіз</h3>
+                    
+                    <div class="spacing-controls">
+                        <div class="control-group">
+                            <h4>🔴 Margin басқару</h4>
+                            <label>Top: <span id="marginTopValue">10</span>px</label>
+                            <input type="range" id="marginTop" class="control-input" min="0" max="50" value="10" onchange="updateSpacingPreview()">
+                            
+                            <label>Right: <span id="marginRightValue">10</span>px</label>
+                            <input type="range" id="marginRight" class="control-input" min="0" max="50" value="10" onchange="updateSpacingPreview()">
+                            
+                            <label>Bottom: <span id="marginBottomValue">10</span>px</label>
+                            <input type="range" id="marginBottom" class="control-input" min="0" max="50" value="10" onchange="updateSpacingPreview()">
+                            
+                            <label>Left: <span id="marginLeftValue">10</span>px</label>
+                            <input type="range" id="marginLeft" class="control-input" min="0" max="50" value="10" onchange="updateSpacingPreview()">
+                        </div>
+                        
+                        <div class="control-group">
+                            <h4>🔵 Padding басқару</h4>
+                            <label>Top: <span id="paddingTopValue">15</span>px</label>
+                            <input type="range" id="paddingTop" class="control-input" min="0" max="50" value="15" onchange="updateSpacingPreview()">
+                            
+                            <label>Right: <span id="paddingRightValue">20</span>px</label>
+                            <input type="range" id="paddingRight" class="control-input" min="0" max="50" value="20" onchange="updateSpacingPreview()">
+                            
+                            <label>Bottom: <span id="paddingBottomValue">15</span>px</label>
+                            <input type="range" id="paddingBottom" class="control-input" min="0" max="50" value="15" onchange="updateSpacingPreview()">
+                            
+                            <label>Left: <span id="paddingLeftValue">20</span>px</label>
+                            <input type="range" id="paddingLeft" class="control-input" min="0" max="50" value="20" onchange="updateSpacingPreview()">
+                        </div>
+                        
+                        <div class="control-group">
+                            <h4>🎨 Көріністі баптау</h4>
+                            <label>Background Color</label>
+                            <input type="color" id="bgColor" class="control-input" value="#3498db" onchange="updateSpacingPreview()">
+                            
+                            <label>Text Color</label>
+                            <input type="color" id="textColor" class="control-input" value="#ffffff" onchange="updateSpacingPreview()">
+                            
+                            <label>Container Width</label>
+                            <input type="range" id="containerWidth" class="control-input" min="200" max="400" value="300" onchange="updateSpacingPreview()">
+                            <span id="containerWidthValue">300</span>px
+                        </div>
+                    </div>
+                    
+                    <div class="spacing-preview" id="spacingPreview">
+                        <div class="preview-element" id="previewElement">
+                            <h3>Preview Element</h3>
+                            <p>Бұл сіздің spacing баптауларыңыз</p>
+                        </div>
+                        
+                        <div id="spacingOutput" style="margin-top: 20px; font-family: monospace; background: #f8f9fa; padding: 15px; border-radius: 5px; text-align: left; font-size: 14px;">
+                            <strong>CSS Code:</strong><br>
+                            margin: 10px 10px 10px 10px;<br>
+                            padding: 15px 20px 15px 20px;<br>
+                            background: #3498db;<br>
+                            color: #ffffff;
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: center; margin: 20px 0;">
+                        <button class="btn" onclick="copySpacingCSS()">📋 CSS көшіру</button>
+                        <button class="btn" onclick="resetSpacingBuilder()">🔄 Қалпына келтіру</button>
+                        <button class="btn" onclick="randomizeSpacing()">🎲 Кездейсоқ spacing</button>
+                        <button class="btn" onclick="presetSpacing('button')">🔘 Button preset</button>
+                        <button class="btn" onclick="presetSpacing('card')">🃏 Card preset</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Advanced Techniques -->
+            <div class="section">
+                <h2>🚀 Кеңейтілген техникалар</h2>
+                
+                <div class="methods-grid">
+                    <div class="method-card advanced-cards">
+                        <h3>❌ Negative Margin</h3>
+                        <p><strong>Теріс мәндер:</strong> Элементтерді жақындату және overlap жасау</p>
+                        
+                        <div class="code-example">
+                            <button class="copy-btn" onclick="copyCode(this)">Көшіру</button>
+/* Negative margin негіздері */
+.overlap-top {
+    margin-top: -20px; /* Жоғарыға қарай жылжыту */
+}
+
+.overlap-left {
+    margin-left: -15px; /* Солға қарай жылжыту */
+}
+
+/* Элементтерді жақындату */
+.tight-spacing .item {
+    margin-bottom: -5px;
+}
+
+/* Overlapping cards */
+.card-stack .card {
+    margin-top: -10px;
+}
+
+.card-stack .card:first-child {
+    margin-top: 0; /* Бірінші элементке negative margin жоқ */
+}
+
+/* Pull element from flow */
+.pull-out {
+    margin-left: -30px;
+    margin-right: -30px;
+}
+
+/* Breadcrumb navigation */
+.breadcrumb-item {
+    margin-right: -10px;
+    padding-right: 20px;
+    position: relative;
+}
+
+/* Image overlay */
+.image-overlay {
+    margin-top: -50px;
+    margin-left: 20px;
+    z-index: 2;
+    position: relative;
+}
+
+/* Responsive negative margins */
+.responsive-pull {
+    margin: 0 -15px;
+}
+
+@media (max-width: 768px) {
+    .responsive-pull {
+        margin: 0 -10px; /* Мобилде кішірек pull */
+    }
+}
+
+/* Negative margin grid */
+.negative-grid {
+    margin: -10px; /* Container-ға negative margin */
+}
+
+.negative-grid .item {
+    padding: 10px; /* Items-ке positive padding */
+}
+                        </div>
+
+                        <div style="background: #fff8e1; padding: 15px; border-radius: 8px; border-left: 4px solid #ffc107;">
+                            <strong>⚠️ Ескерту:</strong> Negative margin-ды мұқият қолданыңыз. Responsive дизайнда проблема тудыруы мүмкін.
+                        </div>
+                    </div>
+
+                    <div class="method-card advanced-cards">
+                        <h3>📉 Margin Collapsing</h3>
+                        <p><strong>Margin құлау:</strong> Вертикалды margin-дердің біріктірілуі</p>
+                        
+                        <div class="code-example">
+                            <button class="copy-btn" onclick="copyCode(this)">Көшіру</button>
+/* Margin collapsing мысалдары */
+
+/* Стандартты collapsing */
+.element-1 {
+    margin-bottom: 20px;
+}
+
+.element-2 {
+    margin-top: 30px;
+    /* Нәтиже: 30px аралық (20px емес 50px) */
+}
+
+/* Collapsing-ті болдырмау */
+.prevent-collapse-1 {
+    margin-bottom: 20px;
+    padding-bottom: 1px; /* Кез келген padding */
+}
+
+.prevent-collapse-2 {
+    margin-top: 30px;
+    /* Енді 51px аралық болады */
+}
+
+/* Border арқылы болдырмау */
+.border-prevent {
+    border-bottom: 1px solid transparent;
+    margin-bottom: 20px;
+}
+
+/* Flexbox margin collapse болмайды */
+.flex-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-item {
+    margin: 20px 0; /* Collapsing жоқ */
+}
+
+/* Grid-те де collapsing жоқ */
+.grid-container {
+    display: grid;
+    gap: 20px; /* Margin орнына gap қолдану */
+}
+
+/* Inline-block collapsing болдырмайды */
+.inline-block-item {
+    display: inline-block;
+    margin: 20px 0;
+}
+
+/* Float элементтер collapsing болмайды */
+.float-item {
+    float: left;
+    margin: 20px 0;
+}
+
+/* Position: absolute/fixed collapsing болмайды */
+.positioned-item {
+    position: absolute;
+    margin: 20px 0;
+}
+
+/* Overflow: hidden parent collapsing болдырмайды */
+.overflow-parent {
+    overflow: hidden;
+}
+
+.overflow-child {
+    margin: 20px 0; /* Parent-пен collapsing болмайды */
+}
+                        </div>
+
+                        <div class="collapse-demo">
+                            <h4 style="color: #666; margin-bottom: 10px;">Margin Collapsing көрсеткіші:</h4>
+                            <div class="collapse-item">Element 1 (margin-bottom: 15px)</div>
+                            <div class="collapse-item">Element 2 (margin-top: 15px)</div>
+                            <p style="color: #666; font-size: 14px; padding: 10px;">
+                                ☝️ Екі элемент арасында 15px аралық (30px емес!)
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="method-card advanced-cards">
+                        <h3>📱 Responsive Spacing</h3>
+                        <p><strong>Бейімделмелі аралық:</strong> Әртүрлі экран өлшемдеріне spacing</p>
+                        
+                        <div class="code-example">
+                            <button class="copy-btn" onclick="copyCode(this)">Көшіру</button>
+/* Responsive spacing стратегиялары */
+
+/* Mobile-first подход */
+.responsive-spacing {
+    margin: 10px;
+    padding: 15px;
+}
+
+/* Tablet */
+@media (min-width: 768px) {
+    .responsive-spacing {
+        margin: 20px;
+        padding: 25px;
+    }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+    .responsive-spacing {
+        margin: 30px;
+        padding: 40px;
+    }
+}
+
+/* Viewport unit-тер */
+.viewport-spacing {
+    margin: 2vw; /* Viewport width-ке байланысты */
+    padding: 3vh; /* Viewport height-ке байланысты */
+}
+
+/* Container queries (жаңа) */
+@container (min-width: 400px) {
+    .container-responsive {
+        padding: 20px;
+    }
+}
+
+/* Clamp функциясы */
+.fluid-spacing {
+    margin: clamp(10px, 5vw, 50px);
+    padding: clamp(15px, 4vw, 60px);
+}
+
+/* Grid gap responsive */
+.responsive-grid {
+    display: grid;
+    gap: 10px;
+}
+
+@media (min-width: 768px) {
+    .responsive-grid {
+        gap: 20px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .responsive-grid {
+        gap: 30px;
+    }
+}
+
+/* Flexbox gap responsive */
+.responsive-flex {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+@media (min-width: 768px) {
+    .responsive-flex {
+        gap: 20px;
+    }
+}
+
+/* Component-based spacing */
+.btn {
+    padding: 8px 16px;
+}
+
+@media (min-width: 768px) {
+    .btn {
+        padding: 12px 24px;
+    }
+}
+
+.card {
+    padding: 16px;
+    margin-bottom: 16px;
+}
+
+@media (min-width: 768px) {
+    .card {
+        padding: 24px;
+        margin-bottom: 24px;
+    }
+}
+
+/* Typography spacing */
+.heading {
+    margin-bottom: 0.5em;
+}
+
+.paragraph {
+    margin-bottom: 1em;
+}
+
+/* Section spacing */
+.section {
+    padding: 40px 0;
+}
+
+@media (min-width: 768px) {
+    .section {
+        padding: 60px 0;
+    }
+}
+
+@media (min-width: 1024px) {
+    .section {
+        padding: 80px 0;
+    }
+}
+                        </div>
+
+                        <div style="background: #e8f5e8; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                            <h4 style="color: #2c3e50; margin-bottom: 10px;">📐 Responsive spacing принциптері:</h4>
+                            <ul style="color: #34495e; line-height: 1.8;">
+                                <li><strong>Mobile-first:</strong> Кіші мәндерден бастаңыз</li>
+                                <li><strong>Пропорционалдылық:</strong> Spacing арақатынасын сақтаңыз</li>
+                                <li><strong>Touch targets:</strong> Мобилде басуға ыңғайлы етіңіз</li>
+                                <li><strong>Viewport units:</strong> vw, vh пайдаланыңыз</li>
+                                <li><strong>Container queries:</strong> Жаңа стандартты пайдаланыңыз</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="method-card advanced-cards">
+                        <h3>🎯 Modern Spacing (Grid & Flexbox)</h3>
+                        <p><strong>Заманауи әдістер:</strong> Gap property және жаңа layout техникалары</p>
+                        
+                        <div class="code-example">
+                            <button class="copy-btn" onclick="copyCode(this)">Көшіру</button>
+/* CSS Grid spacing */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px; /* Барлық элементтер арасында 20px */
+    
+    /* Жеке gap мәндері */
+    row-gap: 30px;    /* Жолдар арасы */
+    column-gap: 15px; /* Бағандар арасы */
+}
+
+/* Flexbox spacing */
+.flex-container {
+    display: flex;
+    gap: 15px; /* Flexbox items арасы */
+    flex-wrap: wrap;
+}
+
+/* Flex direction бойынша gap */
+.flex-column {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Nested grid spacing */
+.nested-grid {
+    display: grid;
+    gap: 20px;
+}
+
+.nested-grid .item {
+    display: grid;
+    gap: 10px; /* Ішкі grid-тің gap-ы */
+}
+
+/* Auto-fit responsive grid */
+.auto-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: clamp(15px, 4vw, 40px);
+}
+
+/* Subgrid spacing (жаңа) */
+.subgrid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.subgrid-item {
+    display: grid;
+    grid-template-rows: subgrid;
+    gap: inherit; /* Parent gap-ын мұралау */
+}
+
+/* Space-between альтернативасы */
+.modern-space-between {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px; /* Minimum gap */
+}
+
+/* Stack layout */
+.stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--stack-gap, 1rem);
+}
+
+/* Cluster layout */
+.cluster {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cluster-gap, 1rem);
+}
+
+/* CSS Custom Properties spacing */
+:root {
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+    --spacing-2xl: 48px;
+}
+
+.component {
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+/* Spacing scale system */
+.space-1 { gap: 4px; }
+.space-2 { gap: 8px; }
+.space-3 { gap: 12px; }
+.space-4 { gap: 16px; }
+.space-5 { gap: 20px; }
+.space-6 { gap: 24px; }
+.space-8 { gap: 32px; }
+.space-10 { gap: 40px; }
+.space-12 { gap: 48px; }
+.space-16 { gap: 64px; }
+.space-20 { gap: 80px; }
+.space-24 { gap: 96px; }
+
+/* Logical properties (жаңа) */
+.logical-spacing {
+    margin-block: 20px;    /* margin-top + margin-bottom */
+    margin-inline: 10px;   /* margin-left + margin-right */
+    padding-block: 15px;   /* padding-top + padding-bottom */
+    padding-inline: 25px;  /* padding-left + padding-right */
+}
+
+/* Flow spacing */
+.flow > * + * {
+    margin-top: var(--flow-space, 1em);
+}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Practical Examples -->
+            <div class="section">
+                <h2>🛠️ Практикалық мысалдар</h2>
+                
+                <div class="methods-grid">
+                    <div class="method-card">
+                        <h3>🔘 Батырма компоненттері</h3>
+                        
+                        <div class="code-example">
+                            <button class="copy-btn" onclick="copyCode(this)">Көшіру</button>
+/* Батырма spacing жүйесі */
+.btn {
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px; /* Icon мен text арасы */
+}
+
+/* Size variants */
+.btn-xs {
+    padding: 4px 8px;
+    font-size: 12px;
+    gap: 4px;
+}
+
+.btn-sm {
+    padding: 6px 12px;
+    font-size: 14px;
+    gap: 6px;
+}
+
+.btn-md {
+    padding: 10px 20px;
+    font-size: 16px;
+    gap: 8px;
+}
+
+.btn-lg {
+    padding: 12px 24px;
+    font-size: 18px;
+    gap: 10px;
+}
+
+.btn-xl {
+    padding: 16px 32px;
+    font-size: 20px;
+    gap: 12px;
+}
+
+/* Button groups */
+.btn-group {
+    display: flex;
+    gap: 0; /* Gap жоқ, border арқылы ажырату */
+}
+
+.btn-group .btn {
+    border-radius: 0;
+    border-right: 1px solid rgba(255,255,255,0.2);
+}
+
+.btn-group .btn:first-child {
+    border-radius: 6px 0 0 6px;
+}
+
+.btn-group .btn:last-child {
+    border-radius: 0 6px 6px 0;
+    border-right: none;
+}
+
+/* Spaced button group */
+.btn-group-spaced {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+/* Icon buttons */
+.btn-icon {
+    padding: 10px;
+    width: 40px;
+    height: 40px;
+}
+
+.btn-icon-sm {
+    padding: 6px;
+    width: 28px;
+    height: 28px;
+}
+
+.btn-icon-lg {
+    padding: 12px;
+    width: 48px;
+    height: 48px;
+}
+
+/* Full width buttons */
+.btn-full {
+    width: 100%;
+    padding: 12px 20px;
+}
+
+/* Responsive button spacing */
+@media (max-width: 768px) {
+    .btn {
+        padding: 12px 16px; /* Мобилде үлкенірек touch target */
+        min-height: 44px; /* iOS touch target */
+    }
+    
+    .btn-group-spaced {
+        gap: 12px; /* Мобилде үлкенірек gap */
+    }
+}
+                        </div>
+                    </div>
+
+                    <div class="method-card">
+                        <h3>🃏 Карта layouts</h3>
+                        
+                        <div class="code-example">
+                            <button class="copy-btn" onclick="copyCode(this)">Көшіру</button>
+/* Card spacing жүйесі */
+.card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    overflow: hidden;
+    margin-bottom: 24px;
+}
+
+/* Card sections */
+.card-header {
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.card-body {
+    padding: 20px 24px;
+}
+
+.card-footer {
+    padding: 16px 24px 20px;
+    border-top: 1px solid #f0f0f0;
+    background: #fafafa;
+}
+
+/* Compact card */
+.card-compact .card-header {
+    padding: 12px 16px 8px;
+}
+
+.card-compact .card-body {
+    padding: 12px 16px;
+}
+
+.card-compact .card-footer {
+    padding: 8px 16px 12px;
+}
+
+/* Large card */
+.card-large .card-header {
+    padding: 28px 32px 24px;
+}
+
+.card-large .card-body {
+    padding: 24px 32px;
+}
+
+.card-large .card-footer {
+    padding: 20px 32px 28px;
+}
+
+/* Card grid */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+}
+
+/* Card list */
+.card-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Card with image */
+.card-image img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.card-image .card-content {
+    padding: 20px;
+}
+
+/* Nested card content */
+.card-content h3 {
+    margin-bottom: 12px;
+}
+
+.card-content p {
+    margin-bottom: 16px;
+    line-height: 1.6;
+}
+
+.card-content .meta {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #f0f0f0;
+    font-size: 14px;
+    color: #666;
+}
+
+/* Card actions */
+.card-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.card-actions-right {
+    justify-content: flex-end;
+}
+
+.card-actions-full {
+    flex-direction: column;
+}
+
+.card-actions-full .btn {
+    width: 100%;
+}
+
+/* Responsive card spacing */
+@media (max-width: 768px) {
+    .card {
+        margin: 0 -16px 16px; /* Full width on mobile */
+        border-radius: 0;
+    }
+    
+    .card-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .card-header,
+    .card-body,
+    .card-footer {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+}
+                        </div>
+                    </div>
+
+                    <div class="method-card">
+                        <h3>📝 Form элементтері</h3>
+                        
+                        <div class="code-example">
+                            <button class="copy-btn" onclick="copyCode(this)">Көшіру</button>
+/* Form spacing жүйесі */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group:last-child {
+    margin-bottom: 0;
+}
+
+/* Form labels */
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #333;
+}
+
+.form-label.required::after {
+    content: " *";
+    color: #e74c3c;
+}
+
+/* Form inputs */
+.form-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: border-color 0.2s;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+/* Input sizes */
+.form-input-sm {
+    padding: 8px 12px;
+    font-size: 14px;
+}
+
+.form-input-lg {
+    padding: 16px 20px;
+    font-size: 18px;
+}
+
+/* Textarea */
+.form-textarea {
+    padding: 12px 16px;
+    min-height: 120px;
+    resize: vertical;
+}
+
+/* Select */
+.form-select {
+    padding: 12px 40px 12px 16px;
+    background-image: url('dropdown-arrow.svg');
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+}
+
+/* Checkbox and Radio */
+.form-check {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.form-check-input {
+    margin-top: 2px; /* Text baseline-мен туралау */
+}
+
+.form-check-label {
+    flex: 1;
+    line-height: 1.5;
+}
+
+/* Form sections */
+.form-section {
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.form-section:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.form-section-title {
+    margin-bottom: 20px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+/* Inline forms */
+.form-inline {
+    display: flex;
+    align-items: end;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.form-inline .form-group {
+    margin-bottom: 0;
+    flex: 1;
+    min-width: 200px;
+}
+
+/* Form grid */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+/* Form actions */
+.form-actions {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid #f0f0f0;
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+.form-actions-full {
+    flex-direction: column;
+}
+
+.form-actions-center {
+    justify-content: center;
+}
+
+/* Input groups */
+.input-group {
+    display: flex;
+    gap: 0;
+}
+
+.input-group .form-input {
+    border-radius: 0;
+    border-right: none;
+}
+
+.input-group .form-input:first-child {
+    border-radius: 6px 0 0 6px;
+}
+
+.input-group .form-input:last-child {
+    border-radius: 0 6px 6px 0;
+    border-right: 2px solid #e2e8f0;
+}
+
+.input-group .input-addon {
+    background: #f8f9fa;
+    border: 2px solid #e2e8f0;
+    padding: 12px 16px;
+    color: #666;
+    white-space: nowrap;
+}
+
+/* Help text */
+.form-help {
+    margin-top: 6px;
+    font-size: 14px;
+    color: #666;
+    line-height: 1.4;
+}
+
+/* Error states */
+.form-group.error .form-input {
+    border-color: #e74c3c;
+}
+
+.form-error {
+    margin-top: 6px;
+    font-size: 14px;
+    color: #e74c3c;
+}
+
+/* Responsive form spacing */
+@media (max-width: 768px) {
+    .form-group {
+        margin-bottom: 16px;
+    }
+    
+    .form-input {
+        padding: 14px 16px; /* Үлкенірек touch target */
+    }
+    
+    .form-inline {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .form-inline .form-group {
+        min-width: auto;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+}
+                        </div>
+                    </div>
+
+                    <div class="method-card">
+                        <h3>🧭 Navigation компоненттері</h3>
+                        
+                        <div class="code-example">
+                            <button class="copy-btn" onclick="copyCode(this)">Көшіру</button>
+/* Navigation spacing */
+.navbar {
+    padding: 12px 24px;
+    background: white;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.navbar-brand {
+    margin-right: 32px;
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.navbar-nav {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-item {
+    position: relative;
+}
+
+.nav-link {
+    padding: 8px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    color: #666;
+    transition: all 0.2s;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    background: #f8f9fa;
+    color: #3498db;
+}
+
+/* Dropdown navigation */
+.nav-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    padding: 8px 0;
+    margin-top: 4px;
+    min-width: 200px;
+    z-index: 1000;
+}
+
+.nav-dropdown-item {
+    padding: 10px 16px;
+    color: #333;
+    text-decoration: none;
+    display: block;
+    transition: background 0.2s;
+}
+
+.nav-dropdown-item:hover {
+    background: #f8f9fa;
+}
+
+.nav-dropdown-divider {
+    height: 1px;
+    background: #e2e8f0;
+    margin: 8px 0;
+}
+
+/* Sidebar navigation */
+.sidebar {
+    width: 250px;
+    background: #f8f9fa;
+    padding: 24px 0;
+    border-right: 1px solid #e2e8f0;
+}
+
+.sidebar-section {
+    margin-bottom: 32px;
+}
+
+.sidebar-title {
+    padding: 0 24px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #666;
+    letter-spacing: 0.5px;
+}
+
+.sidebar-nav {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.sidebar-nav-item {
+    margin-bottom: 2px;
+}
+
+.sidebar-nav-link {
+    display: block;
+    padding: 10px 24px;
+    color: #666;
+    text-decoration: none;
+    border-right: 3px solid transparent;
+    transition: all 0.2s;
+}
+
+.sidebar-nav-link:hover {
+    background: #e9ecef;
+    color: #333;
+}
+
+.sidebar-nav-link.active {
+    background: #e3f2fd;
+    color: #3498db;
+    border-right-color: #3498db;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 0;
+    font-size: 14px;
+}
+
+.breadcrumb-item {
+    color: #666;
+}
+
+.breadcrumb-item.active {
+    color: #333;
+    font-weight: 500;
+}
+
+.breadcrumb-separator {
+    color: #ccc;
+}
+
+/* Tab navigation */
+.tab-nav {
+    display: flex;
+    border-bottom: 2px solid #f0f0f0;
+    gap: 0;
+}
+
+.tab-item {
+    padding: 12px 20px;
+    border-bottom: 2px solid transparent;
+    color: #666;
+    text-decoration: none;
+    transition: all 0.2s;
+    margin-bottom: -2px;
+}
+
+.tab-item:hover {
+    color: #3498db;
+    border-bottom-color: rgba(52, 152, 219, 0.3);
+}
+
+.tab-item.active {
+    color: #3498db;
+    border-bottom-color: #3498db;
+    font-weight: 500;
+}
+
+/* Mobile navigation */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 12px 16px;
+    }
+    
+    .navbar-nav {
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        border-top: 1px solid #e2e8f0;
+        padding: 16px;
+        gap: 8px;
+    }
+    
+    .nav-link {
+        padding: 12px;
+        width: 100%;
+        text-align: left;
+    }
+    
+    .sidebar {
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: -100%;
+        height: 100vh;
+        z-index: 1000;
+        transition: left 0.3s;
+    }
+    
+    .sidebar.open {
+        left: 0;
+    }
+    
+    .tab-nav {
+        overflow-x: auto;
+        gap: 0;
+    }
+    
+    .tab-item {
+        white-space: nowrap;
+        padding: 12px 16px;
+    }
+}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Best Practices -->
+            <div class="section">
+                <h2>💡 Ең жақсы тәжірибелер</h2>
+                
+                <div class="tips-section">
+                    <h3 style="color: #2980b9; margin-bottom: 20px;">🎯 Spacing дизайн принциптері</h3>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+                        <div>
+                            <h4 style="color: #27ae60; margin-bottom: 15px;">✅ Дұрыс тәжірибелер:</h4>
+                            <ul style="color: #2c3e50; line-height: 1.8;">
+                                <li><strong>Spacing scale:</strong> Математикалық прогрессия қолданыңыз (4, 8, 16, 24, 32...)</li>
+                                <li><strong>Consistency:</strong> Бүкіл жобада бірдей spacing жүйесін ұстаныңыз</li>
+                                <li><strong>Rhythm:</strong> Vertical rhythm сақтаңыз</li>
+                                <li><strong>Touch targets:</strong> Мобилде минимум 44px басылатын аймақ</li>
+                                <li><strong>White space:</strong> Кеңістікті дизайн элементі ретінде пайдаланыңыз</li>
+                                <li><strong>Semantic spacing:</strong> Мағынаға байланысты spacing қолданыңыз</li>
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <h4 style="color: #e74c3c; margin-bottom: 15px;">❌ Қате тәжірибелер:</h4>
+                            <ul style="color: #2c3e50; line-height: 1.8;">
+                                <li>Кездейсоқ spacing мәндерін <strong>қолдану</strong></li>
+                                <li>Барлық жерде бірдей spacing <strong>пайдалану</strong></li>
+                                <li>Negative margin-ды дұрыс түсінбей <strong>қолдану</strong></li>
+                                <li>Margin collapsing ескермей layout <strong>жасау</strong></li>
+                                <li>Responsive spacing ескермеу</li>
+                                <li>Gap property-ді білмей ескі әдістерді <strong>қолдану</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div style="background: #fff3e0; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                        <h4 style="color: #e65100; margin-bottom: 15px;">🔢 Ұсынылатын spacing scale:</h4>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                            <div>
+                                <strong>Кіші spacing:</strong><br>
+                                2px, 4px, 8px, 12px
+                            </div>
+                            <div>
+                                <strong>Орташа spacing:</strong><br>
+                                16px, 20px, 24px, 32px
+                            </div>
+                            <div>
+                                <strong>Үлкен spacing:</strong><br>
+                                40px, 48px, 64px, 80px
+                            </div>
+                            <div>
+                                <strong>Секция spacing:</strong><br>
+                                96px, 128px, 160px
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Assignment -->
+            <div class="section">
+                <h2>💪 Практикалық тапсырма</h2>
+                
+                <div style="background: linear-gradient(135deg, #e8f0fe, #c8e6c9); padding: 25px; border-radius: 15px; border-left: 5px solid #8e44ad;">
+                    <h3 style="color: #7d3c98; margin-bottom: 20px;">🎯 Тапсырма: Responsive Card Layout жасау</h3>
+                    
+                    <div style="background: white; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                        <h4 style="color: #2c3e50; margin-bottom: 15px;">📋 Талаптар:</h4>
+                        <ol style="color: #2c3e50; line-height: 1.8; margin-left: 20px;">
+                            <li><strong>Card grid:</strong> 3 бағанды grid layout (desktop)</li>
+                            <li><strong>Card structure:</strong> Header, body, footer секциялары</li>
+                            <li><strong>Responsive design:</strong> Mobile-де 1 баған, tablet-те 2 баған</li>
+                            <li><strong>Spacing system:</strong> Консистентті margin/padding жүйесі</li>
+                            <li><strong>Button group:</strong> Card footer-де spacing-пен батырмалар</li>
+                            <li><strong>Gap property:</strong> Modern CSS grid gap қолдану</li>
+                            <li><strong>Touch friendly:</strong> Мобилде жеткілікті touch targets</li>
+                        </ol>
+                    </div>
+                    
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                        <h4 style="color: #2c3e50; margin-bottom: 10px;">🎨 Дизайн спецификациялары:</h4>
+                        <ul style="color: #666; margin-left: 20px;">
+                            <li>Card padding: 24px (desktop), 16px (mobile)</li>
+                            <li>Grid gap: 24px (desktop), 16px (mobile)</li>
+                            <li>Button spacing: 12px gap арасында</li>
+                            <li>Section margins: 16px арасында</li>
+                            <li>Typography spacing: 8px headings, 16px paragraphs</li>
+                        </ul>
+                    </div>
+                    
+                    <div style="text-align: center; margin: 20px 0;">
+                        <button class="btn" onclick="showSpacingTaskSolution()">💡 Шешімді көру</button>
+                        <button class="btn" onclick="openSpacingCodePen()">🔗 CodePen-де ашу</button>
+                        <button class="btn" onclick="generateSpacingTips()">🎨 Spacing кеңестері</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <!-- Task Solution Modal -->
+    <div id="spacing-solution-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; padding: 20px; overflow-y: auto;">
+        <div style="max-width: 1000px; margin: 20px auto; background: white; border-radius: 15px; padding: 30px; position: relative;">
+            <button onclick="closeSpacingSolution()" style="position: absolute; top: 15px; right: 20px; background: none; border: none; font-size: 24px; cursor: pointer;">✕</button>
+            
+            <h3 style="color: #2c3e50; margin-bottom: 20px;">💡 Responsive Card Layout шешімі</h3>
+            
+            <div class="code-example">
+                <button class="copy-btn" onclick="copyCode(this)">Көшіру</button>
+&lt;!DOCTYPE html&gt;
+&lt;html lang="kk"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Responsive Card Layout - Spacing дизайны&lt;/title&gt;
+    
+    &lt;style&gt;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            /* Spacing scale system */
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 12px;
+            --space-lg: 16px;
+            --space-xl: 24px;
+            --space-2xl: 32px;
+            --space-3xl: 48px;
+            
+            /* Responsive spacing */
+            --card-padding: var(--space-xl);
+            --grid-gap: var(--space-xl);
+            --section-margin: var(--space-lg);
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: var(--space-xl);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: var(--space-3xl);
+        }
+        
+        .page-title {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: var(--space-lg);
+        }
+        
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: #7f8c8d;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        /* Card Grid Layout */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--grid-gap);
+        }
+        
+        /* Card Component */
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+        }
+        
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1), 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+        
+        /* Card Header */
+        .card-header {
+            padding: var(--card-padding);
+            padding-bottom: var(--space-lg);
+            border-bottom: 1px solid #f8f9fa;
+            background: linear-gradient(135deg, rgba(52, 152, 219, 0.05), rgba(155, 89, 182, 0.05));
+        }
+        
+        .card-category {
+            display: inline-block;
+            padding: var(--space-xs) var(--space-md);
+            background: #3498db;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--space-md);
+        }
+        
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: var(--space-sm);
+            line-height: 1.3;
+        }
+        
+        .card-meta {
+            font-size: 0.85rem;
+            color: #95a5a6;
+            display: flex;
+            align-items: center;
+            gap: var(--space-lg);
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+        }
+        
+        /* Card Body */
+        .card-body {
+            padding: var(--card-padding);
+            padding-top: var(--space-lg);
+            padding-bottom: var(--space-lg);
+        }
+        
+        .card-description {
+            color: #5a6c7d;
+            line-height: 1.6;
+            margin-bottom: var(--space-lg);
+        }
+        
+        .card-features {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .card-features li {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-sm);
+            font-size: 0.9rem;
+            color: #5a6c7d;
+        }
+        
+        .card-features li:last-child {
+            margin-bottom: 0;
+        }
+        
+        .feature-icon {
+            color: #27ae60;
+            font-weight: bold;
+        }
+        
+        /* Card Footer */
+        .card-footer {
+            padding: var(--card-padding);
+            padding-top: var(--space-lg);
+            background: #fafbfc;
+            border-top: 1px solid #f1f3f4;
+        }
+        
+        .card-price {
+            display: flex;
+            align-items: baseline;
+            gap: var(--space-xs);
+            margin-bottom: var(--space-lg);
+        }
+        
+        .price-amount {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+        
+        .price-currency {
+            font-size: 1.1rem;
+            color: #7f8c8d;
+        }
+        
+        .price-period {
+            font-size: 0.9rem;
+            color: #95a5a6;
+        }
+        
+        /* Button Group */
+        .button-group {
+            display: flex;
+            gap: var(--space-md);
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: var(--space-md) var(--space-xl);
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-sm);
+            min-height: 44px; /* Touch-friendly */
+        }
+        
+        .btn-primary {
+            background: #3498db;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #2980b9;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: #3498db;
+            border: 2px solid #3498db;
+        }
+        
+        .btn-outline:hover {
+            background: #3498db;
+            color: white;
+            transform: translateY(-1px);
+        }
+        
+        .btn-full {
+            flex: 1;
+            min-width: 100%;
+        }
+        
+        /* Card Variants */
+        .card-featured {
+            border: 2px solid #f39c12;
+            position: relative;
+        }
+        
+        .card-featured::before {
+            content: 'Ұсынылады';
+            position: absolute;
+            top: -1px;
+            right: var(--space-xl);
+            background: #f39c12;
+            color: white;
+            padding: var(--space-xs) var(--space-lg);
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: 0 0 8px 8px;
+        }
+        
+        .card-featured .card-category {
+            background: #f39c12;
+        }
+        
+        /* Responsive Design */
+        
+        /* Tablet (768px - 1023px) */
+        @media (max-width: 1023px) {
+            .card-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        /* Mobile (до 767px) */
+        @media (max-width: 767px) {
+            :root {
+                --card-padding: var(--space-lg);
+                --grid-gap: var(--space-lg);
+                --section-margin: var(--space-md);
+            }
+            
+            body {
+                padding: var(--space-lg);
+            }
+            
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .card-header {
+                padding-bottom: var(--space-md);
+            }
+            
+            .card-body {
+                padding-top: var(--space-md);
+                padding-bottom: var(--space-md);
+            }
+            
+            .card-footer {
+                padding-top: var(--space-md);
+            }
+            
+            .button-group {
+                flex-direction: column;
+                gap: var(--space-sm);
+            }
+            
+            .btn {
+                width: 100%;
+                padding: var(--space-lg) var(--space-xl);
+                min-height: 48px; /* Үлкенірек touch target */
+            }
+            
+            .card-title {
+                font-size: 1.2rem;
+            }
+            
+            .price-amount {
+                font-size: 1.75rem;
+            }
+        }
+        
+        /* Extra small (до 480px) */
+        @media (max-width: 480px) {
+            :root {
+                --card-padding: var(--space-md);
+            }
+            
+            body {
+                padding: var(--space-md);
+            }
+            
+            .page-header {
+                margin-bottom: var(--space-2xl);
+            }
+            
+            .card-meta {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: var(--space-xs);
+            }
+        }
+        
+        /* Loading States */
+        .card-loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+        
+        .card-loading .card-body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.8);
+            z-index: 1;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="container"&gt;
+        &lt;header class="page-header"&gt;
+            &lt;h1 class="page-title"&gt;🏗️ Responsive Card Layout&lt;/h1&gt;
+            &lt;p class="page-subtitle"&gt;
+                Заманауи CSS Grid, Flexbox және Spacing жүйесімен жасалған 
+                толық responsive карта компоненттері
+            &lt;/p&gt;
+        &lt;/header&gt;
+        
+        &lt;main class="card-grid"&gt;
+            &lt;!-- Card 1 --&gt;
+            &lt;article class="card"&gt;
+                &lt;header class="card-header"&gt;
+                    &lt;span class="card-category"&gt;Starter&lt;/span&gt;
+                    &lt;h2 class="card-title"&gt;Жаңадан бастаушылар үшін&lt;/h2&gt;
+                    &lt;div class="card-meta"&gt;
+                        &lt;div class="meta-item"&gt;
+                            &lt;span&gt;⏰&lt;/span&gt;
+                            &lt;span&gt;5 минут&lt;/span&gt;
+                        &lt;/div&gt;
+                        &lt;div class="meta-item"&gt;
+                            &lt;span&gt;👤&lt;/span&gt;
+                            &lt;span&gt;1 пользователь&lt;/span&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/header&gt;
+                
+                &lt;div class="card-body"&gt;
+                    &lt;p class="card-description"&gt;
+                        Web дамытуды жаңа бастағандар үшін арнайы жасалған тариф. 
+                        Негізгі құралдар мен қолдауы бар.
+                    &lt;/p&gt;
+                    
+                    &lt;ul class="card-features"&gt;
+                        &lt;li&gt;&lt;span class="feature-icon"&gt;✓&lt;/span&gt; Негізгі шаблондар&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+                
+                &lt;footer class="card-footer"&gt;
+                    &lt;div class="card-price"&gt;
+                        &lt;span class="price-amount"&gt;$9&lt;/span&gt;
+                        &lt;span class="price-currency"&gt;USD&lt;/span&gt;
+                        &lt;span class="price-period"&gt;/ай&lt;/span&gt;
+                    &lt;/div&gt;
+                    
+                    &lt;div class="button-group"&gt;
+                        &lt;button class="btn btn-primary"&gt;Бастау&lt;/button&gt;
+                        &lt;button class="btn btn-outline"&gt;Толығырақ&lt;/button&gt;
+                    &lt;/div&gt;
+                &lt;/footer&gt;
+            &lt;/article&gt;
+            
+            &lt;!-- Card 2 - Featured --&gt;
+            &lt;article class="card card-featured"&gt;
+                &lt;header class="card-header"&gt;
+                    &lt;span class="card-category"&gt;Professional&lt;/span&gt;
+                    &lt;h2 class="card-title"&gt;Кәсіби дамытушылар үшін&lt;/h2&gt;
+                    &lt;div class="card-meta"&gt;
+                        &lt;div class="meta-item"&gt;
+                            &lt;span&gt;⚡&lt;/span&gt;
+                            &lt;span&gt;Шектеусіз&lt;/span&gt;
+                        &lt;/div&gt;
+                        &lt;div class="meta-item"&gt;
+                            &lt;span&gt;👥&lt;/span&gt;
+                            &lt;span&gt;5 пользователь&lt;/span&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/header&gt;
+                
+                &lt;div class="card-body"&gt;
+                    &lt;p class="card-description"&gt;
+                        Кәсіби дамытушылар мен кіші командалар үшін толық функционалды тариф. 
+                        Кеңейтілген құралдар мен приоритетті қолдау.
+                    &lt;/p&gt;
+                    
+                    &lt;ul class="card-features"&gt;
+                        &lt;li&gt;&lt;span class="feature-icon"&gt;✓&lt;/span&gt; Шектеусіз жобалар&lt;/li&gt;
+                        &lt;li&gt;&lt;span class="feature-icon"&gt;✓&lt;/span&gt; 100GB сақтау орны&lt;/li&gt;
+                        &lt;li&gt;&lt;span class="feature-icon"&gt;✓&lt;/span&gt; Приоритетті қолдау&lt;/li&gt;
+                        &lt;li&gt;&lt;span class="feature-icon"&gt;✓&lt;/span&gt; Кеңейтілген аналитика&lt;/li&gt;
+                        &lt;li&gt;&lt;span class="feature-icon"&gt;✓&lt;/span&gt; API кірісі&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+                
+                &lt;footer class="card-footer"&gt;
+                    &lt;div class="card-price"&gt;
+                        &lt;span class="price-amount"&gt;$29&lt;/span&gt;
+                        &lt;span class="price-currency"&gt;USD&lt;/span&gt;
+                        &lt;span class="price-period"&gt;/ай&lt;/span&gt;
+                    &lt;/div&gt;
+                    
+                    &lt;div class="button-group"&gt;
+                        &lt;button class="btn btn-primary btn-full"&gt;🚀 Таңдау&lt;/button&gt;
+                        &lt;button class="btn btn-outline"&gt;Сынап көру&lt;/button&gt;
+                    &lt;/div&gt;
+                &lt;/footer&gt;
+            &lt;/article&gt;
+            
+            &lt;!-- Card 3 --&gt;
+            &lt;article class="card"&gt;
+                &lt;header class="card-header"&gt;
+                    &lt;span class="card-category"&gt;Enterprise&lt;/span&gt;
+                    &lt;h2 class="card-title"&gt;Ірі компаниялар үшін&lt;/h2&gt;
+                    &lt;div class="card-meta"&gt;
+                        &lt;div class="meta-item"&gt;
+                            &lt;span&gt;🏢&lt;/span&gt;
+                            &lt;span&gt;Шектеусіз&lt;/span&gt;
+                        &lt;/div&gt;
+                        &lt;div class="meta-item"&gt;
+                            &lt;span&gt;🛡️&lt;/span&gt;
+                            &lt;span&gt;Қауіпсіздік&lt;/span&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/header&gt;
+                
+                &lt;div class="card-body"&gt;
+                    &lt;p class="card-description"&gt;
+                        Ірі компаниялар мен кәсіпорындар үшін арнайы шешім. 
+                        Максималды қауіпсіздік пен толық бақылау.
+                    &lt;/p&gt;
+                    
+                    &lt;ul class="card-features"&gt;
+                        &lt;li&gt;&lt;span class="feature-icon"&gt;✓&lt;/span&gt; Барлық функциялар&lt;/li&gt;
+                        &lt;li&gt;&lt;span class="feature-icon"&gt;✓&lt;/span&gt; Шектеусіз сақтау&lt;/li&gt;
+                        &lt;li&gt;&lt;span class="feature-icon"&gt;✓&lt;/span&gt; 24/7 қолдау&lt;/li&gt;
+                        &lt;li&gt;&lt;span class="feature-icon"&gt;✓&lt;/span&gt; SLA кепілдіктері&lt;/li&gt;
+                        &lt;li&gt;&lt;span class="feature-icon"&gt;✓&lt;/span&gt; Жеке менеджер&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+                
+                &lt;footer class="card-footer"&gt;
+                    &lt;div class="card-price"&gt;
+                        &lt;span class="price-amount"&gt;$99&lt;/span&gt;
+                        &lt;span class="price-currency"&gt;USD&lt;/span&gt;
+                        &lt;span class="price-period"&gt;/ай&lt;/span&gt;
+                    &lt;/div&gt;
+                    
+                    &lt;div class="button-group"&gt;
+                        &lt;button class="btn btn-primary"&gt;Хабарласу&lt;/button&gt;
+                        &lt;button class="btn btn-outline"&gt;Ұсыныс сұрау&lt;/button&gt;
+                    &lt;/div&gt;
+                &lt;/footer&gt;
+            &lt;/article&gt;
+        &lt;/main&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+            </div>
+            
+            <div style="background: #e8f5e8; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                <h4 style="color: #2c3e50; margin-bottom: 15px;">🎯 Шешімдегі кілт техникалар:</h4>
+                <ul style="color: #34495e; line-height: 1.8;">
+                    <li><strong>CSS Custom Properties:</strong> --space-* айнымалылары арқылы spacing scale</li>
+                    <li><strong>CSS Grid:</strong> grid-template-columns және gap property</li>
+                    <li><strong>Flexbox:</strong> Button group-тағы spacing</li>
+                    <li><strong>Mobile-first:</strong> Responsive breakpoints</li>
+                    <li><strong>Touch-friendly:</strong> 44px минимум touch targets</li>
+                    <li><strong>Semantic HTML:</strong> article, header, footer элементтері</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Spacing builder айнымалылары
+        let currentSpacing = {
+            marginTop: 10,
+            marginRight: 10,
+            marginBottom: 10,
+            marginLeft: 10,
+            paddingTop: 15,
+            paddingRight: 20,
+            paddingBottom: 15,
+            paddingLeft: 20,
+            bgColor: '#3498db',
+            textColor: '#ffffff',
+            containerWidth: 300
+        };
+        
+        // Кодты көшіру функциясы
+        function copyCode(button) {
+            const codeBlock = button.parentElement;
+            const code = codeBlock.textContent.replace('Көшіру', '').trim();
+            
+            navigator.clipboard.writeText(code).then(function() {
+                showToast('📋 Код сәтті көшірілді!');
+                button.textContent = 'Көшірілді!';
+                setTimeout(() => button.textContent = 'Көшіру', 2000);
+            }).catch(function(err) {
+                showToast('❌ Көшіру қатесі!');
+            });
+        }
+        
+        // Spacing стилін көшіру
+        function copySpacingStyle(style) {
+            navigator.clipboard.writeText(style).then(function() {
+                showToast('🎨 Spacing стилі көшірілді!');
+            });
+        }
+        
+        // Spacing preview жаңарту
+        function updateSpacingPreview() {
+            const preview = document.getElementById('spacingPreview');
+            const element = document.getElementById('previewElement');
+            const output = document.getElementById('spacingOutput');
+            
+            // Мәндерді алу
+            currentSpacing.marginTop = document.getElementById('marginTop').value;
+            currentSpacing.marginRight = document.getElementById('marginRight').value;
+            currentSpacing.marginBottom = document.getElementById('marginBottom').value;
+            currentSpacing.marginLeft = document.getElementById('marginLeft').value;
+            currentSpacing.paddingTop = document.getElementById('paddingTop').value;
+            currentSpacing.paddingRight = document.getElementById('paddingRight').value;
+            currentSpacing.paddingBottom = document.getElementById('paddingBottom').value;
+            currentSpacing.paddingLeft = document.getElementById('paddingLeft').value;
+            currentSpacing.bgColor = document.getElementById('bgColor').value;
+            currentSpacing.textColor = document.getElementById('textColor').value;
+            currentSpacing.containerWidth = document.getElementById('containerWidth').value;
+            
+            // UI мәндерін жаңарту
+            document.getElementById('marginTopValue').textContent = currentSpacing.marginTop;
+            document.getElementById('marginRightValue').textContent = currentSpacing.marginRight;
+            document.getElementById('marginBottomValue').textContent = currentSpacing.marginBottom;
+            document.getElementById('marginLeftValue').textContent = currentSpacing.marginLeft;
+            document.getElementById('paddingTopValue').textContent = currentSpacing.paddingTop;
+            document.getElementById('paddingRightValue').textContent = currentSpacing.paddingRight;
+            document.getElementById('paddingBottomValue').textContent = currentSpacing.paddingBottom;
+            document.getElementById('paddingLeftValue').textContent = currentSpacing.paddingLeft;
+            document.getElementById('containerWidthValue').textContent = currentSpacing.containerWidth;
+            
+            // Element стилін қолдану
+            element.style.margin = `${currentSpacing.marginTop}px ${currentSpacing.marginRight}px ${currentSpacing.marginBottom}px ${currentSpacing.marginLeft}px`;
+            element.style.padding = `${currentSpacing.paddingTop}px ${currentSpacing.paddingRight}px ${currentSpacing.paddingBottom}px ${currentSpacing.paddingLeft}px`;
+            element.style.backgroundColor = currentSpacing.bgColor;
+            element.style.color = currentSpacing.textColor;
+            
+            // Preview container өлшемі
+            preview.style.width = `${currentSpacing.containerWidth}px`;
+            
+            // CSS кодын жаңарту
+            output.innerHTML = `
+<strong>CSS Code:</strong><br>
+margin: ${currentSpacing.marginTop}px ${currentSpacing.marginRight}px ${currentSpacing.marginBottom}px ${currentSpacing.marginLeft}px;<br>
+padding: ${currentSpacing.paddingTop}px ${currentSpacing.paddingRight}px ${currentSpacing.paddingBottom}px ${currentSpacing.paddingLeft}px;<br>
+background: ${currentSpacing.bgColor};<br>
+color: ${currentSpacing.textColor};
+            `.trim();
+        }
+        
+        // Spacing CSS көшіру
+        function copySpacingCSS() {
+            const css = `margin: ${currentSpacing.marginTop}px ${currentSpacing.marginRight}px ${currentSpacing.marginBottom}px ${currentSpacing.marginLeft}px;
+padding: ${currentSpacing.paddingTop}px ${currentSpacing.paddingRight}px ${currentSpacing.paddingBottom}px ${currentSpacing.paddingLeft}px;
+background: ${currentSpacing.bgColor};
+color: ${currentSpacing.textColor};`;
+            
+            navigator.clipboard.writeText(css).then(function() {
+                showToast('📋 Spacing CSS көшірілді!');
+            });
+        }
+        
+        // Spacing builder-ді қалпына келтіру
+        function resetSpacingBuilder() {
+            document.getElementById('marginTop').value = 10;
+            document.getElementById('marginRight').value = 10;
+            document.getElementById('marginBottom').value = 10;
+            document.getElementById('marginLeft').value = 10;
+            document.getElementById('paddingTop').value = 15;
+            document.getElementById('paddingRight').value = 20;
+            document.getElementById('paddingBottom').value = 15;
+            document.getElementById('paddingLeft').value = 20;
+            document.getElementById('bgColor').value = '#3498db';
+            document.getElementById('textColor').value = '#ffffff';
+            document.getElementById('containerWidth').value = 300;
+            
+            updateSpacingPreview();
+            showToast('🔄 Бастапқы қалпына келтірілді!');
+        }
+        
+        // Кездейсоқ spacing жасау
+        function randomizeSpacing() {
+            document.getElementById('marginTop').value = Math.floor(Math.random() * 30);
+            document.getElementById('marginRight').value = Math.floor(Math.random() * 30);
+            document.getElementById('marginBottom').value = Math.floor(Math.random() * 30);
+            document.getElementById('marginLeft').value = Math.floor(Math.random() * 30);
+            document.getElementById('paddingTop').value = Math.floor(Math.random() * 40) + 5;
+            document.getElementById('paddingRight').value = Math.floor(Math.random() * 40) + 5;
+            document.getElementById('paddingBottom').value = Math.floor(Math.random() * 40) + 5;
+            document.getElementById('paddingLeft').value = Math.floor(Math.random() * 40) + 5;
+            
+            updateSpacingPreview();
+            showToast('🎲 Кездейсоқ spacing жасалды!');
+        }
+        
+        // Preset spacing
+        function presetSpacing(type) {
+            switch(type) {
+                case 'button':
+                    document.getElementById('marginTop').value = 8;
+                    document.getElementById('marginRight').value = 8;
+                    document.getElementById('marginBottom').value = 8;
+                    document.getElementById('marginLeft').value = 8;
+                    document.getElementById('paddingTop').value = 12;
+                    document.getElementById('paddingRight').value = 24;
+                    document.getElementById('paddingBottom').value = 12;
+                    document.getElementById('paddingLeft').value = 24;
+                    document.getElementById('bgColor').value = '#3498db';
+                    showToast('🔘 Button preset қолданылды!');
+                    break;
+                case 'card':
+                    document.getElementById('marginTop').value = 20;
+                    document.getElementById('marginRight').value = 0;
+                    document.getElementById('marginBottom').value = 24;
+                    document.getElementById('marginLeft').value = 0;
+                    document.getElementById('paddingTop').value = 24;
+                    document.getElementById('paddingRight').value = 24;
+                    document.getElementById('paddingBottom').value = 24;
+                    document.getElementById('paddingLeft').value = 24;
+                    document.getElementById('bgColor').value = '#ffffff';
+                    document.getElementById('textColor').value = '#2c3e50';
+                    showToast('🃏 Card preset қолданылды!');
+                    break;
+            }
+            updateSpacingPreview();
+        }
+        
+        // Тапсырма функциялары
+        function showSpacingTaskSolution() {
+            document.getElementById('spacing-solution-modal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeSpacingSolution() {
+            document.getElementById('spacing-solution-modal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        
+        function openSpacingCodePen() {
+            showToast('💡 CodePen ашылуда...');
+            setTimeout(() => {
+                showToast('📝 Жоғарыдағы кодты CodePen-ге көшіріп пайдаланыңыз!');
+            }, 1500);
+        }
+        
+        function generateSpacingTips() {
+            const tips = [
+                '📏 8px-дан бастаңыз: 8, 16, 24, 32, 40... (scale system)',
+                '📱 Мобилде touch target-тарды 44px етіңіз',
+                '🎯 Margin - элементтер арасы, Padding - контент арасы',
+                '⚡ CSS Grid gap property пайдаланыңыз',
+                '🔄 CSS Custom Properties spacing үшін қолданыңыз',
+                '📐 Vertical rhythm сақтаңыз (1.5em line-height)',
+                '🎨 White space-ті дизайн элементі ретінде пайдаланыңыз',
+                '📦 Box-sizing: border-box қолданыңыз'
+            ];
+            
+            const randomTip = tips[Math.floor(Math.random() * tips.length)];
+            showToast(randomTip);
+        }
+        
+        // Toast хабарламасы
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(function() {
+                toast.classList.remove('show');
+            }, 4000);
+        }
+        
+        // Modal жабу
+        document.getElementById('spacing-solution-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeSpacingSolution();
+            }
+        });
+        
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', function() {
+            updateSpacingPreview();
+        });
+    </script>
+</body>

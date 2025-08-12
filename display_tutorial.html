@@ -1,0 +1,1503 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Display - толық сабақ</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #8e44ad, #3498db);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .content {
+            padding: 40px;
+            display: grid;
+            gap: 30px;
+        }
+
+        .section {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 5px solid #8e44ad;
+        }
+
+        .section h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .methods-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .method-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border-left: 4px solid;
+        }
+
+        .method-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .basic-cards { border-left-color: #e74c3c; }
+        .layout-cards { border-left-color: #3498db; }
+        .modern-cards { border-left-color: #27ae60; }
+        .advanced-cards { border-left-color: #f39c12; }
+
+        .method-card h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .code-example {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            margin: 15px 0;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #8e44ad;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 11px;
+        }
+
+        .copy-btn:hover {
+            background: #7d3c98;
+        }
+
+        .display-demo {
+            background: #f8f9fa;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .demo-container {
+            background: #fff;
+            border: 2px dashed #ccc;
+            padding: 15px;
+            margin: 10px 0;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .demo-element {
+            background: #3498db;
+            color: white;
+            padding: 8px 12px;
+            margin: 5px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .demo-element:hover {
+            background: #2980b9;
+            transform: scale(1.05);
+        }
+
+        .interactive-demo {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .display-controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .control-group {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .control-btn {
+            width: 100%;
+            padding: 8px 12px;
+            margin: 3px 0;
+            border: 2px solid #3498db;
+            background: white;
+            color: #3498db;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .control-btn:hover {
+            background: #3498db;
+            color: white;
+        }
+
+        .control-btn.active {
+            background: #3498db;
+            color: white;
+        }
+
+        .display-preview {
+            background: #f8f9fa;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            min-height: 200px;
+        }
+
+        .preview-container {
+            background: white;
+            border: 2px dashed #bbb;
+            padding: 15px;
+            border-radius: 8px;
+            min-height: 150px;
+        }
+
+        .preview-element {
+            background: #3498db;
+            color: white;
+            padding: 10px 15px;
+            margin: 5px;
+            border-radius: 5px;
+            font-weight: bold;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #8e44ad 0%, #3498db 100%);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .comparison-item {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .tips-section {
+            background: #e8f4fd;
+            border: 2px solid #3498db;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #8e44ad, #3498db);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #8e44ad;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            z-index: 1000;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        /* Display value мысалдары */
+        .demo-block { display: block; background: #e74c3c; }
+        .demo-inline { display: inline; background: #f39c12; }
+        .demo-inline-block { display: inline-block; background: #27ae60; }
+        .demo-flex { display: flex; background: #3498db; gap: 10px; }
+        .demo-grid { display: grid; background: #9b59b6; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .demo-none { display: none; }
+        .demo-table { display: table; background: #1abc9c; width: 100%; }
+        .demo-table-cell { display: table-cell; background: #16a085; padding: 10px; border: 1px solid #fff; }
+
+        /* Flexbox демосы */
+        .flex-demo {
+            display: flex;
+            background: #ecf0f1;
+            border: 2px solid #bdc3c7;
+            padding: 10px;
+            margin: 10px 0;
+            min-height: 80px;
+        }
+
+        .flex-item {
+            background: #3498db;
+            color: white;
+            padding: 10px 15px;
+            margin: 5px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        /* Grid демосы */
+        .grid-demo {
+            display: grid;
+            background: #ecf0f1;
+            border: 2px solid #bdc3c7;
+            padding: 10px;
+            margin: 10px 0;
+            gap: 10px;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        }
+
+        .grid-item {
+            background: #9b59b6;
+            color: white;
+            padding: 15px;
+            border-radius: 4px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        /* Table демосы */
+        .table-demo {
+            display: table;
+            width: 100%;
+            background: #ecf0f1;
+            border: 2px solid #bdc3c7;
+            margin: 10px 0;
+        }
+
+        .table-row {
+            display: table-row;
+        }
+
+        .table-cell {
+            display: table-cell;
+            background: #1abc9c;
+            color: white;
+            padding: 15px;
+            border: 2px solid white;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .methods-grid, .display-controls, .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📺 CSS Display</h1>
+            <p>Элементтердің көрсетілу әдісін басқару және layout жасау</p>
+        </div>
+
+        <div class="content">
+            <!-- Introduction -->
+            <div class="section">
+                <h2>📚 Кіріспе</h2>
+                
+                <p style="font-size: 1.1rem; margin-bottom: 20px;">
+                    Display property - CSS-тің ең маңызды қасиеттерінің бірі. <span class="highlight">Дұрыс display мәнін таңдау</span> layout-тың негізі болып табылады және элементтердің өзара әрекеттесуін анықтайды.
+                </p>
+
+                <div style="background: #f0e6ff; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                    <h3 style="color: #7d3c98; margin-bottom: 15px;">🎯 Осы сабақта үйренетініміз:</h3>
+                    <ul style="color: #2c3e50; line-height: 1.8; margin-left: 20px;">
+                        <li>Display мәндерінің түрлері (block, inline, flex, grid...)</li>
+                        <li>Block vs Inline vs Inline-block айырмашылықтары</li>
+                        <li>Flexbox layout жүйесі</li>
+                        <li>CSS Grid layout</li>
+                        <li>Table display қасиеттері</li>
+                        <li>Display: none vs visibility: hidden</li>
+                        <li>Responsive display техникалары</li>
+                        <li>Заманауи display мәндері</li>
+                    </ul>
+                </div>
+
+                <div class="display-demo">
+                    <h4 style="margin-bottom: 20px; color: #2c3e50;">🔍 Display мәндерінің көрінісі</h4>
+                    <div style="text-align: left;">
+                        <div class="demo-container">
+                            <span style="background: #e74c3c; color: white; padding: 5px 10px; margin: 2px; display: block; text-align: center;">Block элементі</span>
+                        </div>
+                        <div class="demo-container">
+                            <span style="background: #f39c12; color: white; padding: 5px 10px; margin: 2px;">Inline</span> 
+                            <span style="background: #f39c12; color: white; padding: 5px 10px; margin: 2px;">элементтер</span> 
+                            <span style="background: #f39c12; color: white; padding: 5px 10px; margin: 2px;">жолда орналасады</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Basic Display Values -->
+            <div class="section">
+                <h2>📏 Негізгі Display мәндері</h2>
+                
+                <div class="methods-grid">
+                    <div class="method-card basic-cards">
+                        <h3>🔴 Block элементтер</h3>
+                        <p><strong>Блок деңгейіндегі элементтер:</strong> Толық ені алады, жаңа жолдан басталады</p>
+                        
+                        <div class="code-example">
+                            <button class="copy-btn" onclick="copyCode(this)">Көшіру</button>
+/* Block display */
+.block-element {
+    display: block;
+    width: 100%; /* Әдепкі мән */
+    margin: 0; /* Әдепкі мән */
+    padding: 0; /* Әдепкі мән */
+}
+
+/* Негізгі block элементтер */
+div, p, h1-h6, section, article, 
+header, footer, main, aside {
+    display: block; /* Браузер әдепкі стилі */
+}
+
+/* Block ерекшеліктері */
+.custom-block {
+    display: block;
+    width: 300px; /* Ені орнатуға болады */
+    height: 100px; /* Биіктігі орнатуға болады */
+    margin: 20px auto; /* Margin қолдануға болады */
+    padding: 15px; /* Padding жұмыс істейді */
+    background: #3498db;
+    color: white;
+    text-align: center;
+}
+
+/* Inline элементті block-қа айналдыру */
+span.block-span {
+    display: block;
+    width: 200px;
+    background: #e74c3c;
+    color: white;
+    padding: 10px;
+    margin: 10px 0;
+    text-align: center;
+}
+
+/* Block элементтердің stack-талуы */
+.stacked-blocks {
+    display: block;
+    background: #27ae60;
+    color: white;
+    padding: 10px;
+    margin: 5px 0;
+    text-align: center;
+}
+                        </div>
+
+                        <div class="display-demo">
+                            <h4 style="margin-bottom: 15px;">Block элементтер мысалы:</h4>
+                            <div style="text-align: left;">
+                                <div class="demo-element demo-block" style="margin: 5px 0; text-align: center;">Block Element 1</div>
+                                <div class="demo-element demo-block" style="margin: 5px 0; text-align: center;">Block Element 2</div>
+                                <div class="demo-element demo-block" style="margin: 5px 0; text-align: center;">Block Element 3</div>
+                            </div>
+                        </div>
+
+                        <div style="background: #ffebee; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                            <h4 style="color: #c62828; margin-bottom: 10px;">📋 Block элементтердің ерекшеліктері:</h4>
+                            <ul style="color: #34495e; line-height: 1.8;">
+                                <li>Толық ені алады (width: 100%)</li>
+                                <li>Жаңа жолдан басталады</li>
+                                <li>Width, height орнатуға болады</li>
+                                <li>Барлық margin, padding жұмыс істейді</li>
+                                <li>Вертикалды margin collapse болады</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="method-card basic-cards">
+                        <h3>🟡 Inline элементтер</h3>
+                        <p><strong>Жол ішіндегі элементтер:</strong> Мәтін ағынында орналасады</p>
+                        
+                        <div class="code-example">
+                            <button class="copy-btn" onclick="copyCode(this)">Көшіру</button>
+/* Inline display */
+.inline-element {
+    display: inline;
+    /* width, height жұмыс істемейді */
+    /* margin-top, margin-bottom жұмыс істемейді */
+    /* padding-top, padding-bottom көрінеді бірақ layout-қа әсер етпейді */
+}
+
+/* Негізгі inline элементтер */
+span, a, strong, em, code, small,
+img, input, button, select {
+    display: inline; /* Браузер әдепкі стилі */
+}
+
+/* Inline элементтердің стилі */
+.custom-inline {
+    display: inline;
+    background: #f39c12;
+    color: white;
+    padding: 5px 10px; /* Горизонталды padding ғана */
+    margin: 0 5px; /* Горизонталды margin ғана */
+    border-radius: 3px;
+}
+
+/* Block элементті inline-ға айналдыру */
+div.inline-div {
+    display: inline;
+    background: #9b59b6;
+    color: white;
+    padding: 8px 12px;
+    margin: 0 3px;
+}
+                        </div>
+
+                        <div class="display-demo">
+                            <h4 style="margin-bottom: 15px;">Inline элементтер мысалы:</h4>
+                            <div style="text-align: left; padding: 15px; background: #f8f9fa; border-radius: 5px;">
+                                Бұл <span class="demo-element demo-inline" style="padding: 5px 8px; margin: 0 2px;">inline</span> 
+                                элементтер <span class="demo-element demo-inline" style="padding: 5px 8px; margin: 0 2px;">мәтін</span> 
+                                ағынында <span class="demo-element demo-inline" style="padding: 5px 8px; margin: 0 2px;">орналасады</span> 
+                                және wrap болады.
+                            </div>
+                        </div>
+
+                        <div style="background: #fff3e0; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                            <h4 style="color: #f57f17; margin-bottom: 10px;">📋 Inline элементтердің ерекшеліктері:</h4>
+                            <ul style="color: #34495e; line-height: 1.8;">
+                                <li>Контенттің ені қаншалықты, сонша алады</li>
+                                <li>Жаңа жол жасамайды</li>
+                                <li>Width, height орнатуға болмайды</li>
+                                <li>Тек горизонталды margin/padding</li>
+                                <li>Мәтінмен бірге wrap болады</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="method-card basic-cards">
+                        <h3>🟢 Inline-block элементтер</h3>
+                        <p><strong>Аралас элементтер:</strong> Inline сияқты орналасып, block сияқты мінез-құлық</p>
+                        
+                        <div class="code-example">
+                            <button class="copy-btn" onclick="copyCode(this)">Көшіру</button>
+/* Inline-block display */
+.inline-block-element {
+    display: inline-block;
+    width: 150px; /* Width орнатуға болады */
+    height: 60px; /* Height орнатуға болады */
+    margin: 10px; /* Барлық margin жұмыс істейді */
+    padding: 15px; /* Барлық padding жұмыс істейді */
+    vertical-align: top; /* Вертикалды туралау */
+}
+
+/* Батырмалар үшін inline-block */
+.btn-inline-block {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #3498db;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    margin: 5px;
+    text-align: center;
+    min-width: 100px;
+    transition: background 0.3s;
+}
+
+.btn-inline-block:hover {
+    background: #2980b9;
+}
+
+/* Навигация элементтері */
+.nav-item {
+    display: inline-block;
+    padding: 10px 15px;
+    margin: 0 5px;
+    background: #2c3e50;
+    color: white;
+    border-radius: 4px;
+    vertical-align: middle;
+}
+                        </div>
+
+                        <div class="display-demo">
+                            <h4 style="margin-bottom: 15px;">Inline-block элементтер мысалы:</h4>
+                            <div style="text-align: center;">
+                                <div class="demo-element demo-inline-block" style="width: 100px; height: 60px; line-height: 40px; margin: 5px; display: inline-block;">Item 1</div>
+                                <div class="demo-element demo-inline-block" style="width: 120px; height: 80px; line-height: 60px; margin: 5px; display: inline-block;">Item 2</div>
+                                <div class="demo-element demo-inline-block" style="width: 110px; height: 70px; line-height: 50px; margin: 5px; display: inline-block;">Item 3</div>
+                            </div>
+                        </div>
+
+                        <div style="background: #e8f5e8; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                            <h4 style="color: #2e7d32; margin-bottom: 10px;">📋 Inline-block артықшылықтары:</h4>
+                            <ul style="color: #34495e; line-height: 1.8;">
+                                <li>Width, height орнатуға болады</li>
+                                <li>Барлық margin, padding жұмыс істейді</li>
+                                <li>Горизонталды жолда орналасады</li>
+                                <li>Vertical-align қолдануға болады</li>
+                                <li>Float-тың орнына қолдануға болады</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="method-card basic-cards">
+                        <h3>❌ None мәні</h3>
+                        <p><strong>Жасыру:</strong> Элементті толықтай DOM-нан жасыру</p>
+                        
+                        <div class="code-example">
+                            <button class="copy-btn" onclick="copyCode(this)">Көшіру</button>
+/* Display none */
+.hidden {
+    display: none; /* Элемент толықтай жасырылады */
+}
+
+/* Visibility hidden салыстыру */
+.invisible {
+    visibility: hidden; /* Орнын сақтайды, бірақ көрінбейді */
+}
+
+/* Шартты жасыру */
+.mobile-hidden {
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .mobile-hidden {
+        display: none; /* Мобилде жасыру */
+    }
+}
+
+/* JavaScript арқылы көрсету/жасыру */
+.toggle-element {
+    display: block;
+    transition: opacity 0.3s ease;
+}
+
+.toggle-element.hidden {
+    display: none;
+}
+
+/* Modal жасыру/көрсету */
+.modal {
+    display: none; /* Әдепкі жасырын */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+}
+
+.modal.active {
+    display: flex; /* Көрсету кезінде flex */
+    align-items: center;
+    justify-content: center;
+}
+                        </div>
+
+                        <div class="display-demo">
+                            <h4 style="margin-bottom: 15px;">Display: none vs Visibility: hidden</h4>
+                            <div style="text-align: left;">
+                                <div style="background: #f8f9fa; padding: 10px; margin: 5px 0; border: 2px dashed #ccc;">
+                                    <div style="background: #3498db; color: white; padding: 10px; margin: 5px; display: inline-block;">Көрінетін элемент</div>
+                                    <div style="background: #e74c3c; color: white; padding: 10px; margin: 5px; visibility: hidden; display: inline-block;">Visibility: hidden</div>
+                                    <div style="background: #27ae60; color: white; padding: 10px; margin: 5px; display: inline-block;">Келесі элемент</div>
+                                </div>
+                                <p style="font-size: 14px; color: #666; margin: 10px 0;">☝️ Visibility: hidden орнын сақтайды</p>
+                                
+                                <div style="background: #f8f9fa; padding: 10px; margin: 5px 0; border: 2px dashed #ccc;">
+                                    <div style="background: #3498db; color: white; padding: 10px; margin: 5px; display: inline-block;">Көрінетін элемент</div>
+                                    <div style="background: #27ae60; color: white; padding: 10px; margin: 5px; display: inline-block;">Келесі элемент</div>
+                                </div>
+                                <p style="font-size: 14px; color: #666; margin: 10px 0;">☝️ Display: none орнын алмайды</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modern Layout Systems -->
+            <div class="section">
+                <h2>🎯 Заманауи Layout жүйелері</h2>
+                
+                <div class="methods-grid">
+                    <div class="method-card modern-cards">
+                        <h3>🔷 Flexbox Layout</h3>
+                        <p><strong>Икемді қорап:</strong> 1-өлшемді layout жүйесі</p>
+                        
+                        <div class="code-example">
+                            <button class="copy-btn" onclick="copyCode(this)">Көшіру</button>
+/* Flexbox container */
+.flex-container {
+    display: flex;
+    flex-direction: row; /* немесе column */
+    justify-content: center; /* Main axis бойынша */
+    align-items: center; /* Cross axis бойынша */
+    gap: 20px; /* Elements арасындағы аралық */
+    flex-wrap: wrap; /* Wrap мүмкіндігі */
+}
+
+/* Flex items */
+.flex-item {
+    flex: 1; /* Grow, shrink, basis */
+    min-width: 200px;
+    padding: 15px;
+    background: #3498db;
+    color: white;
+    text-align: center;
+    border-radius: 4px;
+}
+
+/* Flex направлениелері */
+.flex-row { flex-direction: row; } /* Әдепкі */
+.flex-column { flex-direction: column; }
+.flex-row-reverse { flex-direction: row-reverse; }
+.flex-column-reverse { flex-direction: column-reverse; }
+
+/* Justify content мәндері */
+.justify-start { justify-content: flex-start; }
+.justify-end { justify-content: flex-end; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.justify-around { justify-content: space-around; }
+.justify-evenly { justify-content: space-evenly; }
+
+/* Align items мәндері */
+.align-start { align-items: flex-start; }
+.align-end { align-items: flex-end; }
+.align-center { align-items: center; }
+.align-stretch { align-items: stretch; } /* Әдепкі */
+.align-baseline { align-items: baseline; }
+
+/* Navigation мысалы */
+.navbar-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background: #2c3e50;
+    color: white;
+}
+
+.navbar-brand {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.navbar-nav {
+    display: flex;
+    list-style: none;
+    gap: 20px;
+    margin: 0;
+    padding: 0;
+}
+
+/* Card layout */
+.card-flex-container {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.card-flex-item {
+    flex: 1 1 300px; /* grow shrink basis */
+    min-width: 300px;
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Centering мысалы */
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+    background: #ecf0f1;
+}
+                        </div>
+
+                        <div class="display-demo">
+                            <h4 style="margin-bottom: 15px;">Flexbox мысалдары:</h4>
+                            
+                            <div class="flex-demo" style="justify-content: space-between;">
+                                <div class="flex-item">Item 1</div>
+                                <div class="flex-item">Item 2</div>
+                                <div class="flex-item">Item 3</div>
+                            </div>
+                            <p style="font-size: 12px; color: #666; margin: 5px 0;">justify-content: space-between</p>
+                            
+                            <div class="flex-demo" style="justify-content: center; align-items: center;">
+                                <div class="flex-item">Центрленген</div>
+                            </div>
+                            <p style="font-size: 12px; color: #666; margin: 5px 0;">justify-content: center, align-items: center</p>
+                        </div>
+                    </div>
+
+                    <div class="method-card modern-cards">
+                        <h3>🔳 CSS Grid Layout</h3>
+                        <p><strong>Торлы жүйе:</strong> 2-өлшемді layout жүйесі</p>
+                        
+                        <div class="code-example">
+                            <button class="copy-btn" onclick="copyCode(this)">Көшіру</button>
+/* Grid container */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 бірдей баған */
+    grid-template-rows: auto; /* Автоматты жол биіктігі */
+    gap: 20px; /* Жолдар мен бағандар арасы */
+    padding: 20px;
+}
+
+/* Grid items автоматты орналасады */
+.grid-item {
+    background: #9b59b6;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    border-radius: 4px;
+}
+
+/* Нақты grid орналасуы */
+.grid-layout {
+    display: grid;
+    grid-template-columns: 200px 1fr 150px;
+    grid-template-rows: 60px 1fr 40px;
+    grid-template-areas:
+        "header header header"
+        "nav main aside"
+        "footer footer footer";
+    gap: 10px;
+    height: 100vh;
+}
+
+.grid-header { grid-area: header; background: #34495e; }
+.grid-nav { grid-area: nav; background: #2c3e50; }
+.grid-main { grid-area: main; background: #ecf0f1; }
+.grid-aside { grid-area: aside; background: #95a5a6; }
+.grid-footer { grid-area: footer; background: #7f8c8d; }
+
+/* Responsive grid */
+.responsive-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+/* Grid жолдары мен бағандары */
+.explicit-grid {
+    display: grid;
+    grid-template-columns: 100px 200px 1fr;
+    grid-template-rows: 50px 100px;
+    gap: 10px;
+}
+
+/* Grid item орналасуы */
+.positioned-item {
+    grid-column: 1 / 3; /* 1-ші бағаннан 3-шіге дейін */
+    grid-row: 1 / 2; /* 1-ші жолда */
+    background: #e74c3c;
+}
+
+/* Fractional units */
+.fr-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr; /* 1:2:1 арақатынасы */
+    gap: 15px;
+}
+
+/* Auto-fit vs auto-fill */
+.auto-fit-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+                        </div>
+
+                        <div class="display-demo">
+                            <h4 style="margin-bottom: 15px;">CSS Grid мысалдары:</h4>
+                            
+                            <div class="grid-demo" style="grid-template-columns: 1fr 2fr 1fr; margin-bottom: 10px;">
+                                <div class="grid-item">1fr</div>
+                                <div class="grid-item">2fr</div>
+                                <div class="grid-item">1fr</div>
+                            </div>
+                            <p style="font-size: 12px; color: #666; margin: 5px 0;">1fr 2fr 1fr колонкалары</p>
+                            
+                            <div class="grid-demo" style="grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));">
+                                <div class="grid-item">Auto</div>
+                                <div class="grid-item">Fit</div>
+                                <div class="grid-item">Grid</div>
+                                <div class="grid-item">Items</div>
+                            </div>
+                            <p style="font-size: 12px; color: #666; margin: 5px 0;">auto-fit, minmax(80px, 1fr)</p>
+                        </div>
+                    </div>
+
+                    <div class="method-card layout-cards">
+                        <h3>📊 Table Display</h3>
+                        <p><strong>Кесте көрінісі:</strong> Table сияқты layout жасау</p>
+                        
+                        <div class="code-example">
+                            <button class="copy-btn" onclick="copyCode(this)">Көшіру</button>
+/* Table display */
+.table-display {
+    display: table;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-row {
+    display: table-row;
+}
+
+.table-cell {
+    display: table-cell;
+    padding: 10px;
+    border: 1px solid #ddd;
+    vertical-align: middle;
+}
+
+.table-header-group {
+    display: table-header-group;
+    font-weight: bold;
+    background: #f5f5f5;
+}
+
+.table-footer-group {
+    display: table-footer-group;
+    background: #f9f9f9;
+}
+
+/* Equal height columns */
+.equal-height-container {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.equal-height-column {
+    display: table-cell;
+    vertical-align: top;
+    padding: 20px;
+    background: #ecf0f1;
+    border: 1px solid #bdc3c7;
+}
+
+/* Form layout with table display */
+.form-table {
+    display: table;
+    width: 100%;
+}
+
+.form-row {
+    display: table-row;
+}
+
+.form-label {
+    display: table-cell;
+    width: 150px;
+    padding: 10px;
+    vertical-align: middle;
+    text-align: right;
+    font-weight: bold;
+}
+
+.form-input-cell {
+    display: table-cell;
+    padding: 10px;
+}
+                        </div>
+
+                        <div class="display-demo">
+                            <h4 style="margin-bottom: 15px;">Table Display мысалы:</h4>
+                            
+                            <div class="table-demo">
+                                <div class="table-row">
+                                    <div class="table-cell">Header 1</div>
+                                    <div class="table-cell">Header 2</div>
+                                    <div class="table-cell">Header 3</div>
+                                </div>
+                                <div class="table-row">
+                                    <div class="table-cell">Cell 1</div>
+                                    <div class="table-cell">Cell 2</div>
+                                    <div class="table-cell">Cell 3</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="background: #e0f2f1; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                            <h4 style="color: #00695c; margin-bottom: 10px;">📊 Table Display артықшылықтары:</h4>
+                            <ul style="color: #34495e; line-height: 1.8;">
+                                <li>Тең биіктіктегі колонкалар</li>
+                                <li>Vertical alignment мүмкіндіктері</li>
+                                <li>Table layout algorithm</li>
+                                <li>Semantic емес table жасау</li>
+                                <li>Form layout үшін ыңғайлы</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="method-card advanced-cards">
+                        <h3>🔮 Жаңа Display мәндері</h3>
+                        <p><strong>Заманауи мүмкіндіктер:</strong> Contents, flow-root, және басқа жаңа мәндер</p>
+                        
+                        <div class="code-example">
+                            <button class="copy-btn" onclick="copyCode(this)">Көшіру</button>
+/* Display: contents */
+.contents-wrapper {
+    display: contents; /* Wrapper жоқ сияқты */
+}
+
+/* Display: flow-root */
+.flow-root-container {
+    display: flow-root; /* BFC жасау */
+    background: #ecf0f1;
+    padding: 20px;
+}
+
+.floated-element {
+    float: left;
+    width: 200px;
+    background: #3498db;
+    color: white;
+    padding: 10px;
+    margin: 0 20px 10px 0;
+}
+
+/* Display: list-item */
+.custom-list-item {
+    display: list-item;
+    list-style-position: inside;
+    list-style-type: disc;
+    padding: 5px 0;
+}
+
+/* Conditional display with supports */
+@supports (display: grid) {
+    .modern-layout {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+    }
+}
+
+@supports not (display: grid) {
+    .modern-layout {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Display Demo -->
+            <div class="section">
+                <h2>🛠️ Интерактивті Display сынағы</h2>
+                
+                <div class="interactive-demo">
+                    <h3 style="color: #2c3e50; margin-bottom: 20px;">🎛️ Display мәндерін тест етіңіз</h3>
+                    
+                    <div class="display-controls">
+                        <div class="control-group">
+                            <h4 style="margin-bottom: 10px;">Негізгі мәндер</h4>
+                            <button class="control-btn" onclick="changeDisplay('block')">Block</button>
+                            <button class="control-btn" onclick="changeDisplay('inline')">Inline</button>
+                            <button class="control-btn" onclick="changeDisplay('inline-block')">Inline-block</button>
+                            <button class="control-btn" onclick="changeDisplay('none')">None</button>
+                        </div>
+                        
+                        <div class="control-group">
+                            <h4 style="margin-bottom: 10px;">Layout жүйелері</h4>
+                            <button class="control-btn" onclick="changeDisplay('flex')">Flex</button>
+                            <button class="control-btn" onclick="changeDisplay('grid')">Grid</button>
+                            <button class="control-btn" onclick="changeDisplay('table')">Table</button>
+                            <button class="control-btn" onclick="changeDisplay('table-cell')">Table-cell</button>
+                        </div>
+                        
+                        <div class="control-group">
+                            <h4 style="margin-bottom: 10px;">Басқару</h4>
+                            <button class="control-btn" onclick="changeDisplay('contents')">Contents</button>
+                            <button class="control-btn" onclick="changeDisplay('flow-root')">Flow-root</button>
+                            <button class="control-btn" onclick="changeDisplay('list-item')">List-item</button>
+                            <button class="control-btn" onclick="resetDisplay()">Reset</button>
+                        </div>
+                    </div>
+                    
+                    <div class="display-preview" id="displayPreview">
+                        <h4 style="margin-bottom: 15px; color: #2c3e50;">Preview Container</h4>
+                        <div class="preview-container" id="previewContainer">
+                            <div class="preview-element" id="element1">Element 1</div>
+                            <div class="preview-element" id="element2">Element 2</div>
+                            <div class="preview-element" id="element3">Element 3</div>
+                        </div>
+                        
+                        <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 5px; text-align: left;">
+                            <strong>Ағымдағы CSS:</strong><br>
+                            <code id="cssOutput" style="font-family: monospace; font-size: 14px; color: #2c3e50;">
+                                display: block;
+                            </code>
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: center; margin: 20px 0;">
+                        <button class="btn" onclick="copyDisplayCSS()">📋 CSS көшіру</button>
+                        <button class="btn" onclick="animateElements()">✨ Анимация</button>
+                        <button class="btn" onclick="showDisplayExplanation()">💡 Түсіндірме</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Best Practices -->
+            <div class="section">
+                <h2>💡 Ең жақсы тәжірибелер</h2>
+                
+                <div class="tips-section">
+                    <h3 style="color: #2980b9; margin-bottom: 20px;">🎯 Display property дизайн принциптері</h3>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+                        <div>
+                            <h4 style="color: #27ae60; margin-bottom: 15px;">✅ Дұрыс тәжірибелер:</h4>
+                            <ul style="color: #2c3e50; line-height: 1.8;">
+                                <li><strong>Semantic HTML:</strong> Display орнына дұрыс HTML элементтерін пайдаланыңыз</li>
+                                <li><strong>Mobile-first:</strong> Кіші экраннан бастап responsive дизайн жасаңыз</li>
+                                <li><strong>Flexbox vs Grid:</strong> 1D үшін flex, 2D үшін grid пайдаланыңыз</li>
+                                <li><strong>Performance:</strong> Display: none animation-ға ыңғайсыз, opacity пайдаланыңыз</li>
+                                <li><strong>Accessibility:</strong> Screen reader-лер үшін дұрыс markup пайдаланыңыз</li>
+                                <li><strong>Fallbacks:</strong> Ескі браузерлер үшін fallback қамтамасыз етіңіз</li>
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <h4 style="color: #e74c3c; margin-bottom: 15px;">❌ Қате тәжірибелер:</h4>
+                            <ul style="color: #2c3e50; line-height: 1.8;">
+                                <li>Table layout үшін div+CSS орнына <strong>HTML table пайдалану</strong></li>
+                                <li>Float орнына display: inline-block <strong>дұрыс емес пайдалану</strong></li>
+                                <li>Flexbox/Grid-тің барлық мүмкіндіктерін <strong>білмей қолдану</strong></li>
+                                <li>Display: none мен visibility: hidden <strong>айырмашылығын білмеу</strong></li>
+                                <li>Responsive design-да display мәндерін <strong>дұрыс өзгертпеу</strong></li>
+                                <li>Accessibility-ді ескермей layout <strong>жасау</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div style="background: #fff3e0; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                        <h4 style="color: #e65100; margin-bottom: 15px;">🔍 Display мәнін қашан қолдану керек?</h4>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                            <div>
+                                <strong>Block:</strong><br>
+                                <small>Жаңа жолдан басталатын элементтер (div, p, h1...)</small>
+                            </div>
+                            <div>
+                                <strong>Inline:</strong><br>
+                                <small>Мәтін ішіндегі элементтер (span, a, strong...)</small>
+                            </div>
+                            <div>
+                                <strong>Flex:</strong><br>
+                                <small>1D layout, alignment, spacing</small>
+                            </div>
+                            <div>
+                                <strong>Grid:</strong><br>
+                                <small>2D layout, complex designs</small>
+                            </div>
+                            <div>
+                                <strong>Table:</strong><br>
+                                <small>Table data немесе equal height</small>
+                            </div>
+                            <div>
+                                <strong>None:</strong><br>
+                                <small>Толық жасыру, space алмайды</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Practical Task -->
+            <div class="section">
+                <h2>💪 Практикалық тапсырма</h2>
+                
+                <div style="background: linear-gradient(135deg, #e8f0fe, #c8e6c9); padding: 25px; border-radius: 15px; border-left: 5px solid #8e44ad;">
+                    <h3 style="color: #7d3c98; margin-bottom: 20px;">🎯 Тапсырма: Dashboard Layout жасау</h3>
+                    
+                    <div style="background: white; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                        <h4 style="color: #2c3e50; margin-bottom: 15px;">📋 Талаптар:</h4>
+                        <ol style="color: #2c3e50; line-height: 1.8; margin-left: 20px;">
+                            <li><strong>Header:</strong> Logo мен navigation (Flexbox)</li>
+                            <li><strong>Sidebar:</strong> Вертикалды навигация (Flexbox)</li>
+                            <li><strong>Main content:</strong> Widget grid (CSS Grid)</li>
+                            <li><strong>Widgets:</strong> Әртүрлі өлшемдегі карточкалар</li>
+                            <li><strong>Modal:</strong> Settings modal (display: none/flex)</li>
+                            <li><strong>Responsive:</strong> Mobile-де sidebar collapse</li>
+                        </ol>
+                    </div>
+                    
+                    <div style="text-align: center; margin: 20px 0;">
+                        <button class="btn" onclick="showDisplayTaskSolution()">💡 Шешімді көру</button>
+                        <button class="btn" onclick="generateDisplayTips()">🎨 Display кеңестері</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script>
+        // Display demo айнымалылары
+        let currentDisplay = 'block';
+        let elements = [];
+        
+        // Кодты көшіру функциясы
+        function copyCode(button) {
+            const codeBlock = button.parentElement;
+            const code = codeBlock.textContent.replace('Көшіру', '').trim();
+            
+            navigator.clipboard.writeText(code).then(function() {
+                showToast('📋 Код сәтті көшірілді!');
+                button.textContent = 'Көшірілді!';
+                setTimeout(() => button.textContent = 'Көшіру', 2000);
+            }).catch(function(err) {
+                showToast('❌ Көшіру қатесі!');
+            });
+        }
+        
+        // Display өзгерту
+        function changeDisplay(displayValue) {
+            currentDisplay = displayValue;
+            const elements = document.querySelectorAll('.preview-element');
+            const container = document.getElementById('previewContainer');
+            const cssOutput = document.getElementById('cssOutput');
+            
+            // Барлық control button-дардан active class-ты жою
+            document.querySelectorAll('.control-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Ағымдағы button-ға active class қосу
+            event.target.classList.add('active');
+            
+            // Display мәнін қолдану
+            elements.forEach(element => {
+                element.style.display = displayValue;
+                
+                // Арнайы стильдер
+                if (displayValue === 'flex') {
+                    container.style.display = 'flex';
+                    container.style.gap = '10px';
+                    container.style.flexWrap = 'wrap';
+                } else if (displayValue === 'grid') {
+                    container.style.display = 'grid';
+                    container.style.gridTemplateColumns = 'repeat(auto-fit, minmax(100px, 1fr))';
+                    container.style.gap = '10px';
+                } else if (displayValue === 'table') {
+                    container.style.display = 'table';
+                    container.style.width = '100%';
+                    elements.forEach(el => {
+                        el.style.display = 'table-cell';
+                        el.style.padding = '20px';
+                        el.style.border = '2px solid white';
+                    });
+                } else if (displayValue === 'table-cell') {
+                    container.style.display = 'table';
+                    elements.forEach(el => {
+                        el.style.display = 'table-cell';
+                        el.style.padding = '20px';
+                        el.style.border = '2px solid white';
+                        el.style.verticalAlign = 'middle';
+                    });
+                } else {
+                    container.style.display = 'block';
+                    container.style.gap = 'initial';
+                    container.style.gridTemplateColumns = 'initial';
+                    elements.forEach(el => {
+                        el.style.border = 'none';
+                        el.style.verticalAlign = 'initial';
+                    });
+                }
+            });
+            
+            // CSS кодын жаңарту
+            cssOutput.textContent = `display: ${displayValue};`;
+            
+            showToast(`🎨 Display: ${displayValue} қолданылды!`);
+        }
+        
+        // Display қалпына келтіру
+        function resetDisplay() {
+            changeDisplay('block');
+            document.querySelectorAll('.control-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            showToast('🔄 Display қалпына келтірілді!');
+        }
+        
+        // Display CSS көшіру
+        function copyDisplayCSS() {
+            const css = `display: ${currentDisplay};`;
+            navigator.clipboard.writeText(css).then(function() {
+                showToast('📋 Display CSS көшірілді!');
+            });
+        }
+        
+        // Элементтерді animate ету
+        function animateElements() {
+            const elements = document.querySelectorAll('.preview-element');
+            elements.forEach((element, index) => {
+                setTimeout(() => {
+                    element.style.transform = 'scale(1.1)';
+                    element.style.transition = 'transform 0.3s ease';
+                    setTimeout(() => {
+                        element.style.transform = 'scale(1)';
+                    }, 200);
+                }, index * 100);
+            });
+            showToast('✨ Элементтер анимацияланды!');
+        }
+        
+        // Display түсіндіру көрсету
+        function showDisplayExplanation() {
+            const explanations = {
+                'block': 'Block элементтер толық ені алады және жаңа жолдан басталады',
+                'inline': 'Inline элементтер мәтін ағынында орналасады және wrap болады',
+                'inline-block': 'Inline-block элементтер жолда орналасып, block ерекшеліктеріне ие',
+                'flex': 'Flexbox 1-өлшемді layout жасауға арналған',
+                'grid': 'Grid 2-өлшемді layout жасауға арналған',
+                'table': 'Table display кесте сияқты layout жасайды',
+                'table-cell': 'Table-cell элементтер кесте ұяшықтары сияқты әрекет етеді',
+                'none': 'None элементті толықтай жасырады',
+                'contents': 'Contents wrapper-ді жасырып, балаларын parent-ке көшіреді',
+                'flow-root': 'Flow-root жаңа block formatting context жасайды',
+                'list-item': 'List-item список элементі сияқты көрсетеді'
+            };
+            
+            const explanation = explanations[currentDisplay] || 'Белгісіз display мәні';
+            showToast(`💡 ${explanation}`);
+        }
+        
+        // Тапсырма шешімін көрсету
+        function showDisplayTaskSolution() {
+            showToast('📝 Dashboard layout шешімі дайындалуда...');
+            setTimeout(() => {
+                showToast('🏗️ HTML структурасы: header > nav + main, CSS: display: flex/grid');
+            }, 2000);
+        }
+        
+        // Display кеңестер генерациялау
+        function generateDisplayTips() {
+            const tips = [
+                '🎯 Block элементтер: div, p, h1-h6, section - толық ені алады',
+                '📏 Inline элементтер: span, a, strong - мәтінмен бірге орналасады', 
+                '🔷 Flexbox: 1D layout үшін, navigation және centering үшін мінсіз',
+                '🔳 Grid: 2D layout үшін, card layouts және complex design үшін',
+                '📊 Table: тең биіктіктегі колонкалар үшін қолданыңыз',
+                '❌ display: none орнын алмайды, visibility: hidden орнын сақтайды',
+                '📱 Mobile-first: кіші экраннан бастап responsive дизайн жасаңыз',
+                '⚡ Performance: animation үшін opacity/transform пайдаланыңыз'
+            ];
+            
+            const randomTip = tips[Math.floor(Math.random() * tips.length)];
+            showToast(randomTip);
+        }
+        
+        // Toast хабарламасы
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(function() {
+                toast.classList.remove('show');
+            }, 4000);
+        }
+        
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', function() {
+            elements = document.querySelectorAll('.preview-element');
+        });
+        
+        // Қосымша демо функциялары
+        function showFlexDemo() {
+            const container = document.getElementById('previewContainer');
+            container.style.display = 'flex';
+            container.style.justifyContent = 'space-between';
+            container.style.alignItems = 'center';
+            container.style.gap = '15px';
+            showToast('🔷 Flexbox demo: space-between, center');
+        }
+        
+        function showGridDemo() {
+            const container = document.getElementById('previewContainer');
+            container.style.display = 'grid';
+            container.style.gridTemplateColumns = 'repeat(3, 1fr)';
+            container.style.gap = '15px';
+            showToast('🔳 Grid demo: 3 equal columns');
+        }
+        
+        function showTableDemo() {
+            const container = document.getElementById('previewContainer');
+            const elements = document.querySelectorAll('.preview-element');
+            
+            container.style.display = 'table';
+            container.style.width = '100%';
+            
+            elements.forEach(element => {
+                element.style.display = 'table-cell';
+                element.style.padding = '20px';
+                element.style.border = '2px solid white';
+                element.style.textAlign = 'center';
+                element.style.verticalAlign = 'middle';
+            });
+            
+            showToast('📊 Table demo: equal height cells');
+        }
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            const displays = ['block', 'inline', 'inline-block', 'flex', 'grid', 'table', 'none'];
+            let currentIndex = displays.indexOf(currentDisplay);
+            
+            if (e.key === 'ArrowRight' && currentIndex < displays.length - 1) {
+                changeDisplay(displays[currentIndex + 1]);
+            } else if (e.key === 'ArrowLeft' && currentIndex > 0) {
+                changeDisplay(displays[currentIndex - 1]);
+            } else if (e.key === 'r' || e.key === 'R') {
+                resetDisplay();
+            }
+        });
+        
+        // Mobile touch support
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        document.addEventListener('touchstart', function(e) {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+        
+        document.addEventListener('touchend', function(e) {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+        
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const displays = ['block', 'inline', 'inline-block', 'flex', 'grid', 'table'];
+            let currentIndex = displays.indexOf(currentDisplay);
+            
+            if (touchEndX < touchStartX - swipeThreshold && currentIndex < displays.length - 1) {
+                // Swipe left - next display
+                changeDisplay(displays[currentIndex + 1]);
+            } else if (touchEndX > touchStartX + swipeThreshold && currentIndex > 0) {
+                // Swipe right - previous display
+                changeDisplay(displays[currentIndex - 1]);
+            }
+        }
+    </script>
+</body>
+</html>

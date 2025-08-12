@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Анимация сабағы</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .lesson-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .lesson-section h2 {
+            color: #4a5568;
+            margin-bottom: 20px;
+            font-size: 2em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .lesson-section h3 {
+            color: #2d3748;
+            margin: 20px 0 15px 0;
+            font-size: 1.5em;
+        }
+
+        .demo-box {
+            width: 100px;
+            height: 100px;
+            margin: 20px auto;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .demo-box:hover {
+            transform: scale(1.05);
+        }
+
+        /* Анимация мысалдары */
+        .bounce-demo {
+            background: #e53e3e;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-30px); }
+            60% { transform: translateY(-15px); }
+        }
+
+        .rotate-demo {
+            background: #38a169;
+            animation: rotate 3s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .pulse-demo {
+            background: #3182ce;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .slide-demo {
+            background: #805ad5;
+            animation: slide 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes slide {
+            0% { transform: translateX(-50px); }
+            100% { transform: translateX(50px); }
+        }
+
+        .interactive-section {
+            background: #f7fafc;
+            border: 2px dashed #667eea;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            background: #667eea;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            line-height: 1.4;
+        }
+
+        .highlight {
+            background: #ffd89b;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .playground-box {
+            width: 80px;
+            height: 80px;
+            background: #f56565;
+            border-radius: 10px;
+            margin: 20px auto;
+            transition: all 0.5s ease;
+        }
+
+        /* Интерактивті анимациялар */
+        .play-bounce { animation: bounce 1s ease-in-out; }
+        .play-rotate { animation: rotate 1s linear; }
+        .play-pulse { animation: pulse 1s ease-in-out; }
+        .play-shake { animation: shake 0.5s ease-in-out; }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .quiz-section {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+
+        .quiz-question {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            font-weight: bold;
+            color: #744210;
+        }
+
+        .quiz-options {
+            display: grid;
+            gap: 10px;
+        }
+
+        .quiz-option {
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .quiz-option:hover {
+            border-color: #667eea;
+            transform: translateX(5px);
+        }
+
+        .quiz-option.correct {
+            background: #c6f6d5;
+            border-color: #38a169;
+        }
+
+        .quiz-option.incorrect {
+            background: #fed7d7;
+            border-color: #e53e3e;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 3px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header floating">
+            <h1>🎨 CSS Анимация</h1>
+            <p>Интерактивті сабақ - Қазақша</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="lesson-section">
+            <h2>1. CSS Анимация дегеніміз не?</h2>
+            <p>CSS анимациясы - бұл веб-элементтерді қозғалысқа келтіру және олардың қасиеттерін уақыт ішінде өзгерту тәсілі. Анимация арқылы біз:</p>
+            <ul style="margin: 15px 0; padding-left: 30px;">
+                <li>Элементтерді қозғалысқа келтіре аламыз</li>
+                <li>Түстерді өзгерте аламыз</li>
+                <li>Өлшемдерді үлкейте немесе кішірейте аламыз</li>
+                <li>Пайдаланушылармен әрекеттесуді жақсарта аламыз</li>
+            </ul>
+
+            <h3>Негізгі CSS анимация түрлері:</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin: 20px 0;">
+                <div>
+                    <h4 style="text-align: center; color: #e53e3e;">Секіру (Bounce)</h4>
+                    <div class="demo-box bounce-demo">Секіру</div>
+                </div>
+                <div>
+                    <h4 style="text-align: center; color: #38a169;">Айналу (Rotate)</h4>
+                    <div class="demo-box rotate-demo">Айналу</div>
+                </div>
+                <div>
+                    <h4 style="text-align: center; color: #3182ce;">Лүпілдеу (Pulse)</h4>
+                    <div class="demo-box pulse-demo">Лүпілдеу</div>
+                </div>
+                <div>
+                    <h4 style="text-align: center; color: #805ad5;">Жылжу (Slide)</h4>
+                    <div class="demo-box slide-demo">Жылжу</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="lesson-section">
+            <h2>2. @keyframes ережесі</h2>
+            <p><span class="highlight">@keyframes</span> - CSS анимациясының негізгі құрылымы. Ол анимацияның қалай орындалуын анықтайды:</p>
+            
+            <div class="code-block">
+@keyframes анимация_аты {
+    0% {
+        /* Басталу күйі */
+        transform: translateX(0);
+    }
+    50% {
+        /* Ортасы */
+        transform: translateX(100px);
+    }
+    100% {
+        /* Аяқталу күйі */
+        transform: translateX(0);
+    }
+}
+
+.element {
+    animation: анимация_аты 2s ease-in-out infinite;
+}
+            </div>
+
+            <h3>Keyframes пайызбен:</h3>
+            <ul style="margin: 15px 0; padding-left: 30px;">
+                <li><strong>0%</strong> немесе <strong>from</strong> - анимацияның басталуы</li>
+                <li><strong>50%</strong> - анимацияның ортасы</li>
+                <li><strong>100%</strong> немесе <strong>to</strong> - анимацияның аяқталуы</li>
+            </ul>
+        </div>
+
+        <div class="lesson-section">
+            <h2>3. Animation қасиеттері</h2>
+            <p>CSS animation қасиетінің құрамдас бөліктері:</p>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin: 20px 0;">
+                <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+                    <h4>animation-name</h4>
+                    <p>@keyframes атын көрсетеді</p>
+                    <code>animation-name: bounce;</code>
+                </div>
+                <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+                    <h4>animation-duration</h4>
+                    <p>Анимация ұзақтығы</p>
+                    <code>animation-duration: 2s;</code>
+                </div>
+                <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+                    <h4>animation-timing-function</h4>
+                    <p>Жылдамдық қисығы</p>
+                    <code>animation-timing-function: ease;</code>
+                </div>
+                <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+                    <h4>animation-iteration-count</h4>
+                    <p>Қайталану саны</p>
+                    <code>animation-iteration-count: infinite;</code>
+                </div>
+            </div>
+
+            <div class="code-block">
+/* Толық жазу */
+.element {
+    animation-name: bounce;
+    animation-duration: 2s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+/* Қысқа жазу */
+.element {
+    animation: bounce 2s ease-in-out infinite alternate;
+}
+            </div>
+        </div>
+
+        <div class="lesson-section">
+            <h2>4. Интерактивті тәжірибе</h2>
+            <p>Төмендегі батырмаларды басып, әртүрлі анимацияларды көріңіз:</p>
+            
+            <div class="interactive-section">
+                <div class="controls">
+                    <button onclick="playAnimation('bounce')">Секіру</button>
+                    <button onclick="playAnimation('rotate')">Айналу</button>
+                    <button onclick="playAnimation('pulse')">Лүпілдеу</button>
+                    <button onclick="playAnimation('shake')">Дірілдеу</button>
+                    <button onclick="resetAnimation()">Тоқтату</button>
+                </div>
+                <div class="playground-box" id="playgroundBox">DEMO</div>
+                <div id="currentCode" class="code-block" style="margin-top: 20px;">
+                    /* Батырманы басып, код өзгерісін көріңіз */
+                </div>
+            </div>
+        </div>
+
+        <div class="quiz-section">
+            <h2>5. Білімді тексеру</h2>
+            <div class="quiz-question" id="quizQuestion">
+                CSS анимациясын құру үшін қай ереже қолданылады?
+            </div>
+            <div class="quiz-options" id="quizOptions">
+                <div class="quiz-option" onclick="checkAnswer(this, false)">@animation</div>
+                <div class="quiz-option" onclick="checkAnswer(this, true)">@keyframes</div>
+                <div class="quiz-option" onclick="checkAnswer(this, false)">@transform</div>
+                <div class="quiz-option" onclick="checkAnswer(this, false)">@motion</div>
+            </div>
+            <div id="feedback" style="margin-top: 15px; font-weight: bold;"></div>
+        </div>
+
+        <div class="lesson-section">
+            <h2>6. Практикалық тапсырма</h2>
+            <p>Енді сіз өзіңіздің анимацияңызды жасап көріңіз! Төмендегі кодты өзгертіп, жаңа анимация құрыңыз:</p>
+            
+            <div class="code-block">
+@keyframes менің_анимациям {
+    0% {
+        transform: scale(1) rotate(0deg);
+        background-color: #ff6b6b;
+    }
+    50% {
+        transform: scale(1.5) rotate(180deg);
+        background-color: #4ecdc4;
+    }
+    100% {
+        transform: scale(1) rotate(360deg);
+        background-color: #45b7d1;
+    }
+}
+
+.менің_элементім {
+    animation: менің_анимациям 3s ease-in-out infinite;
+}
+            </div>
+
+            <div style="background: #e6fffa; border: 2px solid #38b2ac; border-radius: 10px; padding: 20px; margin: 20px 0;">
+                <h4 style="color: #2c7a7b;">💡 Кеңестер:</h4>
+                <ul style="color: #2c7a7b; padding-left: 20px;">
+                    <li>Анимация ұзақтығын 2-3 секундтан аспайтын етіп жасаңыз</li>
+                    <li>ease-in-out timing функциясы табиғи көрінеді</li>
+                    <li>Көп анимацияны бір уақытта пайдаланбаңыз</li>
+                    <li>Mobile құрылғыларда жұмыс істейтінін тексеріңіз</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="lesson-section">
+            <h2>7. Қорытынды</h2>
+            <p>Бұл сабақта сіз CSS анимациясының негіздерін үйрендіңіз:</p>
+            <ul style="margin: 15px 0; padding-left: 30px;">
+                <li>✅ @keyframes ережесін пайдалану</li>
+                <li>✅ Animation қасиеттерін баптау</li>
+                <li>✅ Әртүрлі анимация түрлерін жасау</li>
+                <li>✅ Интерактивті элементтер құру</li>
+            </ul>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <h3 style="color: #667eea;">🎉 Табыс! Сіз CSS анимациясының негіздерін меңгердіңіз!</h3>
+                <p style="color: #666; margin-top: 10px;">Енді өз жобаларыңызда анимациялар пайдалана аласыз</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentQuestionIndex = 0;
+        let correctAnswers = 0;
+
+        const questions = [
+            {
+                question: "CSS анимациясын құру үшін қай ереже қолданылады?",
+                options: ["@animation", "@keyframes", "@transform", "@motion"],
+                correct: 1
+            },
+            {
+                question: "animation-duration қасиеті не үшін пайдаланылады?",
+                options: ["Анимация жылдамдығы", "Анимация ұзақтығы", "Анимация бағыты", "Анимация түрі"],
+                correct: 1
+            },
+            {
+                question: "Анимацияны шексіз қайталау үшін қандай мән пайдаланылады?",
+                options: ["repeat", "forever", "infinite", "continuous"],
+                correct: 2
+            }
+        ];
+
+        function playAnimation(type) {
+            const box = document.getElementById('playgroundBox');
+            const codeDiv = document.getElementById('currentCode');
+            
+            // Remove all animation classes
+            box.className = 'playground-box';
+            
+            // Add new animation class
+            setTimeout(() => {
+                box.classList.add(`play-${type}`);
+            }, 50);
+
+            // Update code display
+            const codeExamples = {
+                bounce: `@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-30px); }
+    60% { transform: translateY(-15px); }
+}
+.element { animation: bounce 1s ease-in-out; }`,
+                rotate: `@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+.element { animation: rotate 1s linear; }`,
+                pulse: `@keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.2); opacity: 0.7; }
+    100% { transform: scale(1); opacity: 1; }
+}
+.element { animation: pulse 1s ease-in-out; }`,
+                shake: `@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+.element { animation: shake 0.5s ease-in-out; }`
+            };
+
+            codeDiv.textContent = codeExamples[type] || "/* Код мысалы */";
+            updateProgress();
+        }
+
+        function resetAnimation() {
+            const box = document.getElementById('playgroundBox');
+            const codeDiv = document.getElementById('currentCode');
+            box.className = 'playground-box';
+            codeDiv.textContent = "/* Анимация тоқтатылды */";
+        }
+
+        function checkAnswer(option, isCorrect) {
+            const options = document.querySelectorAll('.quiz-option');
+            const feedback = document.getElementById('feedback');
+            
+            options.forEach(opt => {
+                opt.style.pointerEvents = 'none';
+                if (opt === option) {
+                    if (isCorrect) {
+                        opt.classList.add('correct');
+                        feedback.innerHTML = '✅ Дұрыс! Жақсы білесіз!';
+                        feedback.style.color = '#38a169';
+                        correctAnswers++;
+                    } else {
+                        opt.classList.add('incorrect');
+                        feedback.innerHTML = '❌ Дұрыс емес. @keyframes ережесі пайдаланылады.';
+                        feedback.style.color = '#e53e3e';
+                    }
+                }
+            });
+
+            setTimeout(() => {
+                nextQuestion();
+            }, 2000);
+            
+            updateProgress();
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                loadQuestion();
+            } else {
+                showFinalResults();
+            }
+        }
+
+        function loadQuestion() {
+            const question = questions[currentQuestionIndex];
+            document.getElementById('quizQuestion').textContent = question.question;
+            
+            const optionsDiv = document.getElementById('quizOptions');
+            optionsDiv.innerHTML = '';
+            
+            question.options.forEach((option, index) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'quiz-option';
+                optionDiv.textContent = option;
+                optionDiv.onclick = () => checkAnswer(optionDiv, index === question.correct);
+                optionsDiv.appendChild(optionDiv);
+            });
+            
+            document.getElementById('feedback').textContent = '';
+        }
+
+        function showFinalResults() {
+            const quizSection = document.querySelector('.quiz-section');
+            quizSection.innerHTML = `
+                <h2>Тест нәтижелері</h2>
+                <div style="text-align: center; padding: 30px;">
+                    <div style="font-size: 3em; margin-bottom: 20px;">
+                        ${correctAnswers === questions.length ? '🏆' : correctAnswers >= 2 ? '👏' : '📚'}
+                    </div>
+                    <h3>Сіздің нәтижеңіз: ${correctAnswers}/${questions.length}</h3>
+                    <p style="margin-top: 15px;">
+                        ${correctAnswers === questions.length 
+                            ? 'Тамаша! Сіз барлық сұрақтарға дұрыс жауап бердіңіз!' 
+                            : correctAnswers >= 2 
+                            ? 'Жақсы нәтиже! Сабақты қайтадан оқып шығыңыз.'
+                            : 'Сабақты қайтадан оқып, тағы да тырысып көріңіз.'}
+                    </p>
+                </div>
+            `;
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        // Initialize
+        window.onload = function() {
+            updateProgress();
+        };
+    </script>
+</body>
+</html>

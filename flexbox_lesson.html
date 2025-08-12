@@ -1,0 +1,2705 @@
+<!DOCTYPE html>
+<html lang="kk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSS Flexbox: Икемді макеттер жасау</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+
+      .header {
+        background: linear-gradient(135deg, #2c3e50, #3498db);
+        color: white;
+        padding: 30px;
+        text-align: center;
+      }
+
+      .header h1 {
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      .header p {
+        font-size: 1.2rem;
+        opacity: 0.9;
+      }
+
+      .content {
+        padding: 40px;
+        display: grid;
+        gap: 30px;
+      }
+
+      .theory-section {
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        padding: 25px;
+        border-radius: 15px;
+        border-left: 5px solid #3498db;
+      }
+
+      .theory-section h2 {
+        color: #2c3e50;
+        margin-bottom: 20px;
+        font-size: 1.8rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .theory-section h2::before {
+        content: "📚";
+        font-size: 1.5rem;
+      }
+
+      .syntax-demo {
+        background: #2d3748;
+        color: #e2e8f0;
+        padding: 20px;
+        border-radius: 10px;
+        font-family: "Courier New", monospace;
+        margin: 20px 0;
+        overflow-x: auto;
+      }
+
+      .syntax-line {
+        margin: 8px 0;
+        display: flex;
+        align-items: center;
+      }
+
+      .syntax-highlight {
+        color: #ffd700;
+        font-weight: bold;
+      }
+
+      .syntax-value {
+        color: #98fb98;
+      }
+
+      .syntax-property {
+        color: #87ceeb;
+      }
+
+      .flex-concepts {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        margin: 20px 0;
+      }
+
+      .concept-card {
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        border: 3px solid;
+        transition: all 0.3s ease;
+        position: relative;
+      }
+
+      .concept-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      }
+
+      .container-concept {
+        border-color: #e74c3c;
+      }
+
+      .item-concept {
+        border-color: #f39c12;
+      }
+
+      .axis-concept {
+        border-color: #9b59b6;
+      }
+
+      .properties-concept {
+        border-color: #27ae60;
+      }
+
+      .concept-card h3 {
+        margin-bottom: 15px;
+        font-size: 1.3rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .container-concept h3 {
+        color: #e74c3c;
+      }
+
+      .item-concept h3 {
+        color: #f39c12;
+      }
+
+      .axis-concept h3 {
+        color: #9b59b6;
+      }
+
+      .properties-concept h3 {
+        color: #27ae60;
+      }
+
+      .code-example {
+        background: #2d3748;
+        color: #e2e8f0;
+        padding: 10px 12px;
+        border-radius: 6px;
+        font-family: "Courier New", monospace;
+        font-size: 13px;
+        margin: 8px 0;
+      }
+
+      .demo-playground {
+        background: white;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 20px 0;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .demo-controls {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin: 20px 0;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 10px;
+      }
+
+      .control-group {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
+
+      .control-group label {
+        font-weight: bold;
+        color: #2c3e50;
+        font-size: 14px;
+      }
+
+      .control-input, .control-select {
+        padding: 8px 12px;
+        border: 2px solid #dee2e6;
+        border-radius: 5px;
+        font-size: 14px;
+        background: white;
+      }
+
+      .control-input:focus, .control-select:focus {
+        outline: none;
+        border-color: #3498db;
+      }
+
+      .flex-demo-container {
+        border: 3px solid #3498db;
+        background: #f0f8ff;
+        padding: 20px;
+        margin: 20px 0;
+        min-height: 200px;
+        border-radius: 10px;
+        position: relative;
+      }
+
+      .flex-demo-container::before {
+        content: "Flex Container";
+        position: absolute;
+        top: -15px;
+        left: 15px;
+        background: #3498db;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 12px;
+        font-weight: bold;
+      }
+
+      .flex-item {
+        background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+        color: white;
+        padding: 15px;
+        margin: 5px;
+        border-radius: 8px;
+        text-align: center;
+        font-weight: bold;
+        min-width: 60px;
+        transition: all 0.3s ease;
+      }
+
+      .flex-item:nth-child(2) {
+        background: linear-gradient(135deg, #4ecdc4, #44a08d);
+      }
+
+      .flex-item:nth-child(3) {
+        background: linear-gradient(135deg, #45b7d1, #96c93d);
+      }
+
+      .flex-item:nth-child(4) {
+        background: linear-gradient(135deg, #f093fb, #f5576c);
+      }
+
+      .flex-item:nth-child(5) {
+        background: linear-gradient(135deg, #ffecd2, #fcb69f);
+        color: #333;
+      }
+
+      .practice-section {
+        background: linear-gradient(135deg, #e8f5e8, #c8e6c8);
+        padding: 25px;
+        border-radius: 15px;
+        border-left: 5px solid #4caf50;
+      }
+
+      .practice-section h2 {
+        color: #2c3e50;
+        margin-bottom: 20px;
+        font-size: 1.8rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .practice-section h2::before {
+        content: "🔬";
+        font-size: 1.5rem;
+      }
+
+      .editor-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin: 20px 0;
+      }
+
+      .editor {
+        background: #1a202c;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+
+      .editor-header {
+        background: #2d3748;
+        padding: 10px 15px;
+        color: #e2e8f0;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .editor-header::before {
+        content: "⚡";
+      }
+
+      textarea {
+        width: 100%;
+        height: 400px;
+        background: #1a202c;
+        color: #e2e8f0;
+        border: none;
+        padding: 15px;
+        font-family: "Courier New", monospace;
+        font-size: 14px;
+        resize: none;
+        outline: none;
+      }
+
+      .preview {
+        background: white;
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+
+      .preview-header {
+        background: #f7fafc;
+        padding: 10px 15px;
+        border-bottom: 1px solid #e2e8f0;
+        font-weight: bold;
+        color: #2d3748;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .preview-header::before {
+        content: "👀";
+      }
+
+      .preview-content {
+        padding: 15px;
+        min-height: 368px;
+      }
+
+      .btn {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        margin: 5px;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      .btn-apply {
+        background: linear-gradient(135deg, #27ae60, #229954);
+      }
+
+      .btn-reset {
+        background: linear-gradient(135deg, #e74c3c, #c0392b);
+      }
+
+      .btn-example {
+        background: linear-gradient(135deg, #f39c12, #e67e22);
+      }
+
+      .highlight {
+        background: linear-gradient(120deg, #a8e6cf 0%, #dcedc1 100%);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-weight: bold;
+      }
+
+      .properties-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+        margin: 20px 0;
+      }
+
+      .property-card {
+        background: white;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease;
+        border-left: 4px solid #3498db;
+      }
+
+      .property-card:hover {
+        transform: translateY(-2px);
+      }
+
+      .property-name {
+        font-family: "Courier New", monospace;
+        background: #2d3748;
+        color: #e2e8f0;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 14px;
+        display: inline-block;
+        margin-bottom: 10px;
+        font-weight: bold;
+      }
+
+      .property-description {
+        font-size: 14px;
+        color: #555;
+        margin-bottom: 10px;
+        line-height: 1.5;
+      }
+
+      .property-values {
+        background: #f8f9fa;
+        padding: 10px;
+        border-radius: 5px;
+        font-family: "Courier New", monospace;
+        font-size: 12px;
+        color: #2c3e50;
+      }
+
+      .flex-examples {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        margin: 20px 0;
+      }
+
+      .example-card {
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+      }
+
+      .example-card:hover {
+        transform: translateY(-3px);
+      }
+
+      .example-header {
+        background: #34495e;
+        color: white;
+        padding: 15px;
+        font-weight: bold;
+        text-align: center;
+      }
+
+      .example-demo {
+        padding: 20px;
+      }
+
+      .example-flex-container {
+        border: 2px dashed #bdc3c7;
+        padding: 15px;
+        border-radius: 5px;
+        min-height: 100px;
+      }
+
+      .example-flex-item {
+        background: #3498db;
+        color: white;
+        padding: 10px;
+        margin: 3px;
+        border-radius: 5px;
+        text-align: center;
+        font-size: 12px;
+        font-weight: bold;
+      }
+
+      @media (max-width: 768px) {
+        .editor-container {
+          grid-template-columns: 1fr;
+        }
+
+        .demo-controls {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .content {
+          padding: 20px;
+        }
+
+        .flex-concepts {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>CSS Flexbox</h1>
+        <p>Икемді макеттер жасау әдістерін үйренеміз</p>
+      </div>
+
+      <div class="content">
+        <div class="theory-section">
+          <h2>Теория: CSS Flexbox дегеніміз не?</h2>
+
+          <p style="font-size: 1.1rem; margin-bottom: 20px">
+            <span class="highlight">CSS Flexbox</span> (Flexible Box Layout) - 
+            элементтерді жолда немесе бағанда икемді түрде орналастыруға арналған 
+            заманауи CSS модулі. Ол күрделі макеттерді оңай жасауға көмектеседі.
+          </p>
+
+          <div class="syntax-demo">
+            <div class="syntax-line">
+              <span class="syntax-comment">/* Flex container жасау */</span>
+            </div>
+            <div class="syntax-line">
+              <span class="syntax-property">.container</span> <span>{</span>
+            </div>
+            <div class="syntax-line">
+              &nbsp;&nbsp;<span class="syntax-property">display</span>: <span class="syntax-value">flex</span>;
+            </div>
+            <div class="syntax-line">
+              &nbsp;&nbsp;<span class="syntax-property">flex-direction</span>: <span class="syntax-value">row</span>; <span class="syntax-comment">/* немесе column */</span>
+            </div>
+            <div class="syntax-line">
+              &nbsp;&nbsp;<span class="syntax-property">justify-content</span>: <span class="syntax-value">center</span>; <span class="syntax-comment">/* негізгі өстегі орналасу */</span>
+            </div>
+            <div class="syntax-line">
+              &nbsp;&nbsp;<span class="syntax-property">align-items</span>: <span class="syntax-value">center</span>; <span class="syntax-comment">/* қосымша өстегі орналасу */</span>
+            </div>
+            <div class="syntax-line">
+              <span>}</span>
+            </div>
+            <br>
+            <div class="syntax-line">
+              <span class="syntax-comment">/* Flex item қасиеттері */</span>
+            </div>
+            <div class="syntax-line">
+              <span class="syntax-property">.item</span> <span>{</span>
+            </div>
+            <div class="syntax-line">
+              &nbsp;&nbsp;<span class="syntax-property">flex</span>: <span class="syntax-value">1</span>; <span class="syntax-comment">/* grow shrink basis */</span>
+            </div>
+            <div class="syntax-line">
+              &nbsp;&nbsp;<span class="syntax-property">align-self</span>: <span class="syntax-value">flex-start</span>;
+            </div>
+            <div class="syntax-line">
+              <span>}</span>
+            </div>
+          </div>
+
+          <div class="flex-concepts">
+            <div class="concept-card container-concept">
+              <h3>🏠 Flex Container</h3>
+              <p>
+                <strong>Анықтамасы:</strong> display: flex қасиетін алған негізгі элемент
+              </p>
+              <div class="code-example">display: flex;</div>
+              <p><strong>Басқаратын қасиеттері:</strong></p>
+              <ul style="margin: 10px 0 0 20px; line-height: 1.8; font-size: 14px;">
+                <li>flex-direction - бағыты</li>
+                <li>justify-content - негізгі өстегі орналасу</li>
+                <li>align-items - қосымша өстегі орналасу</li>
+                <li>flex-wrap - жолға түсіру</li>
+                <li>gap - элементтер арасындағы бос орын</li>
+              </ul>
+            </div>
+
+            <div class="concept-card item-concept">
+              <h3>📦 Flex Items</h3>
+              <p>
+                <strong>Анықтамасы:</strong> Flex container ішіндегі тікелей балалар элементтер
+              </p>
+              <div class="code-example">flex: 1 1 auto;</div>
+              <p><strong>Қасиеттері:</strong></p>
+              <ul style="margin: 10px 0 0 20px; line-height: 1.8; font-size: 14px;">
+                <li>flex-grow - ұлғаю коэффициенті</li>
+                <li>flex-shrink - кішірею коэффициенті</li>
+                <li>flex-basis - бастапқы көлемі</li>
+                <li>align-self - жеке орналасуы</li>
+                <li>order - реті</li>
+              </ul>
+            </div>
+
+            <div class="concept-card axis-concept">
+              <h3>⚡ Flex Осьтері</h3>
+              <p>
+                <strong>Анықтамасы:</strong> Flexbox екі ось бойынша жұмыс істейді
+              </p>
+              <div class="code-example">main-axis & cross-axis</div>
+              <p><strong>Ерекшеліктері:</strong></p>
+              <ul style="margin: 10px 0 0 20px; line-height: 1.8; font-size: 14px;">
+                <li>Main axis - негізгі ось (flex-direction анықтайды)</li>
+                <li>Cross axis - қосымша ось (негізгі өске перпендикуляр)</li>
+                <li>justify-content - main axis үшін</li>
+                <li>align-items - cross axis үшін</li>
+              </ul>
+            </div>
+
+            <div class="concept-card properties-concept">
+              <h3>🎛️ Негізгі қасиеттер</h3>
+              <p>
+                <strong>Анықтамасы:</strong> Flexbox макетін басқаратын негізгі CSS қасиеттері
+              </p>
+              <div class="code-example">flex, justify-content, align-items</div>
+              <p><strong>Категориялар:</strong></p>
+              <ul style="margin: 10px 0 0 20px; line-height: 1.8; font-size: 14px;">
+                <li>Container қасиеттері - орналасуды басқарады</li>
+                <li>Item қасиеттері - жеке элементтерді басқарады</li>
+                <li>Spacing қасиеттері - бос орындарды басқарады</li>
+                <li>Responsive қасиеттері - жауапты дизайн үшін</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="theory-section">
+          <h2>Flexbox қасиеттері</h2>
+
+          <h3 style="color: #e74c3c; margin: 25px 0 15px 0; font-size: 1.4rem;">🏠 Container қасиеттері</h3>
+          <div class="properties-grid">
+            <div class="property-card">
+              <div class="property-name">display</div>
+              <div class="property-description">
+                Элементті flex container етеді
+              </div>
+              <div class="property-values">flex | inline-flex</div>
+            </div>
+
+            <div class="property-card">
+              <div class="property-name">flex-direction</div>
+              <div class="property-description">
+                Flex items-тардың орналасу бағытын анықтайды
+              </div>
+              <div class="property-values">row | row-reverse | column | column-reverse</div>
+            </div>
+
+            <div class="property-card">
+              <div class="property-name">justify-content</div>
+              <div class="property-description">
+                Негізгі өс бойынша орналасуды басқарады
+              </div>
+              <div class="property-values">flex-start | center | flex-end | space-between | space-around | space-evenly</div>
+            </div>
+
+            <div class="property-card">
+              <div class="property-name">align-items</div>
+              <div class="property-description">
+                Қосымша өс бойынша орналасуды басқарады
+              </div>
+              <div class="property-values">stretch | flex-start | center | flex-end | baseline</div>
+            </div>
+
+            <div class="property-card">
+              <div class="property-name">flex-wrap</div>
+              <div class="property-description">
+                Элементтердің жолға түсуін басқарады
+              </div>
+              <div class="property-values">nowrap | wrap | wrap-reverse</div>
+            </div>
+
+            <div class="property-card">
+              <div class="property-name">gap</div>
+              <div class="property-description">
+                Элементтер арасындағы бос орынды анықтайды
+              </div>
+              <div class="property-values">10px | 1rem | 20px 10px</div>
+            </div>
+          </div>
+
+          <h3 style="color: #f39c12; margin: 25px 0 15px 0; font-size: 1.4rem;">📦 Item қасиеттері</h3>
+          <div class="properties-grid">
+            <div class="property-card">
+              <div class="property-name">flex</div>
+              <div class="property-description">
+                flex-grow, flex-shrink, flex-basis-тің қысқартылған түрі
+              </div>
+              <div class="property-values">1 | 0 1 auto | 2 1 100px</div>
+            </div>
+
+            <div class="property-card">
+              <div class="property-name">flex-grow</div>
+              <div class="property-description">
+                Қосымша орынды қалай бөлісетінін анықтайды
+              </div>
+              <div class="property-values">0 | 1 | 2 | ...</div>
+            </div>
+
+            <div class="property-card">
+              <div class="property-name">flex-shrink</div>
+              <div class="property-description">
+                Орын тапшы кезде қалай кішірейтінін анықтайды
+              </div>
+              <div class="property-values">0 | 1 | 2 | ...</div>
+            </div>
+
+            <div class="property-card">
+              <div class="property-name">flex-basis</div>
+              <div class="property-description">
+                Элементтің бастапқы көлемін анықтайды
+              </div>
+              <div class="property-values">auto | 100px | 50% | 10rem</div>
+            </div>
+
+            <div class="property-card">
+              <div class="property-name">align-self</div>
+              <div class="property-description">
+                Жеке элементтің cross axis бойынша орналасуы
+              </div>
+              <div class="property-values">auto | stretch | flex-start | center | flex-end</div>
+            </div>
+
+            <div class="property-card">
+              <div class="property-name">order</div>
+              <div class="property-description">
+                Элементтің көрсетілу ретін өзгертеді
+              </div>
+              <div class="property-values">0 | 1 | -1 | 99</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="practice-section">
+          <h2>Интерактивті Flexbox тестері</h2>
+
+          <div class="demo-playground">
+            <h3>🎮 Flexbox қасиеттерін тікелей сынап көру</h3>
+            <p>
+              Төмендегі басқару элементтерін пайдаланып, flex қасиеттерін өзгертіңіз:
+            </p>
+
+            <div class="demo-controls">
+              <div class="control-group">
+                <label for="flex-direction">flex-direction:</label>
+                <select id="flex-direction" class="control-select">
+                  <option value="row">row</option>
+                  <option value="row-reverse">row-reverse</option>
+                  <option value="column">column</option>
+                  <option value="column-reverse">column-reverse</option>
+                </select>
+              </div>
+
+              <div class="control-group">
+                <label for="justify-content">justify-content:</label>
+                <select id="justify-content" class="control-select">
+                  <option value="flex-start">flex-start</option>
+                  <option value="center">center</option>
+                  <option value="flex-end">flex-end</option>
+                  <option value="space-between">space-between</option>
+                  <option value="space-around">space-around</option>
+                  <option value="space-evenly">space-evenly</option>
+                </select>
+              </div>
+
+              <div class="control-group">
+                <label for="align-items">align-items:</label>
+                <select id="align-items" class="control-select">
+                  <option value="stretch">stretch</option>
+                  <option value="flex-start">flex-start</option>
+                  <option value="center">center</option>
+                  <option value="flex-end">flex-end</option>
+                  <option value="baseline">baseline</option>
+                </select>
+              </div>
+
+              <div class="control-group">
+                <label for="flex-wrap">flex-wrap:</label>
+                <select id="flex-wrap" class="control-select">
+                  <option value="nowrap">nowrap</option>
+                  <option value="wrap">wrap</option>
+                  <option value="wrap-reverse">wrap-reverse</option>
+                </select>
+              </div>
+
+              <div class="control-group">
+                <label for="gap">gap:</label>
+                <input
+                  type="range"
+                  id="gap"
+                  class="control-input"
+                  min="0"
+                  max="50"
+                  value="10"
+                  style="margin-top: 5px;"
+                />
+                <span id="gap-value">10px</span>
+              </div>
+
+              <div class="control-group">
+                <label for="container-height">Container биіктігі:</label>
+                <input
+                  type="range"
+                  id="container-height"
+                  class="control-input"
+                  min="200"
+                  max="400"
+                  value="200"
+                  style="margin-top: 5px;"
+                />
+                <span id="height-value">200px</span>
+              </div>
+            </div>
+
+            <div style="text-align: center; margin: 20px 0">
+              <button class="btn btn-apply" onclick="applyFlexProperties()">
+                📝 Қасиеттерді қолдану
+              </button>
+              <button class="btn btn-reset" onclick="resetFlexDemo()">
+                🔄 Бастапқы күйге қайтару
+              </button>
+              <button class="btn btn-example" onclick="addFlexItem()">
+                ➕ Элемент қосу
+              </button>
+              <button class="btn btn-example" onclick="removeFlexItem()">
+                ➖ Элемент алу
+              </button>
+            </div>
+
+            <div class="flex-demo-container" id="flex-demo-container">
+              <div class="flex-item">1</div>
+              <div class="flex-item">2</div>
+              <div class="flex-item">3</div>
+            </div>
+
+            <div
+              style="
+                background: #f8f9fa;
+                padding: 15px;
+                border-radius: 8px;
+                margin-top: 15px;
+              "
+            >
+              <strong>Қолданылған CSS кодтау:</strong>
+              <div
+                id="generated-css"
+                style="
+                  font-family: 'Courier New', monospace;
+                  background: #2d3748;
+                  color: #e2e8f0;
+                  padding: 15px;
+                  border-radius: 5px;
+                  margin-top: 10px;
+                  white-space: pre-line;
+                "
+              >
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: stretch;
+  flex-wrap: nowrap;
+  gap: 10px;
+  min-height: 200px;
+}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="theory-section">
+          <h2>Жиі кездесетін Flexbox мысалдары</h2>
+
+          <div class="flex-examples">
+            <div class="example-card">
+              <div class="example-header">Орталау (Центрлеу)</div>
+              <div class="example-demo">
+                <div class="example-flex-container" style="display: flex; justify-content: center; align-items: center; height: 120px;">
+                  <div class="example-flex-item">Орталанған</div>
+                </div>
+                <div class="code-example" style="margin-top: 10px;">
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}</div>
+              </div>
+            </div>
+
+            <div class="example-card">
+              <div class="example-header">Тең бөлу</div>
+              <div class="example-demo">
+                <div class="example-flex-container" style="display: flex;">
+                  <div class="example-flex-item" style="flex: 1;">Item 1</div>
+                  <div class="example-flex-item" style="flex: 1;">Item 2</div>
+                  <div class="example-flex-item" style="flex: 1;">Item 3</div>
+                </div>
+                <div class="code-example" style="margin-top: 10px;">
+.item {
+  flex: 1;
+}</div>
+              </div>
+            </div>
+
+            <div class="example-card">
+              <div class="example-header">Space Between</div>
+              <div class="example-demo">
+                <div class="example-flex-container" style="display: flex; justify-content: space-between;">
+                  <div class="example-flex-item">Left</div>
+                  <div class="example-flex-item">Center</div>
+                  <div class="example-flex-item">Right</div>
+                </div>
+                <div class="code-example" style="margin-top: 10px;">
+.container {
+  justify-content: space-between;
+}</div>
+              </div>
+            </div>
+
+            <div class="example-card">
+              <div class="example-header">Вертикалды орналасу</div>
+              <div class="example-demo">
+                <div class="example-flex-container" style="display: flex; flex-direction: column; height: 120px;">
+                  <div class="example-flex-item">Жоғары</div>
+                  <div class="example-flex-item">Орта</div>
+                  <div class="example-flex-item">Төмен</div>
+                </div>
+                <div class="code-example" style="margin-top: 10px;">
+.container {
+  flex-direction: column;
+}</div>
+              </div>
+            </div>
+
+            <div class="example-card">
+              <div class="example-header">Responsive Grid</div>
+              <div class="example-demo">
+                <div class="example-flex-container" style="display: flex; flex-wrap: wrap;">
+                  <div class="example-flex-item" style="flex: 1 1 150px;">1</div>
+                  <div class="example-flex-item" style="flex: 1 1 150px;">2</div>
+                  <div class="example-flex-item" style="flex: 1 1 150px;">3</div>
+                  <div class="example-flex-item" style="flex: 1 1 150px;">4</div>
+                </div>
+                <div class="code-example" style="margin-top: 10px;">
+.container {
+  flex-wrap: wrap;
+}
+.item {
+  flex: 1 1 150px;
+}</div>
+              </div>
+            </div>
+
+            <div class="example-card">
+              <div class="example-header">Sticky Footer</div>
+              <div class="example-demo">
+                <div class="example-flex-container" style="display: flex; flex-direction: column; height: 120px;">
+                  <div class="example-flex-item" style="background: #2ecc71;">Header</div>
+                  <div class="example-flex-item" style="flex: 1; background: #f39c12;">Content</div>
+                  <div class="example-flex-item" style="background: #e74c3c;">Footer</div>
+                </div>
+                <div class="code-example" style="margin-top: 10px;">
+.content {
+  flex: 1;
+}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="practice-section">
+          <h2>Практикалық редактор</h2>
+
+          <p style="margin-bottom: 20px">
+            Төмендегі редакторда Flexbox қасиеттерін қолданып көріңіз:
+          </p>
+
+          <div class="editor-container">
+            <div class="editor">
+              <div class="editor-header">CSS/HTML редакторы</div>
+              <textarea
+                id="flexEditor"
+                placeholder="CSS/HTML кодыңызды осында жазыңыз..."
+              >
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flexbox мысалдары</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 0; 
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        
+        .demo-container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+        }
+        
+        /* 1. Орталау мысалы */
+        .center-example {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 150px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 10px;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        /* 2. Navigation Bar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #34495e;
+            padding: 15px 20px;
+            border-radius: 8px;
+            color: white;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        /* 3. Card Layout */
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .card {
+            flex: 1 1 250px;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card h3 {
+            color: #e74c3c;
+            margin-bottom: 10px;
+        }
+        
+        /* 4. Sidebar Layout */
+        .layout {
+            display: flex;
+            gap: 20px;
+            min-height: 200px;
+        }
+        
+        .sidebar {
+            flex: 0 0 200px;
+            background: #95a5a6;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        
+        .main-content {
+            flex: 1;
+            background: #ecf0f1;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        
+        /* 5. Footer Stick */
+        .page-layout {
+            display: flex;
+            flex-direction: column;
+            min-height: 300px;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .header {
+            background: #3498db;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .content {
+            flex: 1;
+            padding: 20px;
+            background: #ecf0f1;
+        }
+        
+        .footer {
+            background: #2c3e50;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        /* 6. Form Layout */
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 400px;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .form-row input {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #bdc3c7;
+            border-radius: 5px;
+        }
+        
+        .form-row input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            background: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s ease;
+        }
+        
+        .btn:hover {
+            background: #229954;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .layout {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                flex: none;
+            }
+            
+            .card-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; color: #2c3e50;">🎨 Flexbox мысалдары</h1>
+    
+    <!-- 1. Орталау мысалы -->
+    <div class="demo-container">
+        <h2>1. Элементті орталау</h2>
+        <div class="center-example">
+            Мен толығымен орталанғанмын!
+        </div>
+    </div>
+    
+    <!-- 2. Navigation Bar -->
+    <div class="demo-container">
+        <h2>2. Navigation Bar</h2>
+        <nav class="navbar">
+            <div class="logo" style="font-size: 20px; font-weight: bold;">
+                MyLogo
+            </div>
+            <ul class="nav-links">
+                <li><a href="#">Басты бет</a></li>
+                <li><a href="#">Туралы</a></li>
+                <li><a href="#">Қызметтер</a></li>
+                <li><a href="#">Байланыс</a></li>
+            </ul>
+        </nav>
+    </div>
+    
+    <!-- 3. Card Layout -->
+    <div class="demo-container">
+        <h2>3. Responsive Card Layout</h2>
+        <div class="card-container">
+            <div class="card">
+                <h3>🎯 Миссия</h3>
+                <p>Біздің миссиямыз - сапалы білім беру арқылы болашақты құру.</p>
+            </div>
+            <div class="card">
+                <h3>👁️ Көрініс</h3>
+                <p>Әлемдегі ең үздік білім беру платформасы болу.</p>
+            </div>
+            <div class="card">
+                <h3>⭐ Құндылықтар</h3>
+                <p>Адалдық, инновация және үздіксіз дамуды бағалаймыз.</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 4. Sidebar Layout -->
+    <div class="demo-container">
+        <h2>4. Sidebar макеті</h2>
+        <div class="layout">
+            <aside class="sidebar">
+                <h4>Бүйір панель</h4>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin: 10px 0;"><a href="#" style="color: white; text-decoration: none;">Мәзір 1</a></li>
+                    <li style="margin: 10px 0;"><a href="#" style="color: white; text-decoration: none;">Мәзір 2</a></li>
+                    <li style="margin: 10px 0;"><a href="#" style="color: white; text-decoration: none;">Мәзір 3</a></li>
+                </ul>
+            </aside>
+            <main class="main-content">
+                <h3>Негізгі мазмұн</h3>
+                <p>Бұл жерде негізгі мазмұн орналасады. Sidebar тұрақты ені бар, ал бұл аймақ қалған орынды толтырады.</p>
+                <p>Flexbox арқасында бұл макет ыңғайлы және responsive.</p>
+            </main>
+        </div>
+    </div>
+    
+    <!-- 5. Sticky Footer -->
+    <div class="demo-container">
+        <h2>5. Sticky Footer Layout</h2>
+        <div class="page-layout">
+            <header class="header">
+                <h3>Басталу</h3>
+            </header>
+            <section class="content">
+                <h3>Мазмұн</h3>
+                <p>Мазмұн аз болса да, footer төменде қала береді.</p>
+                <p>Flex: 1 қасиетінің арқасында бұл аймақ қажетті орынды алады.</p>
+            </section>
+            <footer class="footer">
+                <p>&copy; 2025 Flexbox мысалы. Барлық құқықтар қорғалған.</p>
+            </footer>
+        </div>
+    </div>
+    
+    <!-- 6. Form Layout -->
+    <div class="demo-container">
+        <h2>6. Форма макеті</h2>
+        <form class="form-container">
+            <div class="form-row">
+                <input type="text" placeholder="Атыңыз">
+                <input type="text" placeholder="Тегіңіз">
+            </div>
+            <div class="form-row">
+                <input type="email" placeholder="Email" style="flex: 2;">
+                <input type="tel" placeholder="Телефон" style="flex: 1;">
+            </div>
+            <div class="form-row">
+                <input type="text" placeholder="Хабарлама" style="width: 100%;">
+            </div>
+            <button type="submit" class="btn">Жіберу</button>
+        </form>
+    </div>
+    
+    <!-- 7. Responsive Gallery -->
+    <div class="demo-container">
+        <h2>7. Responsive Gallery</h2>
+        <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+            <div style="flex: 1 1 200px; height: 120px; background: linear-gradient(45deg, #ff6b6b, #ee5a52); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                Сурет 1
+            </div>
+            <div style="flex: 1 1 200px; height: 120px; background: linear-gradient(45deg, #4ecdc4, #44a08d); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                Сурет 2
+            </div>
+            <div style="flex: 1 1 200px; height: 120px; background: linear-gradient(45deg, #45b7d1, #96c93d); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                Сурет 3
+            </div>
+            <div style="flex: 1 1 200px; height: 120px; background: linear-gradient(45deg, #f093fb, #f5576c); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                Сурет 4
+            </div>
+        </div>
+    </div>
+</body>
+</html></textarea>
+            </div>
+
+            <div class="preview">
+              <div class="preview-header">Нәтиже</div>
+              <div class="preview-content" id="flexPreview"></div>
+            </div>
+          </div>
+
+          <div style="text-align: center; margin: 20px 0">
+            <button class="btn" onclick="runFlexCode()">🚀 Кодты іске қосу</button>
+            <button class="btn" onclick="clearFlexCode()">🗑️ Тазалау</button>
+            <button class="btn btn-example" onclick="loadCenteringExample()">
+              🎯 Орталау мысалы
+            </button>
+            <button class="btn btn-example" onclick="loadNavbarExample()">
+              🧭 Navbar мысалы
+            </button>
+            <button class="btn btn-example" onclick="loadLayoutExample()">
+              📱 Layout мысалы
+            </button>
+          </div>
+        </div>
+
+        <div
+          style="
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 5px solid #ff9800;
+          "
+        >
+          <h3
+            style="
+              color: #e65100;
+              margin-bottom: 15px;
+              display: flex;
+              align-items: center;
+              gap: 10px;
+            "
+          >
+            ⚠️ Flexbox қолданудағы кеңестер
+          </h3>
+          <ul style="color: #e65100; font-size: 1.1rem; line-height: 1.8">
+            <li>
+              <strong>Container vs Items:</strong> flex қасиеттерін дұрыс элементке қолданыңыз
+            </li>
+            <li>
+              <strong>Main vs Cross Axis:</strong> justify-content пен align-items айырмашылығын ұмытпаңыз
+            </li>
+            <li>
+              <strong>Flex shorthand:</strong> flex: 1 дегеніміз flex: 1 1 0%
+            </li>
+            <li>
+              <strong>Responsive:</strong> flex-wrap: wrap арқылы responsive дизайн жасаңыз
+            </li>
+            <li>
+              <strong>Browser support:</strong> барлық заманауи браузерлерде қолдау бар
+            </li>
+          </ul>
+        </div>
+
+        <div
+          style="
+            background: linear-gradient(135deg, #e8f5e8, #c8e6c8);
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 5px solid #4caf50;
+          "
+        >
+          <h3
+            style="
+              color: #2e7d32;
+              margin-bottom: 15px;
+              display: flex;
+              align-items: center;
+              gap: 10px;
+            "
+          >
+            ✅ Flexbox артықшылықтары
+          </h3>
+          <ul style="color: #2e7d32; font-size: 1.1rem; line-height: 1.8">
+            <li>
+              <strong>Қарапайымдық:</strong> орталау мен орналастыру оңай
+            </li>
+            <li>
+              <strong>Responsive:</strong> автоматты түрде экран өлшеміне бейімделеді
+            </li>
+            <li>
+              <strong>Икемділік:</strong> элементтер арасындағы орынды автоматты бөледі
+            </li>
+            <li>
+              <strong>Тұрақтылық:</strong> барлық заманауи браузерлерде қолдау бар
+            </li>
+            <li>
+              <strong>Тиімділік:</strong> float пен positioning-тен әлдеқайда тиімді
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let flexItemCount = 3;
+      
+      function runFlexCode() {
+        const htmlCode = document.getElementById("flexEditor").value;
+        const preview = document.getElementById("flexPreview");
+
+        const iframe = document.createElement("iframe");
+        iframe.style.width = "100%";
+        iframe.style.height = "100%";
+        iframe.style.border = "none";
+
+        preview.innerHTML = "";
+        preview.appendChild(iframe);
+
+        const iframeDoc =
+          iframe.contentDocument || iframe.contentWindow.document;
+        iframeDoc.open();
+        iframeDoc.write(htmlCode);
+        iframeDoc.close();
+      }
+
+      function clearFlexCode() {
+        document.getElementById("flexEditor").value = "";
+        document.getElementById("flexPreview").innerHTML = "";
+      }
+
+      function applyFlexProperties() {
+        const container = document.getElementById("flex-demo-container");
+        const flexDirection = document.getElementById("flex-direction").value;
+        const justifyContent = document.getElementById("justify-content").value;
+        const alignItems = document.getElementById("align-items").value;
+        const flexWrap = document.getElementById("flex-wrap").value;
+        const gap = document.getElementById("gap").value;
+        const height = document.getElementById("container-height").value;
+
+        container.style.display = "flex";
+        container.style.flexDirection = flexDirection;
+        container.style.justifyContent = justifyContent;
+        container.style.alignItems = alignItems;
+        container.style.flexWrap = flexWrap;
+        container.style.gap = gap + "px";
+        container.style.minHeight = height + "px";
+
+        updateGeneratedCSS();
+      }
+
+      function resetFlexDemo() {
+        document.getElementById("flex-direction").value = "row";
+        document.getElementById("justify-content").value = "flex-start";
+        document.getElementById("align-items").value = "stretch";
+        document.getElementById("flex-wrap").value = "nowrap";
+        document.getElementById("gap").value = "10";
+        document.getElementById("container-height").value = "200";
+
+        const container = document.getElementById("flex-demo-container");
+        container.style.display = "flex";
+        container.style.flexDirection = "row";
+        container.style.justifyContent = "flex-start";
+        container.style.alignItems = "stretch";
+        container.style.flexWrap = "nowrap";
+        container.style.gap = "10px";
+        container.style.minHeight = "200px";
+
+        updateGeneratedCSS();
+        updateSliderValues();
+      }
+
+      function addFlexItem() {
+        if (flexItemCount < 8) {
+          flexItemCount++;
+          const container = document.getElementById("flex-demo-container");
+          const newItem = document.createElement("div");
+          newItem.className = "flex-item";
+          newItem.textContent = flexItemCount;
+          container.appendChild(newItem);
+        }
+      }
+
+      function removeFlexItem() {
+        if (flexItemCount > 1) {
+          const container = document.getElementById("flex-demo-container");
+          const lastItem = container.lastElementChild;
+          if (lastItem) {
+            container.removeChild(lastItem);
+            flexItemCount--;
+          }
+        }
+      }
+
+      function updateGeneratedCSS() {
+        const flexDirection = document.getElementById("flex-direction").value;
+        const justifyContent = document.getElementById("justify-content").value;
+        const alignItems = document.getElementById("align-items").value;
+        const flexWrap = document.getElementById("flex-wrap").value;
+        const gap = document.getElementById("gap").value;
+        const height = document.getElementById("container-height").value;
+
+        const css = `.container {
+  display: flex;
+  flex-direction: ${flexDirection};
+  justify-content: ${justifyContent};
+  align-items: ${alignItems};
+  flex-wrap: ${flexWrap};
+  gap: ${gap}px;
+  min-height: ${height}px;
+}`;
+
+        document.getElementById("generated-css").textContent = css;
+      }
+
+      function updateSliderValues() {
+        const gapSlider = document.getElementById("gap");
+        const heightSlider = document.getElementById("container-height");
+        
+        document.getElementById("gap-value").textContent = gapSlider.value + "px";
+        document.getElementById("height-value").textContent = heightSlider.value + "px";
+      }
+
+      function loadCenteringExample() {
+        const centerExample = `<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <title>Flexbox орталау мысалдары</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 0; 
+            padding: 20px; 
+            background: #f0f2f5;
+        }
+        
+        .demo {
+            background: white;
+            margin: 20px 0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .demo-header {
+            background: #3498db;
+            color: white;
+            padding: 15px 20px;
+            font-weight: bold;
+        }
+        
+        .demo-content {
+            padding: 20px;
+        }
+        
+        /* 1. Толық орталау */
+        .center-perfect {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 8px;
+        }
+        
+        /* 2. Тек горизонталь орталау */
+        .center-horizontal {
+            display: flex;
+            justify-content: center;
+            padding: 30px 0;
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            color: white;
+            border-radius: 8px;
+        }
+        
+        /* 3. Тек вертикалі орталау */
+        .center-vertical {
+            display: flex;
+            align-items: center;
+            height: 150px;
+            background: linear-gradient(135deg, #4ecdc4, #44a08d);
+            color: white;
+            padding-left: 20px;
+            border-radius: 8px;
+        }
+        
+        /* 4. Бірнеше элементті орталау */
+        .center-multiple {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            height: 150px;
+            background: linear-gradient(135deg, #ffecd2, #fcb69f);
+            border-radius: 8px;
+        }
+        
+        .center-item {
+            background: rgba(255,255,255,0.9);
+            padding: 15px 25px;
+            border-radius: 25px;
+            color: #333;
+            font-weight: bold;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+        
+        /* 5. Мәтін мен суретті орталау */
+        .center-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+            background: linear-gradient(135deg, #a8edea, #fed6e3);
+            border-radius: 8px;
+            color: #333;
+            text-align: center;
+        }
+        
+        .center-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+        
+        /* 6. Card орталау */
+        .center-cards {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 200px;
+            background: #ecf0f1;
+            border-radius: 8px;
+            padding: 20px;
+        }
+        
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 300px;
+        }
+        
+        .card h3 {
+            color: #e74c3c;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; color: #2c3e50;">🎯 Flexbox арқылы орталау</h1>
+    
+    <div class="demo">
+        <div class="demo-header">1. Толық орталау (горизонталь + вертикалі)</div>
+        <div class="demo-content">
+            <div class="center-perfect">
+                Мен толығымен орталанғанмын!
+            </div>
+            <p><strong>CSS:</strong></p>
+            <pre style="background: #2c3e50; color: white; padding: 15px; border-radius: 5px; overflow-x: auto;">display: flex;
+justify-content: center;
+align-items: center;</pre>
+        </div>
+    </div>
+    
+    <div class="demo">
+        <div class="demo-header">2. Тек горизонталь орталау</div>
+        <div class="demo-content">
+            <div class="center-horizontal">
+                <div style="background: rgba(255,255,255,0.2); padding: 15px 30px; border-radius: 25px;">
+                    Горизонталь орталанған
+                </div>
+            </div>
+            <p><strong>CSS:</strong></p>
+            <pre style="background: #2c3e50; color: white; padding: 15px; border-radius: 5px; overflow-x: auto;">display: flex;
+justify-content: center;</pre>
+        </div>
+    </div>
+    
+    <div class="demo">
+        <div class="demo-header">3. Тек вертикалі орталау</div>
+        <div class="demo-content">
+            <div class="center-vertical">
+                <div style="font-size: 18px; font-weight: bold;">
+                    Вертикалі орталанған мәтін
+                </div>
+            </div>
+            <p><strong>CSS:</strong></p>
+            <pre style="background: #2c3e50; color: white; padding: 15px; border-radius: 5px; overflow-x: auto;">display: flex;
+align-items: center;</pre>
+        </div>
+    </div>
+    
+    <div class="demo">
+        <div class="demo-header">4. Бірнеше элементті орталау</div>
+        <div class="demo-content">
+            <div class="center-multiple">
+                <div class="center-item">Элемент 1</div>
+                <div class="center-item">Элемент 2</div>
+                <div class="center-item">Элемент 3</div>
+            </div>
+            <p><strong>CSS:</strong></p>
+            <pre style="background: #2c3e50; color: white; padding: 15px; border-radius: 5px; overflow-x: auto;">display: flex;
+justify-content: center;
+align-items: center;
+gap: 20px;</pre>
+        </div>
+    </div>
+    
+    <div class="demo">
+        <div class="demo-header">5. Мәтін мен иконаны орталау</div>
+        <div class="demo-content">
+            <div class="center-content">
+                <div class="center-icon">🎯</div>
+                <h3 style="margin: 0 0 10px 0;">Мақсат</h3>
+                <p style="margin: 0;">Flexbox арқылы орталау</p>
+            </div>
+            <p><strong>CSS:</strong></p>
+            <pre style="background: #2c3e50; color: white; padding: 15px; border-radius: 5px; overflow-x: auto;">display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;</pre>
+        </div>
+    </div>
+    
+    <div class="demo">
+        <div class="demo-header">6. Card орталау</div>
+        <div class="demo-content">
+            <div class="center-cards">
+                <div class="card">
+                    <h3>🚀 Арнайы ұсыныс</h3>
+                    <p>Flexbox арқылы кез келген элементті оңай орталауға болады!</p>
+                    <button style="background: #3498db; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+                        Толығырақ
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>`;
+
+        document.getElementById("flexEditor").value = centerExample;
+        runFlexCode();
+      }
+
+      function loadNavbarExample() {
+        const navbarExample = `<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <title>Flexbox Navbar мысалдары</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            background: #f8f9fa;
+        }
+        
+        .demo-section {
+            margin: 20px;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .demo-title {
+            background: #34495e;
+            color: white;
+            padding: 15px 20px;
+            margin: 0;
+            font-size: 18px;
+        }
+        
+        .demo-content {
+            padding: 20px;
+        }
+        
+        /* 1. Қарапайым Navbar */
+        .navbar-basic {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #3498db;
+            padding: 15px 25px;
+            color: white;
+        }
+        
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        /* 2. Орталық меню */
+        .navbar-center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #e74c3c;
+            padding: 15px;
+            color: white;
+        }
+        
+        /* 3. Логотип + орталық меню + батырма */
+        .navbar-complex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #27ae60;
+            padding: 15px 25px;
+            color: white;
+        }
+        
+        .center-nav {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+        }
+        
+        .btn-outline:hover {
+            background: white;
+            color: #27ae60;
+        }
+        
+        .btn-solid {
+            background: white;
+            color: #27ae60;
+        }
+        
+        .btn-solid:hover {
+            background: #ecf0f1;
+        }
+        
+        /* 4. Вертикалі Navbar */
+        .navbar-vertical {
+            display: flex;
+            flex-direction: column;
+            background: #9b59b6;
+            width: 200px;
+            min-height: 300px;
+            color: white;
+        }
+        
+        .navbar-vertical .logo {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .vertical-nav {
+            display: flex;
+            flex-direction: column;
+            padding: 20px 0;
+        }
+        
+        .vertical-nav a {
+            color: white;
+            text-decoration: none;
+            padding: 12px 25px;
+            transition: background 0.3s ease;
+        }
+        
+        .vertical-nav a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        /* 5. Responsive Navbar */
+        .navbar-responsive {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f39c12;
+            padding: 15px 25px;
+            color: white;
+            position: relative;
+        }
+        
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+        
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: white;
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+        
+        /* 6. Dropdown Navbar */
+        .navbar-dropdown {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #2c3e50;
+            padding: 15px 25px;
+            color: white;
+        }
+        
+        .dropdown {
+            position: relative;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: #34495e;
+            min-width: 150px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+        
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        
+        .dropdown-content a {
+            color: white;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+        
+        .dropdown-content a:hover {
+            background: #3498db;
+        }
+        
+        /* Responsive қасиеттер */
+        @media (max-width: 768px) {
+            .navbar-responsive .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: #f39c12;
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            }
+            
+            .hamburger {
+                display: flex !important;
+            }
+            
+            .navbar-complex {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .center-nav {
+                order: 1;
+            }
+            
+            .auth-buttons {
+                order: 2;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; color: #2c3e50; margin: 20px 0;">🧭 Flexbox Navigation мысалдары</h1>
+    
+    <div class="demo-section">
+        <h2 class="demo-title">1. Қарапайым Navbar (Logo + Menu)</h2>
+        <div class="demo-content">
+            <nav class="navbar-basic">
+                <div class="logo">MyBrand</div>
+                <ul class="nav-links">
+                    <li><a href="#">Басты бет</a></li>
+                    <li><a href="#">Туралы</a></li>
+                    <li><a href="#">Қызметтер</a></li>
+                    <li><a href="#">Байланыс</a></li>
+                </ul>
+            </nav>
+            <p><strong>CSS түйінді қасиеттері:</strong></p>
+            <pre style="background: #2c3e50; color: white; padding: 15px; border-radius: 5px; overflow-x: auto;">display: flex;
+justify-content: space-between;
+align-items: center;</pre>
+        </div>
+    </div>
+    
+    <div class="demo-section">
+        <h2 class="demo-title">2. Орталық меню</h2>
+        <div class="demo-content">
+            <nav class="navbar-center">
+                <ul class="nav-links">
+                    <li><a href="#">Басты бет</a></li>
+                    <li><a href="#">Өнімдер</a></li>
+                    <li><a href="#">Қызметтер</a></li>
+                    <li><a href="#">Байланыс</a></li>
+                </ul>
+            </nav>
+            <p><strong>CSS түйінді қасиеттері:</strong></p>
+            <pre style="background: #2c3e50; color: white; padding: 15px; border-radius: 5px; overflow-x: auto;">display: flex;
+justify-content: center;
+align-items: center;</pre>
+        </div>
+    </div>
+    
+    <div class="demo-section">
+        <h2 class="demo-title">3. Толық Navbar (Logo + Menu + Buttons)</h2>
+        <div class="demo-content">
+            <nav class="navbar-complex">
+                <div class="logo">TechSite</div>
+                <ul class="center-nav">
+                    <li><a href="#" style="color: white; text-decoration: none;">Басты бет</a></li>
+                    <li><a href="#" style="color: white; text-decoration: none;">Блог</a></li>
+                    <li><a href="#" style="color: white; text-decoration: none;">Портфолио</a></li>
+                </ul>
+                <div class="auth-buttons">
+                    <button class="btn btn-outline">Кіру</button>
+                    <button class="btn btn-solid">Тіркелу</button>
+                </div>
+            </nav>
+            <p><strong>CSS түйінді қасиеттері:</strong></p>
+            <pre style="background: #2c3e50; color: white; padding: 15px; border-radius: 5px; overflow-x: auto;">display: flex;
+justify-content: space-between;
+align-items: center;</pre>
+        </div>
+    </div>
+    
+    <div class="demo-section">
+        <h2 class="demo-title">4. Вертикалі Sidebar Navigation</h2>
+        <div class="demo-content">
+            <nav class="navbar-vertical">
+                <div class="logo">Dashboard</div>
+                <div class="vertical-nav">
+                    <a href="#">🏠 Басты бет</a>
+                    <a href="#">📊 Статистика</a>
+                    <a href="#">👥 Пайдаланушылар</a>
+                    <a href="#">⚙️ Баптаулар</a>
+                    <a href="#">🚪 Шығу</a>
+                </div>
+            </nav>
+            <p><strong>CSS түйінді қасиеттері:</strong></p>
+            <pre style="background: #2c3e50; color: white; padding: 15px; border-radius: 5px; overflow-x: auto;">display: flex;
+flex-direction: column;</pre>
+        </div>
+    </div>
+    
+    <div class="demo-section">
+        <h2 class="demo-title">5. Dropdown Navigation</h2>
+        <div class="demo-content">
+            <nav class="navbar-dropdown">
+                <div class="logo">WebSite</div>
+                <div style="display: flex; gap: 25px;">
+                    <a href="#" style="color: white; text-decoration: none;">Басты бет</a>
+                    <div class="dropdown">
+                        <a href="#" style="color: white; text-decoration: none;">Қызметтер ↓</a>
+                        <div class="dropdown-content">
+                            <a href="#">Веб дизайн</a>
+                            <a href="#">Бағдарламалау</a>
+                            <a href="#">SEO</a>
+                            <a href="#">Консультация</a>
+                        </div>
+                    </div>
+                    <a href="#" style="color: white; text-decoration: none;">Байланыс</a>
+                </div>
+            </nav>
+            <p><strong>Ерекшелік:</strong> Hover кезінде dropdown ашылады</p>
+        </div>
+    </div>
+    
+    <div class="demo-section">
+        <h2 class="demo-title">6. Mobile-First Responsive (экранды кішірейтіп көріңіз)</h2>
+        <div class="demo-content">
+            <nav class="navbar-responsive">
+                <div class="logo">ResponsiveSite</div>
+                <ul class="nav-links">
+                    <li><a href="#" style="color: white; text-decoration: none;">Басты бет</a></li>
+                    <li><a href="#" style="color: white; text-decoration: none;">Туралы</a></li>
+                    <li><a href="#" style="color: white; text-decoration: none;">Қызметтер</a></li>
+                    <li><a href="#" style="color: white; text-decoration: none;">Байланыс</a></li>
+                </ul>
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </nav>
+            <p><strong>Responsive ерекшеліктер:</strong></p>
+            <ul>
+                <li>Desktop: горизонталь меню</li>
+                <li>Mobile: hamburger мен вертикалі меню</li>
+                <li>Media queries қолданылады</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>`;
+
+        document.getElementById("flexEditor").value = navbarExample;
+        runFlexCode();
+      }
+
+      function loadLayoutExample() {
+        const layoutExample = `<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <title>Flexbox Layout мысалдары</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 0; 
+            padding: 20px; 
+            background: #ecf0f1;
+        }
+        
+        .layout-demo {
+            background: white;
+            margin: 30px 0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        .layout-title {
+            background: #2c3e50;
+            color: white;
+            padding: 15px 20px;
+            margin: 0;
+            font-size: 18px;
+        }
+        
+        /* 1. Holy Grail Layout */
+        .holy-grail {
+            display: flex;
+            flex-direction: column;
+            min-height: 400px;
+        }
+        
+        .holy-grail-header {
+            background: #3498db;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .holy-grail-main {
+            display: flex;
+            flex: 1;
+        }
+        
+        .holy-grail-sidebar {
+            background: #95a5a6;
+            flex: 0 0 150px;
+            padding: 20px;
+            color: white;
+        }
+        
+        .holy-grail-content {
+            background: #ecf0f1;
+            flex: 1;
+            padding: 20px;
+        }
+        
+        .holy-grail-footer {
+            background: #34495e;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        /* 2. Card Grid Layout */
+        .card-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 20px;
+        }
+        
+        .card {
+            flex: 1 1 250px;
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card h3 {
+            color: #e74c3c;
+            margin-bottom: 10px;
+        }
+        
+        /* 3. Dashboard Layout */
+        .dashboard {
+            display: flex;
+            height: 400px;
+        }
+        
+        .dashboard-sidebar {
+            flex: 0 0 200px;
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+        }
+        
+        .dashboard-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .dashboard-header {
+            background: #3498db;
+            color: white;
+            padding: 15px 20px;
+        }
+        
+        .dashboard-content {
+            flex: 1;
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+            background: #ecf0f1;
+        }
+        
+        .dashboard-widget {
+            flex: 1;
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        /* 4. Magazine Layout */
+        .magazine {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+        }
+        
+        .magazine-main {
+            flex: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .magazine-featured {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+        }
+        
+        .magazine-articles {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .article {
+            flex: 1;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .magazine-sidebar {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .widget {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        /* 5. E-commerce Layout */
+        .ecommerce {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+        }
+        
+        .product-filters {
+            flex: 0 0 200px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        
+        .products-grid {
+            flex: 1;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .product-card {
+            flex: 1 1 180px;
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-3px);
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 120px;
+            background: linear-gradient(45deg, #ff9a9e, #fecfef);
+            border-radius: 5px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .holy-grail-main {
+                flex-direction: column;
+            }
+            
+            .dashboard {
+                flex-direction: column;
+                height: auto;
+            }
+            
+            .magazine {
+                flex-direction: column;
+            }
+            
+            .magazine-articles {
+                flex-direction: column;
+            }
+            
+            .ecommerce {
+                flex-direction: column;
+            }
+            
+            .product-filters {
+                flex: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; color: #2c3e50;">📱 Flexbox Layout мысалдары</h1>
+    
+    <!-- 1. Holy Grail Layout -->
+    <div class="layout-demo">
+        <h2 class="layout-title">1. Holy Grail Layout</h2>
+        <div class="holy-grail">
+            <header class="holy-grail-header">
+                <h3>Header</h3>
+            </header>
+            <main class="holy-grail-main">
+                <aside class="holy-grail-sidebar">
+                    <h4>Left Sidebar</h4>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="margin: 10px 0;">Меню 1</li>
+                        <li style="margin: 10px 0;">Меню 2</li>
+                        <li style="margin: 10px 0;">Меню 3</li>
+                    </ul>
+                </aside>
+                <section class="holy-grail-content">
+                    <h3>Негізгі мазмұн</h3>
+                    <p>Бұл классикалық Holy Grail layout. Header, footer, сол жақ sidebar және негізгі контент аймағы бар.</p>
+                    <p>Flexbox арқасында sidebar тұрақты ені бар, ал контент қалған орынды толтырады.</p>
+                </section>
+                <aside class="holy-grail-sidebar">
+                    <h4>Right Sidebar</h4>
+                    <p style="font-size: 14px;">Қосымша ақпарат, жарнамалар немесе виджеттер</p>
+                </aside>
+            </main>
+            <footer class="holy-grail-footer">
+                Footer - &copy; 2025 Flexbox Layout
+            </footer>
+        </div>
+    </div>
+    
+    <!-- 2. Card Grid Layout -->
+    <div class="layout-demo">
+        <h2 class="layout-title">2. Responsive Card Grid</h2>
+        <div class="card-grid">
+            <div class="card">
+                <h3>🎯 Қызмет 1</h3>
+                <p>Веб дизайн және UI/UX дамыту. Заманауи және пайдаланушыға ыңғайлы интерфейстер жасаймыз.</p>
+            </div>
+            <div class="card">
+                <h3>💻 Қызмет 2</h3>
+                <p>Фронтенд және бэкенд разработка. React, Node.js, Python арқылы толыққанды веб қосымшалар.</p>
+            </div>
+            <div class="card">
+                <h3>📱 Қызмет 3</h3>
+                <p>Мобильді қосымшалар дамыту. iOS және Android платформаларына арналған native қосымшалар.</p>
+            </div>
+            <div class="card">
+                <h3>🚀 Қызмет 4</h3>
+                <p>SEO оптимизациясы және digital маркетинг. Сайтыңызды іздеу жүйелерінде жоғары орынға шығарамыз.</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 3. Dashboard Layout -->
+    <div class="layout-demo">
+        <h2 class="layout-title">3. Dashboard Layout</h2>
+        <div class="dashboard">
+            <aside class="dashboard-sidebar">
+                <h4>📊 Dashboard</h4>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin: 15px 0; padding: 8px; border-radius: 5px; background: rgba(255,255,255,0.1);">🏠 Басты бет</li>
+                    <li style="margin: 15px 0; padding: 8px;">📈 Аналитика</li>
+                    <li style="margin: 15px 0; padding: 8px;">👥 Пайдаланушылар</li>
+                    <li style="margin: 15px 0; padding: 8px;">⚙️ Баптаулар</li>
+                </ul>
+            </aside>
+            <main class="dashboard-main">
+                <header class="dashboard-header">
+                    <h3>Басты панель - Қош келдіңіз!</h3>
+                </header>
+                <section class="dashboard-content">
+                    <div class="dashboard-widget">
+                        <h4 style="color: #e74c3c;">📊 Статистика</h4>
+                        <p>Айлық көрсеткіштер</p>
+                        <h2 style="color: #27ae60;">+24%</h2>
+                    </div>
+                    <div class="dashboard-widget">
+                        <h4 style="color: #3498db;">👥 Пайдаланушылар</h4>
+                        <p>Белсенді пайдаланушылар</p>
+                        <h2 style="color: #f39c12;">1,234</h2>
+                    </div>
+                    <div class="dashboard-widget">
+                        <h4 style="color: #9b59b6;">💰 Кіріс</h4>
+                        <p>Бұл айдағы кіріс</p>
+                        <h2 style="color: #27ae60;">₸45,000</h2>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+    
+    <!-- 4. Magazine Layout -->
+    <div class="layout-demo">
+        <h2 class="layout-title">4. Magazine Layout</h2>
+        <div class="magazine">
+            <main class="magazine-main">
+                <article class="magazine-featured">
+                    <h2>🌟 Басты мақала</h2>
+                    <p>Flexbox арқылы заманауи веб дизайн жасау туралы толық гид. CSS Grid пен Flexbox комбинациясы...</p>
+                    <button style="background: rgba(255,255,255,0.2); border: 2px solid white; color: white; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+                        Толығырақ оқу
+                    </button>
+                </article>
+                <section class="magazine-articles">
+                    <article class="article">
+                        <h4 style="color: #e74c3c;">Жаңалықтар</h4>
+                        <h3>CSS Grid vs Flexbox</h3>
+                        <p>Қашан қайсысын қолдану керектігі туралы...</p>
+                    </article>
+                    <article class="article">
+                        <h4 style="color: #3498db;">Дәстүрлер</h4>
+                        <h3>Responsive Design</h3>
+                        <p>Mobile-first тәсілмен дизайн жасау...</p>
+                    </article>
+                </section>
+            </main>
+            <aside class="magazine-sidebar">
+                <div class="widget">
+                    <h4>📅 Күнтізбе</h4>
+                    <p>Келесі вебинарлар:</p>
+                    <ul style="font-size: 14px;">
+                        <li>15 ақпан - CSS Grid</li>
+                        <li>22 ақпан - JavaScript ES6</li>
+                    </ul>
+                </div>
+                <div class="widget">
+                    <h4>🔥 Танымал мақалалар</h4>
+                    <ol style="font-size: 14px;">
+                        <li>React Hooks гиді</li>
+                        <li>Node.js лучшие практики</li>
+                        <li>TypeScript негіздері</li>
+                    </ol>
+                </div>
+                <div class="widget">
+                    <h4>📧 Жазылу</h4>
+                    <p style="font-size: 14px;">Жаңа мақалалар туралы хабардар болыңыз</p>
+                    <button style="background: #27ae60; color: white; border: none; padding: 8px 15px; border-radius: 5px; width: 100%; cursor: pointer;">
+                        Жазылу
+                    </button>
+                </div>
+            </aside>
+        </div>
+    </div>
+    
+    <!-- 5. E-commerce Layout -->
+    <div class="layout-demo">
+        <h2 class="layout-title">5. E-commerce Product Grid</h2>
+        <div class="ecommerce">
+            <aside class="product-filters">
+                <h4>🔍 Сүзгі</h4>
+                <div style="margin: 15px 0;">
+                    <h5>Категория</h5>
+                    <label style="display: block; margin: 5px 0;"><input type="checkbox"> Электроника</label>
+                    <label style="display: block; margin: 5px 0;"><input type="checkbox"> Киім</label>
+                    <label style="display: block; margin: 5px 0;"><input type="checkbox"> Кітаптар</label>
+                </div>
+                <div style="margin: 15px 0;">
+                    <h5>Баға</h5>
+                    <select style="width: 100%; padding: 5px;">
+                        <option>Барлық бағалар</option>
+                        <option>₸1000-₸5000</option>
+                        <option>₸5000-₸10000</option>
+                    </select>
+                </div>
+            </aside>
+            <main class="products-grid">
+                <div class="product-card">
+                    <div class="product-image">📱</div>
+                    <h4>Смартфон</h4>
+                    <p style="color: #27ae60; font-weight: bold;">₸85,000</p>
+                    <button style="background: #3498db; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; width: 100%;">
+                        Сатып алу
+                    </button>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">💻</div>
+                    <h4>Ноутбук</h4>
+                    <p style="color: #27ae60; font-weight: bold;">₸250,000</p>
+                    <button style="background: #3498db; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; width: 100%;">
+                        Сатып алу
+                    </button>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">🎧</div>
+                    <h4>Құлақап</h4>
+                    <p style="color: #27ae60; font-weight: bold;">₸12,000</p>
+                    <button style="background: #3498db; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; width: 100%;">
+                        Сатып алу
+                    </button>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">⌚</div>
+                    <h4>Смарт сағат</h4>
+                    <p style="color: #27ae60; font-weight: bold;">₸45,000</p>
+                    <button style="background: #3498db; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; width: 100%;">
+                        Сатып алу
+                    </button>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">📷</div>
+                    <h4>Камера</h4>
+                    <p style="color: #27ae60; font-weight: bold;">₸180,000</p>
+                    <button style="background: #3498db; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; width: 100%;">
+                        Сатып алу
+                    </button>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">🖥️</div>
+                    <h4>Монитор</h4>
+                    <p style="color: #27ae60; font-weight: bold;">₸75,000</p>
+                    <button style="background: #3498db; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; width: 100%;">
+                        Сатып алу
+                    </button>
+                </div>
+            </main>
+        </div>
+    </div>
+    
+    <div style="background: #2c3e50; color: white; padding: 30px; margin-top: 40px; border-radius: 10px; text-align: center;">
+        <h2>🎉 Flexbox Layout артықшылықтары</h2>
+        <div style="display: flex; justify-content: space-around; margin-top: 20px; flex-wrap: wrap; gap: 20px;">
+            <div style="flex: 1 1 200px; min-width: 200px;">
+                <h3>🚀 Жылдамдық</h3>
+                <p>Float және positioning-тен әлдеқайда жылдам</p>
+            </div>
+            <div style="flex: 1 1 200px; min-width: 200px;">
+                <h3>📱 Responsive</h3>
+                <p>Автоматты түрде экран өлшеміне бейімделеді</p>
+            </div>
+            <div style="flex: 1 1 200px; min-width: 200px;">
+                <h3>🎯 Орталау</h3>
+                <p>Кез келген элементті оңай орталауға болады</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>`;
+
+        document.getElementById("flexEditor").value = layoutExample;
+        runFlexCode();
+      }
+
+      // Initialize slider event listeners
+      document.getElementById("gap").addEventListener("input", function() {
+        document.getElementById("gap-value").textContent = this.value + "px";
+      });
+
+      document.getElementById("container-height").addEventListener("input", function() {
+        document.getElementById("height-value").textContent = this.value + "px";
+      });
+
+      // Auto-run code when page loads
+      window.onload = function () {
+        runFlexCode();
+        updateGeneratedCSS();
+        updateSliderValues();
+      };
+
+      // Auto-update preview when typing (with debounce)
+      let flexTimeout;
+      document
+        .getElementById("flexEditor")
+        .addEventListener("input", function () {
+          clearTimeout(flexTimeout);
+          flexTimeout = setTimeout(runFlexCode, 500);
+        });
+    </script>
+  </body>
+</html>
+        
